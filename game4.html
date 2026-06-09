@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Run After / Run From Story Game</title>
+<title>Run After / Run From Game</title>
 
 <style>
 body{
@@ -95,26 +95,26 @@ button:hover{
 const questions = [
 {
 emoji:"🦊➡️🐇",
-story:"Fox sees Rabbit in the forest.",
-question:"What does Fox do?",
+story:"A fox sees a rabbit in the forest.",
+question:"What does the fox do?",
 answer:"runs after"
 },
 {
 emoji:"🐇➡️💨",
-story:"Rabbit sees Fox and is scared.",
-question:"What does Rabbit do?",
+story:"A rabbit sees a fox and runs away.",
+question:"What does the rabbit do?",
 answer:"runs from"
 },
 {
 emoji:"🐱➡️🐶",
-story:"Cat sees Dog in the street.",
-question:"What does Cat do?",
+story:"A cat sees a dog in the street.",
+question:"What does the cat do?",
 answer:"runs after"
 },
 {
 emoji:"🐶➡️💨",
-story:"Dog sees Cat and escapes.",
-question:"What does Dog do?",
+story:"A dog sees a cat and runs away.",
+question:"What does the dog do?",
 answer:"runs from"
 },
 
@@ -132,34 +132,21 @@ answer:"runs from"
 },
 
 {
-emoji:"👩➡️👦",
+emoji:"👩➡️🧑",
 story:"Katy is chasing Haron in the park.",
 question:"What does Katy do?",
 answer:"runs after"
 },
 {
-emoji:"👦➡️💨",
+emoji:"🧑➡️💨",
 story:"Haron runs away from Katy.",
 question:"What does Haron do?",
 answer:"runs from"
 },
 
 {
-emoji:"🧑➡️🧑",
-story:"Barzan is chasing Mobin in school.",
-question:"What does Barzan do?",
-answer:"runs after"
-},
-{
-emoji:"🧑➡️💨",
-story:"Mobin runs away from Barzan.",
-question:"What does Mobin do?",
-answer:"runs from"
-},
-
-{
-emoji:"🧑➡️🧑",
-story:"Beriwan is chasing Mansor in the playground.",
+emoji:"👩‍🦰➡️🧑",
+story:"Beriwan is chasing Mansor in school.",
 question:"What does Beriwan do?",
 answer:"runs after"
 },
@@ -167,6 +154,19 @@ answer:"runs after"
 emoji:"🧑➡️💨",
 story:"Mansor runs away from Beriwan.",
 question:"What does Mansor do?",
+answer:"runs from"
+},
+
+{
+emoji:"🧑➡️🧑",
+story:"Barzan is chasing Mobin in the playground.",
+question:"What does Barzan do?",
+answer:"runs after"
+},
+{
+emoji:"🧑➡️💨",
+story:"Mobin runs away from Barzan.",
+question:"What does Mobin do?",
 answer:"runs from"
 },
 
@@ -189,7 +189,7 @@ if(current >= questions.length){
     document.getElementById("question").innerHTML = "";
     document.getElementById("options").innerHTML = "";
     document.getElementById("result").innerHTML =
-    "🎉 Game Finished! Final Score: " + score + "/" + questions.length;
+    "🎉 Game Finished! Score: " + score + "/" + questions.length;
     return;
 }
 
