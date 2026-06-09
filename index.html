@@ -2,68 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>This That These Those Game</title>
+<title>English with Katy</title>
 
 <style>
 body{
     font-family: Arial;
     text-align:center;
-    background:#eaf6ff;
+    background:linear-gradient(135deg,#74ebd5,#acb6e5);
     padding:20px;
 }
 
 .container{
-    max-width:750px;
+    max-width:600px;
     margin:auto;
     background:white;
     padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 12px rgba(0,0,0,0.1);
-}
-
-h1{
-    margin-bottom:10px;
-}
-
-#question{
-    font-size:22px;
-    margin:25px 0;
-    min-height:70px;
+    border-radius:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
 }
 
 button{
-    padding:14px;
-    margin:8px;
-    width:150px;
+    width:90%;
+    padding:15px;
+    margin:10px;
     font-size:18px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     cursor:pointer;
-}
-
-button:hover{
-    opacity:0.9;
-}
-
-.option{
     background:#4a90e2;
     color:white;
-}
-
-#score{
-    font-size:18px;
-    margin:10px;
-}
-
-#result{
-    font-size:20px;
-    margin-top:15px;
-    min-height:30px;
-}
-
-.hint{
-    font-size:16px;
-    color:gray;
 }
 </style>
 </head>
@@ -72,136 +39,22 @@ button:hover{
 
 <div class="container">
 
-<h1>👉 This / That / These / Those 🧠</h1>
+<h1>🎮 English with Katy</h1>
+<p>Choose a game 👇</p>
 
-<p class="hint">
-Choose the correct word based on distance and number
-</p>
+<button onclick="location.href='game1.html'">
+🏃 Game 1: Daily Actions
+</button>
 
-<div id="score">Score: 0</div>
+<button onclick="location.href='game2.html'">
+✔❌ Game 2: True / False
+</button>
 
-<div id="question"></div>
-
-<div id="options"></div>
-
-<div id="result"></div>
+<button onclick="location.href='game3.html'">
+📘 Game 3: This / That / These / Those
+</button>
 
 </div>
-
-<script>
-
-const questions = [
-{
-q:"___ fox is near me.",
-answer:"this"
-},
-{
-q:"___ rabbit is over there (far away).",
-answer:"that"
-},
-{
-q:"___ animals are running near me (plural).",
-answer:"these"
-},
-{
-q:"___ animals are in the distance (plural).",
-answer:"those"
-},
-{
-q:"Look at ___ rabbit next to me.",
-answer:"this"
-},
-{
-q:"Look at ___ fox far away.",
-answer:"that"
-},
-{
-q:"___ rabbits near us are fast.",
-answer:"these"
-},
-{
-q:"___ rabbits over there are small.",
-answer:"those"
-},
-{
-q:"___ is my dog (near me).",
-answer:"this"
-},
-{
-q:"___ are my friends (near me).",
-answer:"these"
-},
-{
-q:"___ is a bird in the sky (far).",
-answer:"that"
-},
-{
-q:"___ are birds in the sky (far, plural).",
-answer:"those"
-}
-];
-
-const options = ["this","that","these","those"];
-
-let current = 0;
-let score = 0;
-
-function loadQuestion(){
-
-if(current >= questions.length){
-    document.getElementById("question").innerHTML =
-    "🎉 Game Over!";
-    
-    document.getElementById("options").innerHTML = "";
-    
-    document.getElementById("result").innerHTML =
-    "Final Score: " + score + "/" + questions.length;
-    
-    return;
-}
-
-document.getElementById("question").innerHTML =
-questions[current].q;
-
-let html = "";
-
-options.forEach(opt=>{
-    html += `
-    <button class="option" onclick="check('${opt}')">
-        ${opt}
-    </button>`;
-});
-
-document.getElementById("options").innerHTML = html;
-
-}
-
-function check(answer){
-
-if(answer === questions[current].answer){
-    score++;
-    document.getElementById("result").innerHTML =
-    "✅ Correct!";
-}else{
-    document.getElementById("result").innerHTML =
-    "❌ Wrong! Correct answer: " + questions[current].answer;
-}
-
-document.getElementById("score").innerHTML =
-"Score: " + score;
-
-current++;
-
-setTimeout(()=>{
-    document.getElementById("result").innerHTML = "";
-    loadQuestion();
-},1000);
-
-}
-
-loadQuestion();
-
-</script>
 
 </body>
 </html>
