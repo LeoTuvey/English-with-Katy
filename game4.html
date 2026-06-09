@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Who is chasing who?</title>
+<title>Run After / Run From Story Game</title>
 
 <style>
 body{
@@ -26,7 +26,7 @@ h1{
 }
 
 .emojiBox{
-    font-size:90px;
+    font-size:70px;
     margin:20px 0;
 }
 
@@ -74,7 +74,7 @@ button:hover{
 
 <div class="container">
 
-<h1>🦊 Who is chasing who?</h1>
+<h1>🏃 Run After / Run From Game</h1>
 
 <div id="score">Score: 0</div>
 
@@ -95,32 +95,85 @@ button:hover{
 const questions = [
 {
 emoji:"🦊➡️🐇",
-story:"A fox sees a rabbit in the forest.",
-question:"What does the fox do?",
+story:"Fox sees Rabbit in the forest.",
+question:"What does Fox do?",
 answer:"runs after"
 },
 {
 emoji:"🐇➡️💨",
-story:"The rabbit is scared and runs away quickly.",
-question:"What does the rabbit do?",
+story:"Rabbit sees Fox and is scared.",
+question:"What does Rabbit do?",
 answer:"runs from"
 },
 {
+emoji:"🐱➡️🐶",
+story:"Cat sees Dog in the street.",
+question:"What does Cat do?",
+answer:"runs after"
+},
+{
+emoji:"🐶➡️💨",
+story:"Dog sees Cat and escapes.",
+question:"What does Dog do?",
+answer:"runs from"
+},
+
+{
 emoji:"🧒➡️👧",
-story:"Saman is chasing Shilan in the school yard.",
+story:"Saman is chasing Shilan in the yard.",
 question:"What does Saman do?",
 answer:"runs after"
 },
 {
 emoji:"👧➡️💨",
-story:"Shilan is afraid and runs away from Saman.",
+story:"Shilan runs away from Saman.",
 question:"What does Shilan do?",
 answer:"runs from"
 },
+
 {
-emoji:"🐱➡️🐶",
-story:"A cat sees a dog and starts running after it.",
-question:"What does the cat do?",
+emoji:"👩➡️👦",
+story:"Katy is chasing Haron in the park.",
+question:"What does Katy do?",
+answer:"runs after"
+},
+{
+emoji:"👦➡️💨",
+story:"Haron runs away from Katy.",
+question:"What does Haron do?",
+answer:"runs from"
+},
+
+{
+emoji:"🧑➡️🧑",
+story:"Barzan is chasing Mobin in school.",
+question:"What does Barzan do?",
+answer:"runs after"
+},
+{
+emoji:"🧑➡️💨",
+story:"Mobin runs away from Barzan.",
+question:"What does Mobin do?",
+answer:"runs from"
+},
+
+{
+emoji:"🧑➡️🧑",
+story:"Beriwan is chasing Mansor in the playground.",
+question:"What does Beriwan do?",
+answer:"runs after"
+},
+{
+emoji:"🧑➡️💨",
+story:"Mansor runs away from Beriwan.",
+question:"What does Mansor do?",
+answer:"runs from"
+},
+
+{
+emoji:"🧑➡️🧑",
+story:"Dildar is chasing Saman in the field.",
+question:"What does Dildar do?",
 answer:"runs after"
 }
 ];
