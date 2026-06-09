@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Run After / Run From Game</title>
+<title>Run After / Run From</title>
 
 <style>
 body{
@@ -25,16 +25,23 @@ h1{
     margin-bottom:10px;
 }
 
+#imageBox img{
+    width:100%;
+    max-height:300px;
+    object-fit:cover;
+    border-radius:12px;
+    margin:15px 0;
+}
+
 #question{
-    font-size:22px;
-    margin:25px 0;
-    min-height:60px;
+    font-size:20px;
+    margin:20px 0;
 }
 
 button{
     padding:14px;
     margin:8px;
-    width:220px;
+    width:90%;
     font-size:18px;
     border:none;
     border-radius:10px;
@@ -63,9 +70,11 @@ button:hover{
 
 <div class="container">
 
-<h1>🏃 Run After / Run From Game</h1>
+<h1>🏃 Run After / Run From</h1>
 
 <div id="score">Score: 0</div>
+
+<div id="imageBox"></div>
 
 <div id="question"></div>
 
@@ -77,33 +86,36 @@ button:hover{
 
 <script>
 
-const people = [
-"Shilan","Katy","Saman","Beriwan","Barzan",
-"Haron","Mansor","Mobin","Dildar","Rabit","Fox","Cat","Dog"
+const questions = [
+{
+img:"https://images.unsplash.com/photo-1502086223501-7ea6ecd79368",
+q:"The fox is chasing the rabbit. What is the fox doing?",
+answer:"runs after"
+},
+{
+img:"https://images.unsplash.com/photo-1552410260-0fd9b3a6b1e0",
+q:"The rabbit is trying to escape. What is it doing?",
+answer:"runs from"
+},
+{
+img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
+q:"The dog is following the cat. What is the dog doing?",
+answer:"runs after"
+},
+{
+img:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
+q:"The cat is escaping from the dog. What is the cat doing?",
+answer:"runs from"
+}
 ];
-
-const actions = ["runs after","runs from"];
 
 let current = 0;
 let score = 0;
-let questions = [];
-
-function createQuestions(){
-    for(let i=0;i<10;i++){
-        let a = people[Math.floor(Math.random()*people.length)];
-        let b = people[Math.floor(Math.random()*people.length)];
-        let action = actions[Math.floor(Math.random()*actions.length)];
-
-        questions.push({
-            q: a + " " + action + " " + b,
-            answer: action
-        });
-    }
-}
 
 function loadQuestion(){
 
 if(current >= questions.length){
+    document.getElementById("imageBox").innerHTML = "";
     document.getElementById("question").innerHTML =
     "🎉 Game Over!";
     
@@ -115,12 +127,17 @@ if(current >= questions.length){
     return;
 }
 
+document.getElementById("imageBox").innerHTML =
+`<img src="${questions[current].img}">`;
+
 document.getElementById("question").innerHTML =
 questions[current].q;
 
+let options = ["runs after","runs from"];
+
 let html = "";
 
-actions.forEach(opt=>{
+options.forEach(opt=>{
     html += `<button onclick="check('${opt}')">${opt}</button>`;
 });
 
@@ -146,11 +163,10 @@ current++;
 setTimeout(()=>{
     document.getElementById("result").innerHTML = "";
     loadQuestion();
-},1000);
+},1200);
 
 }
 
-createQuestions();
 loadQuestion();
 
 </script>
