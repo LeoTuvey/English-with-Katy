@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Daily Actions English Game</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:#eef3ff;
+    padding:20px;
+}
+
+.container{
+    background:white;
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+#question{
+    font-size:22px;
+    margin:20px;
+}
+
+button{
+    padding:12px;
+    margin:8px;
+    width:80%;
+    max-width:300px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#score{
+    font-size:18px;
+    margin:10px;
+}
+
+#result{
+    font-size:20px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏃‍♂️ Daily Actions English Game 🎮</h1>
+
+<div id="score">Score: 0</div>
+
+<div id="question"></div>
+
+<div id="options"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const questions = [
+{
+q:"She ___ (read) a book now.",
+a:"is reading"
+},
+{
+q:"They ___ (play) football every day.",
+a:"play"
+},
+{
+q:"He ___ (sleep) at the moment.",
+a:"is sleeping"
+},
+{
+q:"I ___ (eat) breakfast now.",
+a:"am eating"
+},
+{
+q:"We ___ (go) to school every morning.",
+a:"go"
+},
+{
+q:"The boy ___ (run) in the park right now.",
+a:"is running"
+},
+{
+q:"She ___ (write) a letter now.",
+a:"is writing"
+},
+{
+q:"I ___ (watch) TV every evening.",
+a:"watch"
+}
+];
+
+let current = 0;
+let score = 0;
+
+function load(){
+
+    if(current >= questions.length){
+        document.getElementById("question").innerHTML =
+        "🎉 Game Over!";
+
+        document.getElementById("options").innerHTML = "";
+
+        document.getElementById("result").innerHTML =
+        "Final Score: " + score + "/" + questions.length;
+        return;
+    }
+
+    document.getElementById("question").innerHTML =
+    questions[current].q;
+
+    let opts = [
+        "is reading",
+        "am eating",
+        "is sleeping",
+        "is running",
+        "play",
+        "go",
+        "watch",
+        "is writing"
+    ];
+
+    let html = "";
+
+    opts.forEach(o=>{
+        html += `<button onclick="check('${o}')">${o}</button>`;
+    });
+
+    document.getElementById("options").innerHTML = html;
+}
+
+function check(ans){
+
+    if(ans === questions[current].a){
+        score++;
+        document.getElementById("result").innerHTML =
+        "✅ Correct!";
+    }else{
+        document.getElementById("result").innerHTML =
+        "❌ Wrong!";
+    }
+
+    document.getElementById("score").innerHTML =
+    "Score: " + score;
+
+    current++;
+
+    setTimeout(()=>{
+        document.getElementById("result").innerHTML="";
+        load();
+    },1000);
+}
+
+load();
+
+</script>
+
+</body>
+</html>
