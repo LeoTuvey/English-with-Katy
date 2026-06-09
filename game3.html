@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>This / That / These / Those Game</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:#eaf6ff;
+    padding:20px;
+}
+
+.container{
+    max-width:750px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 12px rgba(0,0,0,0.1);
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+#question{
+    font-size:22px;
+    margin:25px 0;
+}
+
+button{
+    padding:14px;
+    margin:8px;
+    width:150px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.option{
+    background:#4a90e2;
+    color:white;
+}
+
+#score{
+    font-size:18px;
+    margin:10px;
+}
+
+#result{
+    font-size:20px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👉 This / That / These / Those 🧠</h1>
+
+<div id="score">Score: 0</div>
+
+<div id="question"></div>
+
+<div id="options"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const questions = [
+{q:"___ fox is near me.", answer:"this"},
+{q:"___ rabbit is far away.", answer:"that"},
+{q:"___ dogs are near me.", answer:"these"},
+{q:"___ dogs are far away.", answer:"those"},
+{q:"Look at ___ bird next to me.", answer:"this"},
+{q:"Look at ___ birds far away.", answer:"those"},
+{q:"___ is my friend (near me).", answer:"this"},
+{q:"___ are my friends (near me).", answer:"these"},
+{q:"___ is a car far away.", answer:"that"},
+{q:"___ are cars far away.", answer:"those"}
+];
+
+const options = ["this","that","these","those"];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion(){
+
+if(current >= questions.length){
+    document.getElementById("question").innerHTML =
+    "🎉 Game Over!";
+    
+    document.getElementById("options").innerHTML = "";
+    
+    document.getElementById("result").innerHTML =
+    "Final Score: " + score + "/" + questions.length;
+    
+    return;
+}
+
+document.getElementById("question").innerHTML =
+questions[current].q;
+
+let html = "";
+
+options.forEach(opt=>{
+    html += `<button class="option" onclick="check('${opt}')">${opt}</button>`;
+});
+
+document.getElementById("options").innerHTML = html;
+}
+
+function check(answer){
+
+if(answer === questions[current].answer){
+    score++;
+    document.getElementById("result").innerHTML = "✅ Correct!";
+}else{
+    document.getElementById("result").innerHTML =
+    "❌ Wrong! Correct answer: " + questions[current].answer;
+}
+
+document.getElementById("score").innerHTML =
+"Score: " + score;
+
+current++;
+
+setTimeout(()=>{
+    document.getElementById("result").innerHTML = "";
+    loadQuestion();
+},1000);
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
