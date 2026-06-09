@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Run After / Run From Game</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:linear-gradient(135deg,#f6d365,#fda085);
+    padding:20px;
+}
+
+.container{
+    max-width:750px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 12px rgba(0,0,0,0.2);
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+#question{
+    font-size:22px;
+    margin:25px 0;
+    min-height:60px;
+}
+
+button{
+    padding:14px;
+    margin:8px;
+    width:220px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#4a90e2;
+    color:white;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#score{
+    font-size:18px;
+    margin:10px;
+}
+
+#result{
+    font-size:20px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏃 Run After / Run From Game</h1>
+
+<div id="score">Score: 0</div>
+
+<div id="question"></div>
+
+<div id="options"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const people = [
+"Shilan","Katy","Saman","Beriwan","Barzan",
+"Haron","Mansor","Mobin","Dildar","Rabit","Fox","Cat","Dog"
+];
+
+const actions = ["runs after","runs from"];
+
+let current = 0;
+let score = 0;
+let questions = [];
+
+function createQuestions(){
+    for(let i=0;i<10;i++){
+        let a = people[Math.floor(Math.random()*people.length)];
+        let b = people[Math.floor(Math.random()*people.length)];
+        let action = actions[Math.floor(Math.random()*actions.length)];
+
+        questions.push({
+            q: a + " " + action + " " + b,
+            answer: action
+        });
+    }
+}
+
+function loadQuestion(){
+
+if(current >= questions.length){
+    document.getElementById("question").innerHTML =
+    "🎉 Game Over!";
+    
+    document.getElementById("options").innerHTML = "";
+    
+    document.getElementById("result").innerHTML =
+    "Final Score: " + score + "/" + questions.length;
+    
+    return;
+}
+
+document.getElementById("question").innerHTML =
+questions[current].q;
+
+let html = "";
+
+actions.forEach(opt=>{
+    html += `<button onclick="check('${opt}')">${opt}</button>`;
+});
+
+document.getElementById("options").innerHTML = html;
+
+}
+
+function check(answer){
+
+if(answer === questions[current].answer){
+    score++;
+    document.getElementById("result").innerHTML = "✅ Correct!";
+}else{
+    document.getElementById("result").innerHTML =
+    "❌ Wrong! Correct answer: " + questions[current].answer;
+}
+
+document.getElementById("score").innerHTML =
+"Score: " + score;
+
+current++;
+
+setTimeout(()=>{
+    document.getElementById("result").innerHTML = "";
+    loadQuestion();
+},1000);
+
+}
+
+createQuestions();
+loadQuestion();
+
+</script>
+
+</body>
+</html>
