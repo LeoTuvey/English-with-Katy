@@ -39,9 +39,15 @@ h1{
     color:#333;
 }
 
+.question{
+    font-size:20px;
+    font-weight:bold;
+    margin:10px 0;
+}
+
 button{
     padding:14px;
-    margin:8px;
+    margin:10px 0;
     width:90%;
     font-size:18px;
     border:none;
@@ -71,13 +77,15 @@ button:hover{
 
 <div class="container">
 
-<h1>🦊 Who is chasing who?</h1>
+<h1>🦁 Who is chasing who?</h1>
 
 <div id="score">Score: 0</div>
 
 <div id="imageBox"></div>
 
 <div class="story" id="story"></div>
+
+<div class="question" id="question"></div>
 
 <div id="options"></div>
 
@@ -90,13 +98,13 @@ button:hover{
 const questions = [
 {
 img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
-story:"A fox sees a rabbit and starts chasing it in the forest.",
-question:"What does the fox do?",
+story:"A lion sees a small animal in the wild.",
+question:"What does the lion do?",
 answer:"runs after"
 },
 {
 img:"https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13",
-story:"The rabbit sees danger and runs away quickly.",
+story:"A rabbit is scared and runs away quickly.",
 question:"What does the rabbit do?",
 answer:"runs from"
 },
@@ -108,13 +116,13 @@ answer:"runs after"
 },
 {
 img:"https://images.unsplash.com/photo-1507149833265-60c372daea22",
-story:"Shilan is scared and runs away from Saman.",
+story:"Shilan is afraid and escapes from Saman.",
 question:"What does Shilan do?",
 answer:"runs from"
 },
 {
 img:"https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9",
-story:"A dog is chasing a cat on the street.",
+story:"A dog sees a cat and starts running.",
 question:"What does the dog do?",
 answer:"runs after"
 }
@@ -128,9 +136,10 @@ function loadQuestion(){
 if(current >= questions.length){
     document.getElementById("imageBox").innerHTML = "";
     document.getElementById("story").innerHTML = "";
+    document.getElementById("question").innerHTML = "";
     document.getElementById("options").innerHTML = "";
     document.getElementById("result").innerHTML =
-    "🎉 Game Finished! Score: " + score + "/" + questions.length;
+    "🎉 Game Finished! Final Score: " + score + "/" + questions.length;
     return;
 }
 
@@ -138,7 +147,10 @@ document.getElementById("imageBox").innerHTML =
 `<img src="${questions[current].img}">`;
 
 document.getElementById("story").innerHTML =
-questions[current].story + "<br><b>" + questions[current].question + "</b>";
+questions[current].story;
+
+document.getElementById("question").innerHTML =
+questions[current].question;
 
 let options = ["runs after","runs from"];
 
