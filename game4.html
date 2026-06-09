@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Run After / Run From Stories</title>
+<title>Who is chasing who?</title>
 
 <style>
 body{
@@ -33,9 +33,10 @@ h1{
     margin:15px 0;
 }
 
-#question{
-    font-size:20px;
-    margin:20px 0;
+.story{
+    font-size:18px;
+    margin:10px 0;
+    color:#333;
 }
 
 button{
@@ -70,13 +71,13 @@ button:hover{
 
 <div class="container">
 
-<h1>🐱 Run After / Run From Stories</h1>
+<h1>🦊 Who is chasing who?</h1>
 
 <div id="score">Score: 0</div>
 
 <div id="imageBox"></div>
 
-<div id="question"></div>
+<div class="story" id="story"></div>
 
 <div id="options"></div>
 
@@ -88,28 +89,33 @@ button:hover{
 
 const questions = [
 {
-img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
-q:"The cat is chasing the mouse. What is the cat doing?",
+img:"https://images.unsplash.com/photo-1501706362039-c06b2d715385",
+story:"A fox sees a rabbit in the forest.",
+question:"What does the fox do?",
 answer:"runs after"
 },
 {
-img:"https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13",
-q:"The mouse is afraid and escaping. What is the mouse doing?",
-answer:"runs from"
-},
-{
-img:"https://images.unsplash.com/photo-1507149833265-60c372daea22",
-q:"Shilan is running because Saman is chasing her. What is Shilan doing?",
+img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
+story:"The rabbit is scared and runs away.",
+question:"What does the rabbit do?",
 answer:"runs from"
 },
 {
 img:"https://images.unsplash.com/photo-1517841905240-472988babdf9",
-q:"Saman is chasing Shilan in the park. What is Saman doing?",
+story:"Saman is chasing Shilan in the school yard.",
+question:"What does Saman do?",
 answer:"runs after"
 },
 {
+img:"https://images.unsplash.com/photo-1507149833265-60c372daea22",
+story:"Shilan is afraid and escapes.",
+question:"What does Shilan do?",
+answer:"runs from"
+},
+{
 img:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
-q:"The dog is chasing the cat. What is the dog doing?",
+story:"A dog sees a cat and starts running.",
+question:"What does the dog do?",
 answer:"runs after"
 }
 ];
@@ -121,22 +127,18 @@ function loadQuestion(){
 
 if(current >= questions.length){
     document.getElementById("imageBox").innerHTML = "";
-    document.getElementById("question").innerHTML =
-    "🎉 Game Finished!";
-    
+    document.getElementById("story").innerHTML = "";
     document.getElementById("options").innerHTML = "";
-    
     document.getElementById("result").innerHTML =
-    "Final Score: " + score + "/" + questions.length;
-    
+    "🎉 Game Finished! Score: " + score + "/" + questions.length;
     return;
 }
 
 document.getElementById("imageBox").innerHTML =
 `<img src="${questions[current].img}">`;
 
-document.getElementById("question").innerHTML =
-questions[current].q;
+document.getElementById("story").innerHTML =
+questions[current].story + "<br><b>" + questions[current].question + "</b>";
 
 let options = ["runs after","runs from"];
 
