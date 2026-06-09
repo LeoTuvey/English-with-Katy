@@ -25,12 +25,9 @@ h1{
     margin-bottom:10px;
 }
 
-#imageBox img{
-    width:100%;
-    max-height:320px;
-    object-fit:cover;
-    border-radius:12px;
-    margin:15px 0;
+.emojiBox{
+    font-size:90px;
+    margin:20px 0;
 }
 
 .story{
@@ -81,7 +78,7 @@ button:hover{
 
 <div id="score">Score: 0</div>
 
-<div id="imageBox"></div>
+<div class="emojiBox" id="emojiBox"></div>
 
 <div class="story" id="story"></div>
 
@@ -97,34 +94,32 @@ button:hover{
 
 const questions = [
 {
-img:"https://images.unsplash.com/photo-1522926193341-e9ffd686c04c",
-story:"A fox sees a rabbit and starts chasing it in the forest.",
+emoji:"🦊➡️🐇",
+story:"A fox sees a rabbit in the forest.",
 question:"What does the fox do?",
 answer:"runs after"
 },
 {
-img:"https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13",
+emoji:"🐇➡️💨",
 story:"The rabbit is scared and runs away quickly.",
 question:"What does the rabbit do?",
 answer:"runs from"
 },
 {
-img:"https://images.unsplash.com/photo-1517841905240-472988babdf9",
+emoji:"🧒➡️👧",
 story:"Saman is chasing Shilan in the school yard.",
 question:"What does Saman do?",
 answer:"runs after"
 },
 {
-img:"https://images.unsplash.com/photo-1520975682031-a9b3a3d8f7a0",
+emoji:"👧➡️💨",
 story:"Shilan is afraid and runs away from Saman.",
 question:"What does Shilan do?",
 answer:"runs from"
 },
-
-// 🔥 FIXED PART (CAT → DOG NOW CORRECT)
 {
-img:"https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9",
-story:"A cat sees a dog and starts chasing it.",
+emoji:"🐱➡️🐶",
+story:"A cat sees a dog and starts running after it.",
 question:"What does the cat do?",
 answer:"runs after"
 }
@@ -136,7 +131,7 @@ let score = 0;
 function loadQuestion(){
 
 if(current >= questions.length){
-    document.getElementById("imageBox").innerHTML = "";
+    document.getElementById("emojiBox").innerHTML = "";
     document.getElementById("story").innerHTML = "";
     document.getElementById("question").innerHTML = "";
     document.getElementById("options").innerHTML = "";
@@ -145,8 +140,8 @@ if(current >= questions.length){
     return;
 }
 
-document.getElementById("imageBox").innerHTML =
-`<img src="${questions[current].img}">`;
+document.getElementById("emojiBox").innerHTML =
+questions[current].emoji;
 
 document.getElementById("story").innerHTML =
 questions[current].story;
