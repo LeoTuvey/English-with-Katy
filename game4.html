@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Run After / Run From</title>
+<title>Run After / Run From Stories</title>
 
 <style>
 body{
@@ -27,7 +27,7 @@ h1{
 
 #imageBox img{
     width:100%;
-    max-height:300px;
+    max-height:320px;
     object-fit:cover;
     border-radius:12px;
     margin:15px 0;
@@ -70,7 +70,7 @@ button:hover{
 
 <div class="container">
 
-<h1>🏃 Run After / Run From</h1>
+<h1>🐱 Run After / Run From Stories</h1>
 
 <div id="score">Score: 0</div>
 
@@ -88,24 +88,29 @@ button:hover{
 
 const questions = [
 {
-img:"https://images.unsplash.com/photo-1502086223501-7ea6ecd79368",
-q:"The fox is chasing the rabbit. What is the fox doing?",
+img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
+q:"The cat is chasing the mouse. What is the cat doing?",
 answer:"runs after"
 },
 {
-img:"https://images.unsplash.com/photo-1552410260-0fd9b3a6b1e0",
-q:"The rabbit is trying to escape. What is it doing?",
+img:"https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13",
+q:"The mouse is afraid and escaping. What is the mouse doing?",
 answer:"runs from"
 },
 {
-img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
-q:"The dog is following the cat. What is the dog doing?",
+img:"https://images.unsplash.com/photo-1507149833265-60c372daea22",
+q:"Shilan is running because Saman is chasing her. What is Shilan doing?",
+answer:"runs from"
+},
+{
+img:"https://images.unsplash.com/photo-1517841905240-472988babdf9",
+q:"Saman is chasing Shilan in the park. What is Saman doing?",
 answer:"runs after"
 },
 {
 img:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
-q:"The cat is escaping from the dog. What is the cat doing?",
-answer:"runs from"
+q:"The dog is chasing the cat. What is the dog doing?",
+answer:"runs after"
 }
 ];
 
@@ -117,7 +122,7 @@ function loadQuestion(){
 if(current >= questions.length){
     document.getElementById("imageBox").innerHTML = "";
     document.getElementById("question").innerHTML =
-    "🎉 Game Over!";
+    "🎉 Game Finished!";
     
     document.getElementById("options").innerHTML = "";
     
