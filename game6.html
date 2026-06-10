@@ -30,7 +30,6 @@ h1{
     margin:10px;
 }
 
-/* GAME AREA */
 .scene{
     height:280px;
     border:3px solid #333;
@@ -40,7 +39,6 @@ h1{
     background:linear-gradient(to top,#c8f7c5 40%,#bfe7ff 40%);
 }
 
-/* HERE */
 .hereObj{
     position:absolute;
     bottom:20px;
@@ -49,7 +47,6 @@ h1{
     font-size:130px;
 }
 
-/* THERE */
 .thereObj{
     position:absolute;
     top:10px;
@@ -59,7 +56,6 @@ h1{
     opacity:0.85;
 }
 
-/* Labels */
 .hereLabel{
     position:absolute;
     bottom:10px;
@@ -84,7 +80,6 @@ h1{
     font-weight:bold;
 }
 
-/* QUESTION */
 .questionBox{
     position:absolute;
     top:50%;
@@ -98,7 +93,6 @@ h1{
     line-height:1.4;
 }
 
-/* BUTTONS */
 button{
     width:95%;
     padding:14px;
@@ -140,35 +134,40 @@ button:hover{
 
 <script>
 
-/* 🔊 BEST POSSIBLE YOUNG WOMAN STYLE VOICE (browser limit) */
+/* 🔊 FIXED RELIABLE VOICE SYSTEM */
 function speak(text){
 
     let msg = new SpeechSynthesisUtterance(text);
 
     msg.lang = "en-US";
-
-    // 🎯 Natural young female style tuning
-    msg.rate = 0.82;   // clear but not slow
-    msg.pitch = 1.15;  // natural feminine tone
+    msg.rate = 0.8;
+    msg.pitch = 1.3;
     msg.volume = 1;
 
-    let voices = speechSynthesis.getVoices();
+    function setVoice(){
 
-    // Try best natural female voices available on system
-    let bestVoice = voices.find(v =>
-        v.name.toLowerCase().includes("samantha") ||
-        v.name.toLowerCase().includes("aria") ||
-        v.name.toLowerCase().includes("zira") ||
-        v.name.toLowerCase().includes("victoria") ||
-        v.name.toLowerCase().includes("female") ||
-        v.lang.includes("en-US")
-    );
+        let voices = speechSynthesis.getVoices();
 
-    if(bestVoice){
-        msg.voice = bestVoice;
+        let voice =
+            voices.find(v => v.name.includes("Google US English")) ||
+            voices.find(v => v.name.includes("Microsoft Zira")) ||
+            voices.find(v => v.name.includes("Samantha")) ||
+            voices.find(v => v.lang === "en-US") ||
+            voices[0];
+
+        if(voice){
+            msg.voice = voice;
+        }
+
+        speechSynthesis.speak(msg);
     }
 
-    speechSynthesis.speak(msg);
+    // wait for voices to load properly
+    if(speechSynthesis.getVoices().length === 0){
+        speechSynthesis.onvoiceschanged = setVoice;
+    } else {
+        setVoice();
+    }
 }
 
 const questions = [
