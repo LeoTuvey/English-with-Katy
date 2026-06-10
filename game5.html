@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>There Is / There Are</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:linear-gradient(135deg,#84fab0,#8fd3f4);
+    padding:20px;
+}
+
+.container{
+    max-width:750px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 12px rgba(0,0,0,0.2);
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+#score{
+    font-size:18px;
+    margin:10px;
+}
+
+.visual{
+    font-size:90px;
+    margin:25px 0;
+}
+
+button{
+    padding:14px;
+    margin:8px;
+    width:90%;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#4a90e2;
+    color:white;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#result{
+    font-size:20px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📍 There Is / There Are</h1>
+
+<div id="score">Score: 0</div>
+
+<div class="visual" id="visual"></div>
+
+<div id="options"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+visual:"📍🥫",
+answer:"There is a can here."
+},
+
+{
+visual:"🌳🐱",
+answer:"There is a cat there."
+},
+
+{
+visual:"📍🐱🐱",
+answer:"There are two cats here."
+},
+
+{
+visual:"🌳🐱🐱",
+answer:"There are two cats there."
+},
+
+{
+visual:"📍🐶",
+answer:"There is a dog here."
+},
+
+{
+visual:"🌳🐶",
+answer:"There is a dog there."
+},
+
+{
+visual:"📍🦊🦊",
+answer:"There are two foxes here."
+},
+
+{
+visual:"🌳🐰🐰",
+answer:"There are two rabbits there."
+}
+
+];
+
+const choices = [
+"There is a can here.",
+"There is a cat there.",
+"There are two cats here.",
+"There are two cats there.",
+"There is a dog here.",
+"There is a dog there.",
+"There are two foxes here.",
+"There are two rabbits there."
+];
+
+let current = 0;
+let score = 0;
+
+function shuffle(array){
+    return array.sort(() => Math.random() - 0.5);
+}
+
+function loadQuestion(){
+
+if(current >= questions.length){
+
+document.getElementById("visual").innerHTML = "🎉";
+
+document.getElementById("options").innerHTML = "";
+
+document.getElementById("result").innerHTML =
+"Game Finished! Final Score: " + score + "/" + questions.length;
+
+return;
+}
+
+document.getElementById("visual").innerHTML =
+questions[current].visual;
+
+let answers = shuffle([...choices]).slice(0,3);
+
+if(!answers.includes(questions[current].answer)){
+answers[0] = questions[current].answer;
+}
+
+answers = shuffle(answers);
+
+let html = "";
+
+answers.forEach(option=>{
+html += `
+<button onclick="checkAnswer('${option}')">
+${option}
+</button>
+`;
+});
+
+document.getElementById("options").innerHTML = html;
+
+}
+
+function checkAnswer(answer){
+
+if(answer === questions[current].answer){
+
+score++;
+
+document.getElementById("result").innerHTML =
+"✅ Correct!";
+
+}else{
+
+document.getElementById("result").innerHTML =
+"❌ Correct answer: " + questions[current].answer;
+
+}
+
+document.getElementById("score").innerHTML =
+"Score: " + score;
+
+current++;
+
+setTimeout(()=>{
+document.getElementById("result").innerHTML = "";
+loadQuestion();
+},1200);
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
