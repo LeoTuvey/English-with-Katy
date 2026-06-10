@@ -25,34 +25,33 @@ h1{
 }
 
 .scene{
-    height:260px;
+    height:300px;
     border:3px solid #333;
     border-radius:15px;
     position:relative;
     background:linear-gradient(to top,#d0f5c8 40%,#cfe8ff 40%);
-    margin-bottom:20px;
     overflow:hidden;
 }
 
-/* MOVING ANIMATIONS */
-.move-right{
+/* 🐾 SLOW MOVEMENT */
+.move-slow{
     position:absolute;
     left:10%;
     bottom:40px;
-    font-size:120px;
-    animation:runRight 2s forwards;
+    width:120px;
+    animation:runSlow 4s forwards;
 }
 
-@keyframes runRight{
+@keyframes runSlow{
     0%{left:10%}
-    100%{left:70%}
+    100%{left:60%}
 }
 
 .static{
     position:absolute;
     top:40px;
     right:20%;
-    font-size:120px;
+    width:120px;
 }
 
 /* speech bubble */
@@ -65,6 +64,7 @@ h1{
     padding:10px;
     border-radius:10px;
     font-weight:bold;
+    font-size:18px;
 }
 
 button{
@@ -125,30 +125,31 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
+/* 🖼️ IMAGE VERSION */
 const questions = [
 
 {
-moving:"🐶➡️🐱",
-actor:"🐱",
-question:"What am I doing?",
+run:"dog.png",
+chase:"cat.png",
+question:"What is happening?",
 answers:["Run after","Run from"],
 correct:0
 },
 
 {
-moving:"🐱➡️🐭",
-actor:"🐭",
-question:"What am I doing?",
+run:"cat.png",
+chase:"mouse.png",
+question:"What is happening?",
 answers:["Run after","Run from"],
-correct:1
+correct:0
 },
 
 {
-moving:"🦊➡️🐰",
-actor:"🐰",
-question:"What am I doing?",
+run:"fox.png",
+chase:"rabbit.png",
+question:"What is happening?",
 answers:["Run after","Run from"],
-correct:1
+correct:0
 }
 
 ];
@@ -168,10 +169,12 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* SCENE */
+/* 🖼️ SCENE */
 document.getElementById("scene").innerHTML = `
-<div class="bubble">${q.actor} says: ${q.question}</div>
-<div class="move-right">${q.moving}</div>
+<div class="bubble">What is happening?</div>
+
+<img class="move-slow" src="images/${q.run}">
+<img class="static" src="images/${q.chase}">
 `;
 
 /* VOICE */
@@ -202,7 +205,7 @@ i++;
 setTimeout(()=>{
 document.getElementById("result").innerHTML = "";
 load();
-},1200);
+},1500);
 
 }
 
