@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HERE vs THERE - Clear Distance Game</title>
+<title>HERE vs THERE - Clear Game</title>
 
 <style>
 body{
     font-family: Arial;
     text-align:center;
-    background:linear-gradient(135deg,#84fab0,#8fd3f4);
+    background:#eaf6ff;
     padding:20px;
 }
 
@@ -27,62 +27,71 @@ h1{
 
 /* SCORE */
 #score{
-    margin:10px;
     font-size:18px;
+    margin:10px;
+    font-weight:bold;
 }
 
-/* SCENE */
+/* BIG SCENE */
 .scene{
     position:relative;
-    height:280px;
-    border-radius:12px;
+    height:300px;
     margin:20px 0;
-    background:linear-gradient(to top, #c2f0c2 40%, #87ceeb 60%);
+    border-radius:15px;
+    background:linear-gradient(to top, #b7e4c7 40%, #90caf9 60%);
+    border:3px solid #333;
 }
 
-/* HERE ZONE */
+/* HERE SIDE */
 .here-zone{
     position:absolute;
-    bottom:10px;
-    left:10px;
-    width:45%;
-    height:90%;
-    border:3px solid green;
-    border-radius:12px;
-    background:rgba(0,255,0,0.08);
+    bottom:0;
+    left:0;
+    width:50%;
+    height:100%;
+    background:rgba(0,255,0,0.15);
+    border-right:3px dashed green;
 }
 
-/* THERE ZONE */
+/* THERE SIDE */
 .there-zone{
     position:absolute;
-    top:10px;
-    right:10px;
-    width:45%;
-    height:90%;
-    border:3px solid red;
-    border-radius:12px;
-    background:rgba(255,0,0,0.08);
+    bottom:0;
+    right:0;
+    width:50%;
+    height:100%;
+    background:rgba(255,0,0,0.15);
+    border-left:3px dashed red;
 }
 
 /* LABELS */
 .label{
+    position:absolute;
+    top:10px;
+    font-size:24px;
     font-weight:bold;
-    font-size:20px;
-    margin-top:10px;
+    padding:6px 12px;
+    border-radius:8px;
+    background:white;
 }
 
 .here-label{
+    left:10px;
     color:green;
+    border:2px solid green;
 }
 
 .there-label{
+    right:10px;
     color:red;
+    border:2px solid red;
 }
 
 /* OBJECT */
 .object{
-    font-size:70px;
+    font-size:80px;
     position:absolute;
+    text-shadow:2px 2px 4px rgba(0,0,0,0.3);
 }
 
 /* BUTTONS */
@@ -94,13 +103,20 @@ button{
     border:none;
     border-radius:10px;
     cursor:pointer;
-    background:#4a90e2;
+    background:#1e88e5;
     color:white;
+    font-weight:bold;
 }
 
+button:hover{
+    opacity:0.9;
+}
+
+/* RESULT */
 #result{
     font-size:20px;
     margin-top:10px;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -109,7 +125,7 @@ button{
 
 <div class="container">
 
-<h1>📍 HERE vs THERE (Clear Distance Game)</h1>
+<h1>📍 HERE vs THERE (Clear Distance)</h1>
 
 <div id="score">Score: 0</div>
 
@@ -124,26 +140,10 @@ button{
 <script>
 
 const questions = [
-{
-animal:"🐱",
-position:"here",
-answer:"There is a cat here."
-},
-{
-animal:"🐶",
-position:"there",
-answer:"There is a dog there."
-},
-{
-animal:"🐰",
-position:"here",
-answer:"There is a rabbit here."
-},
-{
-animal:"🦊",
-position:"there",
-answer:"There is a fox there."
-}
+{ animal:"🐱", pos:"here", answer:"There is a cat here." },
+{ animal:"🐶", pos:"there", answer:"There is a dog there." },
+{ animal:"🐰", pos:"here", answer:"There is a rabbit here." },
+{ animal:"🦊", pos:"there", answer:"There is a fox there." }
 ];
 
 const choices = [
@@ -168,24 +168,22 @@ return;
 let q = questions[i];
 
 document.getElementById("scene").innerHTML = `
-
 <div class="here-zone">
-<div class="label here-label">HERE (close to you)</div>
+<div class="label here-label">HERE (close)</div>
 </div>
 
 <div class="there-zone">
-<div class="label there-label">THERE (far away)</div>
+<div class="label there-label">THERE (far)</div>
 </div>
 
 <div class="object" style="
-    ${q.position === 'here'
-        ? 'bottom:40px; left:25%;'
-        : 'top:40px; right:25%;'
+    ${q.pos === 'here'
+        ? 'bottom:30px; left:25%;'
+        : 'top:30px; right:25%;'
     }
 ">
 ${q.animal}
 </div>
-
 `;
 
 let html = "";
@@ -204,7 +202,7 @@ score++;
 document.getElementById("result").innerHTML = "✅ Correct!";
 }else{
 document.getElementById("result").innerHTML =
-"❌ Correct answer: " + questions[i].answer;
+"❌ Correct: " + questions[i].answer;
 }
 
 document.getElementById("score").innerHTML = "Score: " + score;
