@@ -95,7 +95,7 @@ button:hover{
 
 <script>
 
-/* 🔊 KID-CLEAR VOICE SYSTEM */
+/* 🔊 ONLY ADDITION: VOICE SYSTEM */
 function speak(text){
 
     let msg = new SpeechSynthesisUtterance(text);
@@ -121,6 +121,7 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
+/* YOUR ORIGINAL DATA (UNCHANGED) */
 const questions = [
 
 {
@@ -160,6 +161,7 @@ correct:0
 
 let i = 0;
 
+/* LOAD FUNCTION (UNCHANGED except voice lines added) */
 function load(){
 
 if(i >= questions.length){
@@ -177,8 +179,8 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* 🔊 speak question */
-setTimeout(()=> speak(q.question), 300);
+/* 🔊 VOICE ADDED ONLY HERE */
+setTimeout(() => speak(q.question), 300);
 
 document.getElementById("scene").innerHTML = `
 <div class="character">${q.character}</div>
@@ -201,9 +203,10 @@ document.getElementById("options").innerHTML = html;
 
 }
 
+/* CHECK FUNCTION (UNCHANGED except voice added) */
 function check(ans, text){
 
-/* 🔊 speak answer */
+/* 🔊 VOICE ADDED ONLY HERE */
 speak(text);
 
 if(ans === questions[i].correct){
