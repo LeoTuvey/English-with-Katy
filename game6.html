@@ -40,7 +40,7 @@ h1{
     background:linear-gradient(to top,#c8f7c5 40%,#bfe7ff 40%);
 }
 
-/* HERE (close) */
+/* HERE */
 .hereObj{
     position:absolute;
     bottom:20px;
@@ -49,7 +49,7 @@ h1{
     font-size:130px;
 }
 
-/* THERE (far) */
+/* THERE */
 .thereObj{
     position:absolute;
     top:10px;
@@ -84,7 +84,7 @@ h1{
     font-weight:bold;
 }
 
-/* QUESTION BOX */
+/* QUESTION */
 .questionBox{
     position:absolute;
     top:50%;
@@ -140,11 +140,32 @@ button:hover{
 
 <script>
 
-/* 🔊 VOICE FUNCTION */
+/* 🔊 IMPROVED VOICE (female / kid-friendly style) */
 function speak(text){
     let msg = new SpeechSynthesisUtterance(text);
+
     msg.lang = "en-US";
-    msg.rate = 0.9;
+    msg.rate = 0.85;   // slower for kids
+    msg.pitch = 1.4;   // higher = more “young voice feel”
+    msg.volume = 1;
+
+    let voices = speechSynthesis.getVoices();
+
+    // Try to find female-style voice
+    let femaleVoice = voices.find(v =>
+        v.lang.includes("en") &&
+        (
+            v.name.toLowerCase().includes("female") ||
+            v.name.toLowerCase().includes("samantha") ||
+            v.name.toLowerCase().includes("zira") ||
+            v.name.toLowerCase().includes("google uk english female")
+        )
+    );
+
+    if(femaleVoice){
+        msg.voice = femaleVoice;
+    }
+
     speechSynthesis.speak(msg);
 }
 
@@ -237,7 +258,7 @@ return;
 
 let q = questions[i];
 
-/* 🔊 speak question */
+/* speak question */
 speechSynthesis.cancel();
 setTimeout(() => speak(q.question), 300);
 
