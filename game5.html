@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HERE vs THERE - Ultra Clear</title>
+<title>HERE vs THERE - Clear Learning</title>
 
 <style>
 body{
     font-family: Arial;
     text-align:center;
-    background:#dff6ff;
+    background:#e8f7ff;
     padding:20px;
 }
 
@@ -32,58 +32,74 @@ h1{
     margin:10px;
 }
 
-/* ROAD STYLE (KEY IMPROVEMENT) */
-.road{
+/* SCENE */
+.scene{
     position:relative;
     height:320px;
     margin:20px 0;
     border-radius:15px;
-    background:linear-gradient(to right, #4caf50 0%, #4caf50 45%, #ff5252 55%, #ff5252 100%);
-    border:4px solid #333;
+    border:3px solid #333;
+    background:linear-gradient(to right, #b9f6ca 0%, #b9f6ca 45%, #ffcdd2 55%, #ffcdd2 100%);
 }
 
 /* CENTER LINE */
 .line{
     position:absolute;
-    top:0;
     left:50%;
-    width:4px;
+    top:0;
+    width:3px;
     height:100%;
     background:white;
 }
 
-/* HERE LABEL */
+/* HERE LABEL (BIG) */
 .here-label{
     position:absolute;
-    left:20px;
+    left:10px;
     top:10px;
     background:white;
     border:3px solid green;
     color:green;
-    padding:5px 10px;
+    padding:6px 12px;
     font-weight:bold;
     border-radius:8px;
+    font-size:20px;
 }
 
-/* THERE LABEL */
+/* THERE LABEL (SMALLER) */
 .there-label{
     position:absolute;
-    right:20px;
+    right:10px;
     top:10px;
     background:white;
     border:3px solid red;
     color:red;
-    padding:5px 10px;
+    padding:4px 8px;
     font-weight:bold;
     border-radius:8px;
+    font-size:14px;
 }
 
-/* OBJECT */
+/* OBJECTS */
 .object{
     position:absolute;
-    font-size:80px;
-    top:120px;
     text-shadow:2px 2px 5px rgba(0,0,0,0.3);
+}
+
+/* HERE OBJECT (BIGGER) */
+.big{
+    font-size:95px;
+}
+
+/* THERE OBJECT (SMALLER) */
+.small{
+    font-size:55px;
+    opacity:0.85;
+}
+
+/* CAN FIX (CLEARER) */
+.can{
+    font-size:85px;
 }
 
 /* BUTTONS */
@@ -100,10 +116,6 @@ button{
     font-weight:bold;
 }
 
-button:hover{
-    opacity:0.9;
-}
-
 /* RESULT */
 #result{
     font-size:20px;
@@ -117,11 +129,11 @@ button:hover{
 
 <div class="container">
 
-<h1>📍 HERE vs THERE (Clear Distance Learning)</h1>
+<h1>📍 HERE vs THERE (Clear Visual Learning)</h1>
 
 <div id="score">Score: 0</div>
 
-<div class="road" id="road"></div>
+<div class="scene" id="scene"></div>
 
 <div id="options"></div>
 
@@ -132,17 +144,17 @@ button:hover{
 <script>
 
 const questions = [
-{ obj:"🐱", pos:"here", answer:"There is a cat here." },
-{ obj:"🐶", pos:"there", answer:"There is a dog there." },
-{ obj:"🐰", pos:"here", answer:"There is a rabbit here." },
-{ obj:"🦊", pos:"there", answer:"There is a fox there." }
+{ obj:"🥫", type:"can", pos:"here", answer:"There is a can here." },
+{ obj:"🐱", type:"animal", pos:"there", answer:"There is a cat there." },
+{ obj:"🐶", type:"animal", pos:"here", answer:"There is a dog here." },
+{ obj:"🐰", type:"animal", pos:"there", answer:"There is a rabbit there." }
 ];
 
 const choices = [
-"There is a cat here.",
-"There is a dog there.",
-"There is a rabbit here.",
-"There is a fox there."
+"There is a can here.",
+"There is a cat there.",
+"There is a dog here.",
+"There is a rabbit there."
 ];
 
 let i = 0;
@@ -151,7 +163,7 @@ let score = 0;
 function load(){
 
 if(i >= questions.length){
-document.getElementById("road").innerHTML =
+document.getElementById("scene").innerHTML =
 "🎉 Finished! Score: " + score;
 document.getElementById("options").innerHTML = "";
 return;
@@ -159,15 +171,21 @@ return;
 
 let q = questions[i];
 
-document.getElementById("road").innerHTML = `
+let sizeClass = "";
+if(q.pos === "here") sizeClass = "big";
+else sizeClass = "small";
+
+if(q.type === "can") sizeClass = "can";
+
+document.getElementById("scene").innerHTML = `
 <div class="here-label">HERE (close)</div>
 <div class="there-label">THERE (far)</div>
 <div class="line"></div>
 
-<div class="object" style="
+<div class="object ${sizeClass}" style="
     ${q.pos === 'here'
-        ? 'left:15%;'
-        : 'left:75%;'
+        ? 'left:20%; bottom:40px;'
+        : 'left:75%; top:60px;'
     }
 ">
 ${q.obj}
@@ -190,7 +208,7 @@ score++;
 document.getElementById("result").innerHTML = "✅ Correct!";
 }else{
 document.getElementById("result").innerHTML =
-"❌ Correct answer: " + questions[i].answer;
+"❌ Correct: " + questions[i].answer;
 }
 
 document.getElementById("score").innerHTML = "Score: " + score;
