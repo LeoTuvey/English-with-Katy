@@ -95,7 +95,7 @@ button:hover{
 
 <script>
 
-/* 🔊 KID-CLEAR VOICE SYSTEM (helper) */
+/* 🔊 KID-CLEAR VOICE SYSTEM */
 function speak(text){
 
     let msg = new SpeechSynthesisUtterance(text);
@@ -177,7 +177,6 @@ return;
 
 let q = questions[i];
 
-/* clear old speech */
 speechSynthesis.cancel();
 
 /* show visuals */
@@ -196,35 +195,30 @@ html += `<button onclick="check(${index}, '${a}')">${a}</button>`;
 
 document.getElementById("options").innerHTML = html;
 
-/* 🔊 FIXED VOICE FLOW */
-let explanation = "";
+/* 🔊 PREVIEW STYLE VOICE (NEW IDEA) */
+let speakText = q.question + " " + q.answers[q.correct];
 
-if(q.question.includes("Run after")){
-explanation = "Run after means chase.";
+let msg = new SpeechSynthesisUtterance(speakText);
+
+msg.lang = "en-US";
+msg.rate = 0.78;
+msg.pitch = 1.25;
+msg.volume = 1;
+
+let voices = speechSynthesis.getVoices();
+
+let voice =
+    voices.find(v => v.name.includes("Google UK English Female")) ||
+    voices.find(v => v.name.includes("Microsoft Zira")) ||
+    voices.find(v => v.name.includes("Samantha")) ||
+    voices.find(v => v.lang.includes("en-US")) ||
+    voices[0];
+
+if(voice){
+    msg.voice = voice;
 }
 
-if(q.question.includes("Run from")){
-explanation = "Run from means escape.";
-}
-
-let qMsg = new SpeechSynthesisUtterance(q.question);
-qMsg.lang = "en-US";
-qMsg.rate = 0.78;
-qMsg.pitch = 1.25;
-
-qMsg.onend = () => {
-
-if(explanation !== ""){
-let eMsg = new SpeechSynthesisUtterance(explanation);
-eMsg.lang = "en-US";
-eMsg.rate = 0.78;
-eMsg.pitch = 1.25;
-speechSynthesis.speak(eMsg);
-}
-
-};
-
-speechSynthesis.speak(qMsg);
+speechSynthesis.speak(msg);
 
 }
 
