@@ -95,7 +95,7 @@ button:hover{
 
 <script>
 
-/* 🔊 ONLY ADDITION: VOICE SYSTEM */
+/* 🔊 KID-CLEAR VOICE SYSTEM */
 function speak(text){
 
     let msg = new SpeechSynthesisUtterance(text);
@@ -121,7 +121,7 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
-/* YOUR ORIGINAL DATA (UNCHANGED) */
+/* GAME DATA (UNCHANGED) */
 const questions = [
 
 {
@@ -161,7 +161,7 @@ correct:0
 
 let i = 0;
 
-/* LOAD FUNCTION (UNCHANGED except voice lines added) */
+/* LOAD GAME */
 function load(){
 
 if(i >= questions.length){
@@ -179,8 +179,20 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* 🔊 VOICE ADDED ONLY HERE */
+/* 🔊 QUESTION + EXPLANATION */
 setTimeout(() => speak(q.question), 300);
+
+setTimeout(() => {
+
+    if(q.question.includes("Run after")){
+        speak("Run after means chase.");
+    }
+
+    if(q.question.includes("Run from")){
+        speak("Run from means escape.");
+    }
+
+}, 1400);
 
 document.getElementById("scene").innerHTML = `
 <div class="character">${q.character}</div>
@@ -203,10 +215,9 @@ document.getElementById("options").innerHTML = html;
 
 }
 
-/* CHECK FUNCTION (UNCHANGED except voice added) */
+/* CHECK ANSWER */
 function check(ans, text){
 
-/* 🔊 VOICE ADDED ONLY HERE */
 speak(text);
 
 if(ans === questions[i].correct){
