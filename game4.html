@@ -19,6 +19,10 @@ body{
     border-radius:15px;
 }
 
+h1{
+    margin-bottom:10px;
+}
+
 /* 🌍 VISUAL AREA */
 .scene{
     height:260px;
@@ -46,7 +50,7 @@ body{
 .escape .actor{ left:10%; }
 .escape .target{ left:50%; }
 
-/* 📘 SENTENCE BOX (IMPORTANT FIX) */
+/* 📘 SENTENCE */
 .sentenceBox{
     margin-top:15px;
     font-size:22px;
@@ -56,7 +60,7 @@ body{
     border-radius:10px;
 }
 
-/* 🧠 MEANING BOX */
+/* 🧠 MEANING */
 .meaningBox{
     margin-top:10px;
     font-size:16px;
@@ -66,7 +70,7 @@ body{
     border-radius:10px;
 }
 
-/* ❓ OPTIONS */
+/* ❓ BUTTONS */
 button{
     width:95%;
     padding:14px;
@@ -106,6 +110,7 @@ button{
 
 <script>
 
+/* 🔊 VOICE */
 function speak(text){
     let msg = new SpeechSynthesisUtterance(text);
     msg.lang = "en-US";
@@ -114,22 +119,85 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
-/* 🧠 DATA */
+/* 🧠 EXPANDED ANIMAL DATA */
 const questions = [
 
 {
-actor:"🐱",
-target:"🐶",
-sentence:"The cat is running after the dog.",
+actor:"🐱 Cat",
+target:"🐭 Mouse",
+sentence:"The cat is running after the mouse.",
 type:"chase",
 meaning:"run after = chase",
 correctAnswer:"run after"
 },
 
 {
-actor:"🐶",
-target:"🐱",
-sentence:"The dog is running from the cat.",
+actor:"🐶 Dog",
+target:"🐱 Cat",
+sentence:"The dog is running after the cat.",
+type:"chase",
+meaning:"run after = chase",
+correctAnswer:"run after"
+},
+
+{
+actor:"🦊 Fox",
+target:"🐰 Rabbit",
+sentence:"The fox is running after the rabbit.",
+type:"chase",
+meaning:"run after = chase",
+correctAnswer:"run after"
+},
+
+{
+actor:"🐺 Wolf",
+target:"🐑 Sheep",
+sentence:"The wolf is running after the sheep.",
+type:"chase",
+meaning:"run after = chase",
+correctAnswer:"run after"
+},
+
+{
+actor:"🦁 Lion",
+target:"🦓 Zebra",
+sentence:"The lion is running after the zebra.",
+type:"chase",
+meaning:"run after = chase",
+correctAnswer:"run after"
+},
+
+{
+actor:"🐭 Mouse",
+target:"🐱 Cat",
+sentence:"The mouse is running from the cat.",
+type:"escape",
+meaning:"run from = escape",
+correctAnswer:"run from"
+},
+
+{
+actor:"🐰 Rabbit",
+target:"🦊 Fox",
+sentence:"The rabbit is running from the fox.",
+type:"escape",
+meaning:"run from = escape",
+correctAnswer:"run from"
+},
+
+{
+actor:"🐑 Sheep",
+target:"🐺 Wolf",
+sentence:"The sheep is running from the wolf.",
+type:"escape",
+meaning:"run from = escape",
+correctAnswer:"run from"
+},
+
+{
+actor:"🦓 Zebra",
+target:"🦁 Lion",
+sentence:"The zebra is running from the lion.",
 type:"escape",
 meaning:"run from = escape",
 correctAnswer:"run from"
@@ -144,6 +212,7 @@ function load(){
 if(i >= questions.length){
 speak("Great job!");
 document.getElementById("scene").innerHTML = "🎉 Finished!";
+document.getElementById("options").innerHTML = "";
 return;
 }
 
@@ -161,7 +230,7 @@ scene.innerHTML = `
 <div class="target">${q.target}</div>
 `;
 
-/* TEXT (CLEAR STRUCTURE) */
+/* TEXT */
 document.getElementById("sentence").innerText = q.sentence;
 document.getElementById("meaning").innerText = q.meaning;
 
