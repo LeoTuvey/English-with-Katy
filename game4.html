@@ -23,7 +23,6 @@ h1{
     margin-bottom:10px;
 }
 
-/* 🌍 VISUAL AREA */
 .scene{
     height:260px;
     border:3px solid #333;
@@ -33,7 +32,7 @@ h1{
     overflow:hidden;
 }
 
-/* 🐾 ANIMALS */
+/* ANIMATION */
 .actor, .target{
     position:absolute;
     bottom:40px;
@@ -50,27 +49,22 @@ h1{
 .escape .actor{ left:10%; }
 .escape .target{ left:50%; }
 
-/* 📘 SENTENCE */
+/* TEXT */
 .sentenceBox{
     margin-top:15px;
     font-size:22px;
     font-weight:bold;
-    background:#f4f4f4;
-    padding:10px;
-    border-radius:10px;
 }
 
-/* 🧠 MEANING */
 .meaningBox{
     margin-top:10px;
     font-size:16px;
-    color:#333;
     background:#e8f3ff;
     padding:8px;
     border-radius:10px;
 }
 
-/* ❓ BUTTONS */
+/* BUTTONS */
 button{
     width:95%;
     padding:14px;
@@ -85,6 +79,13 @@ button{
 
 #result{
     font-size:20px;
+    font-weight:bold;
+}
+
+/* FINAL SCREEN */
+.finalBox{
+    margin-top:20px;
+    font-size:24px;
     font-weight:bold;
 }
 </style>
@@ -106,6 +107,8 @@ button{
 
 <div id="result"></div>
 
+<div id="final"></div>
+
 </div>
 
 <script>
@@ -119,100 +122,25 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
-/* 🧠 EXPANDED ANIMAL DATA */
+/* 🧠 DATA */
 const questions = [
 
-{
-actor:"🐱 Cat",
-target:"🐭 Mouse",
-sentence:"The cat is running after the mouse.",
-type:"chase",
-meaning:"run after = chase",
-correctAnswer:"run after"
-},
-
-{
-actor:"🐶 Dog",
-target:"🐱 Cat",
-sentence:"The dog is running after the cat.",
-type:"chase",
-meaning:"run after = chase",
-correctAnswer:"run after"
-},
-
-{
-actor:"🦊 Fox",
-target:"🐰 Rabbit",
-sentence:"The fox is running after the rabbit.",
-type:"chase",
-meaning:"run after = chase",
-correctAnswer:"run after"
-},
-
-{
-actor:"🐺 Wolf",
-target:"🐑 Sheep",
-sentence:"The wolf is running after the sheep.",
-type:"chase",
-meaning:"run after = chase",
-correctAnswer:"run after"
-},
-
-{
-actor:"🦁 Lion",
-target:"🦓 Zebra",
-sentence:"The lion is running after the zebra.",
-type:"chase",
-meaning:"run after = chase",
-correctAnswer:"run after"
-},
-
-{
-actor:"🐭 Mouse",
-target:"🐱 Cat",
-sentence:"The mouse is running from the cat.",
-type:"escape",
-meaning:"run from = escape",
-correctAnswer:"run from"
-},
-
-{
-actor:"🐰 Rabbit",
-target:"🦊 Fox",
-sentence:"The rabbit is running from the fox.",
-type:"escape",
-meaning:"run from = escape",
-correctAnswer:"run from"
-},
-
-{
-actor:"🐑 Sheep",
-target:"🐺 Wolf",
-sentence:"The sheep is running from the wolf.",
-type:"escape",
-meaning:"run from = escape",
-correctAnswer:"run from"
-},
-
-{
-actor:"🦓 Zebra",
-target:"🦁 Lion",
-sentence:"The zebra is running from the lion.",
-type:"escape",
-meaning:"run from = escape",
-correctAnswer:"run from"
-}
+{actor:"🐱 Cat", target:"🐭 Mouse", sentence:"The cat is running after the mouse.", type:"chase", meaning:"run after = chase", answer:"run after"},
+{actor:"🐶 Dog", target:"🐱 Cat", sentence:"The dog is running after the cat.", type:"chase", meaning:"run after = chase", answer:"run after"},
+{actor:"🦊 Fox", target:"🐰 Rabbit", sentence:"The fox is running after the rabbit.", type:"chase", meaning:"run after = chase", answer:"run after"},
+{actor:"🐭 Mouse", target:"🐱 Cat", sentence:"The mouse is running from the cat.", type:"escape", meaning:"run from = escape", answer:"run from"},
+{actor:"🐰 Rabbit", target:"🦊 Fox", sentence:"The rabbit is running from the fox.", type:"escape", meaning:"run from = escape", answer:"run from"}
 
 ];
 
 let i = 0;
+let score = 0;
 
+/* LOAD GAME */
 function load(){
 
 if(i >= questions.length){
-speak("Great job!");
-document.getElementById("scene").innerHTML = "🎉 Finished!";
-document.getElementById("options").innerHTML = "";
+showFinal();
 return;
 }
 
@@ -220,32 +148,23 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* RESET */
 let scene = document.getElementById("scene");
 scene.className = "";
 
-/* VISUAL */
 scene.innerHTML = `
 <div class="actor">${q.actor}</div>
 <div class="target">${q.target}</div>
 `;
 
-/* TEXT */
 document.getElementById("sentence").innerText = q.sentence;
 document.getElementById("meaning").innerText = q.meaning;
 
-/* ANIMATION */
-setTimeout(()=>{
-    scene.classList.add(q.type);
-},800);
-
-/* VOICE */
+setTimeout(()=> scene.classList.add(q.type), 800);
 setTimeout(()=> speak(q.sentence), 400);
 
-/* OPTIONS */
 let html = "";
 
-["run after","run from"].forEach((a)=>{
+["run after","run from"].forEach(a=>{
 html += `<button onclick="check('${a}')">${a}</button>`;
 });
 
@@ -253,9 +172,11 @@ document.getElementById("options").innerHTML = html;
 
 }
 
-function check(answer){
+/* CHECK ANSWER */
+function check(ans){
 
-if(answer === questions[i].correctAnswer){
+if(ans === questions[i].answer){
+score++;
 document.getElementById("result").innerHTML = "✅ Correct!";
 speak("Correct!");
 }else{
@@ -270,6 +191,39 @@ document.getElementById("result").innerHTML = "";
 load();
 },1500);
 
+}
+
+/* 🏆 FINAL GRADE SYSTEM */
+function showFinal(){
+
+let grade = "";
+
+if(score >= 5){
+grade = "A ⭐ Excellent!";
+}
+else if(score >= 4){
+grade = "B 👍 Good!";
+}
+else if(score >= 3){
+grade = "C 🙂 OK!";
+}
+else{
+grade = "D ❌ Needs Practice";
+}
+
+document.getElementById("scene").innerHTML = "🎉 Finished!";
+document.getElementById("sentence").innerHTML = "";
+document.getElementById("meaning").innerHTML = "";
+document.getElementById("options").innerHTML = "";
+
+document.getElementById("final").innerHTML = `
+<div class="finalBox">
+🏆 Score: ${score} / ${questions.length}<br><br>
+🎓 Grade: ${grade}
+</div>
+`;
+
+speak("Game finished. Your grade is " + grade);
 }
 
 load();
