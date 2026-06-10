@@ -84,6 +84,20 @@ h1{
     font-weight:bold;
 }
 
+/* 🧠 QUESTION (LEFT SIDE - NEW) */
+.questionBox{
+    position:absolute;
+    top:50%;
+    left:10px;
+    transform:translateY(-50%);
+    width:45%;
+    font-size:22px;
+    font-weight:bold;
+    text-align:left;
+    color:#222;
+    line-height:1.4;
+}
+
 /* Buttons */
 button{
     width:95%;
@@ -219,7 +233,7 @@ document.getElementById("scene").innerHTML = `
 ${q.obj}
 </div>
 
-<div style="position:absolute;bottom:95px;width:100%;font-size:18px;">
+<div class="questionBox">
 ${q.question}
 </div>
 
