@@ -33,29 +33,37 @@ h1{
     overflow:hidden;
 }
 
-/* 🌍 SAME GROUND LINE */
+/* 🌍 SAME GROUND LEVEL */
 .actor, .target{
     position:absolute;
-    bottom:40px;   /* SAME LEVEL */
+    bottom:40px;
     font-size:110px;
 }
 
-/* 🐾 MOVING ANIMATION (CHASE EFFECT) */
+/* 🐾 CHASE ANIMATION */
 .actor{
     left:10%;
-    animation:moveActor 3.5s linear forwards;
+    animation:moveChaser 3.5s linear forwards;
 }
 
 .target{
-    left:55%;
+    left:60%;
+    animation:moveEscape 3.5s linear forwards;
 }
 
-/* movement keyframes */
-@keyframes moveActor{
+/* chaser moves forward */
+@keyframes moveChaser{
     0%{left:10%}
-    100%{left:45%}
+    100%{left:50%}
 }
 
+/* target moves away */
+@keyframes moveEscape{
+    0%{left:60%}
+    100%{left:75%}
+}
+
+/* speech bubble */
 .bubble{
     position:absolute;
     top:10px;
@@ -184,7 +192,7 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* 🌍 SCENE (CHASE ON SAME LINE) */
+/* 🌍 SCENE */
 document.getElementById("scene").innerHTML = `
 <div class="bubble">${q.sentence}</div>
 
