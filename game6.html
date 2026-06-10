@@ -140,28 +140,34 @@ button:hover{
 
 <script>
 
-/* 🔊 SUPER CLEAR VOICE (best possible browser version) */
+/* 🔊 CAT + CLEAR VOICE SYSTEM */
 function speak(text){
-    let msg = new SpeechSynthesisUtterance(text);
+
+    let msg = new SpeechSynthesisUtterance();
 
     msg.lang = "en-US";
-    msg.rate = 0.75;   // SLOW = clear for kids
-    msg.pitch = 1.15;  // natural friendly tone
+    msg.rate = 0.75;   // slow = clear for kids
+    msg.pitch = 1.2;   // friendly tone
     msg.volume = 1;
 
     let voices = speechSynthesis.getVoices();
 
-    // PRIORITY: best clear voices on most systems
     let bestVoice = voices.find(v =>
         v.name.includes("Samantha") ||
         v.name.includes("Google UK English Female") ||
         v.name.includes("Microsoft Zira") ||
-        v.name.includes("Daniel") ||
         v.lang === "en-US"
     );
 
     if(bestVoice){
         msg.voice = bestVoice;
+    }
+
+    // 🐱 CAT FEATURE
+    if(text.toLowerCase().includes("cat")){
+        msg.text = "Meow... " + text;
+    }else{
+        msg.text = text;
     }
 
     speechSynthesis.speak(msg);
@@ -256,7 +262,6 @@ return;
 
 let q = questions[i];
 
-/* speak question clearly */
 speechSynthesis.cancel();
 setTimeout(() => speak(q.question), 400);
 
