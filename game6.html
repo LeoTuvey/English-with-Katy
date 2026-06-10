@@ -30,7 +30,7 @@ h1{
     margin:10px;
 }
 
-/* 🌍 GAME AREA */
+/* GAME AREA */
 .scene{
     height:280px;
     border:3px solid #333;
@@ -40,7 +40,7 @@ h1{
     background:linear-gradient(to top,#c8f7c5 40%,#bfe7ff 40%);
 }
 
-/* 🟢 HERE (close = bottom) */
+/* HERE (close) */
 .hereObj{
     position:absolute;
     bottom:20px;
@@ -49,7 +49,7 @@ h1{
     font-size:130px;
 }
 
-/* 🔴 THERE (far = top) */
+/* THERE (far) */
 .thereObj{
     position:absolute;
     top:10px;
@@ -84,7 +84,7 @@ h1{
     font-weight:bold;
 }
 
-/* 🧠 QUESTION (LEFT SIDE - NEW) */
+/* QUESTION BOX */
 .questionBox{
     position:absolute;
     top:50%;
@@ -98,7 +98,7 @@ h1{
     line-height:1.4;
 }
 
-/* Buttons */
+/* BUTTONS */
 button{
     width:95%;
     padding:14px;
@@ -139,6 +139,11 @@ button:hover{
 </div>
 
 <script>
+
+/* 🎧 SOUND FILES */
+const correctSound = new Audio("sounds/correct.mp3");
+const wrongSound = new Audio("sounds/wrong.mp3");
+const winSound = new Audio("sounds/win.mp3");
 
 const questions = [
 
@@ -216,8 +221,12 @@ let score = 0;
 function load(){
 
 if(i >= questions.length){
+
+winSound.play();
+
 document.getElementById("scene").innerHTML =
 "🎉 Finished! Score: " + score;
+
 document.getElementById("options").innerHTML = "";
 return;
 }
@@ -256,8 +265,10 @@ function check(ans){
 if(ans === questions[i].correct){
 score++;
 document.getElementById("result").innerHTML = "✅ Correct!";
+correctSound.play();
 }else{
 document.getElementById("result").innerHTML = "❌ Wrong!";
+wrongSound.play();
 }
 
 document.getElementById("score").innerHTML = "Score: " + score;
