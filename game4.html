@@ -25,7 +25,7 @@ h1{
 }
 
 .scene{
-    height:300px;
+    height:260px;
     border:3px solid #333;
     border-radius:15px;
     position:relative;
@@ -33,28 +33,29 @@ h1{
     overflow:hidden;
 }
 
-/* 🐾 SLOW MOVEMENT */
-.move-slow{
+/* 🌍 SAME GROUND LINE */
+.actor, .target{
     position:absolute;
+    bottom:40px;   /* SAME LEVEL */
+    font-size:110px;
+}
+
+/* 🐾 MOVING ANIMATION (CHASE EFFECT) */
+.actor{
     left:10%;
-    bottom:40px;
-    width:120px;
-    animation:runSlow 4s forwards;
+    animation:moveActor 3.5s linear forwards;
 }
 
-@keyframes runSlow{
+.target{
+    left:55%;
+}
+
+/* movement keyframes */
+@keyframes moveActor{
     0%{left:10%}
-    100%{left:60%}
+    100%{left:45%}
 }
 
-.static{
-    position:absolute;
-    top:40px;
-    right:20%;
-    width:120px;
-}
-
-/* speech bubble */
 .bubble{
     position:absolute;
     top:10px;
@@ -64,7 +65,9 @@ h1{
     padding:10px;
     border-radius:10px;
     font-weight:bold;
-    font-size:18px;
+    font-size:16px;
+    max-width:60%;
+    text-align:left;
 }
 
 button{
@@ -106,14 +109,17 @@ button:hover{
 
 <script>
 
-/* VOICE */
+/* 🔊 VOICE */
 function speak(text){
+
     let msg = new SpeechSynthesisUtterance(text);
+
     msg.lang = "en-US";
     msg.rate = 0.78;
     msg.pitch = 1.25;
 
     let voices = speechSynthesis.getVoices();
+
     let voice =
         voices.find(v => v.name.includes("Google UK English Female")) ||
         voices.find(v => v.name.includes("Microsoft Zira")) ||
@@ -125,31 +131,40 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
-/* 🖼️ IMAGE VERSION */
+/* 🧠 DATA */
 const questions = [
 
 {
-run:"dog.png",
-chase:"cat.png",
-question:"What is happening?",
-answers:["Run after","Run from"],
-correct:0
+actor:"🐱",
+target:"🐶",
+sentence:"The cat is running after the dog.",
+questions:[
+"What does the cat do?",
+"What is the cat doing?"
+],
+correctAnswer:"run after"
 },
 
 {
-run:"cat.png",
-chase:"mouse.png",
-question:"What is happening?",
-answers:["Run after","Run from"],
-correct:0
+actor:"🐰",
+target:"🦊",
+sentence:"The rabbit is running from the fox.",
+questions:[
+"What does the rabbit do?",
+"What is the rabbit doing?"
+],
+correctAnswer:"run from"
 },
 
 {
-run:"fox.png",
-chase:"rabbit.png",
-question:"What is happening?",
-answers:["Run after","Run from"],
-correct:0
+actor:"🐶",
+target:"🐱",
+sentence:"The dog is running after the cat.",
+questions:[
+"What does the dog do?",
+"What is the dog doing?"
+],
+correctAnswer:"run after"
 }
 
 ];
@@ -169,30 +184,31 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* 🖼️ SCENE */
+/* 🌍 SCENE (CHASE ON SAME LINE) */
 document.getElementById("scene").innerHTML = `
-<div class="bubble">What is happening?</div>
+<div class="bubble">${q.sentence}</div>
 
-<img class="move-slow" src="images/${q.run}">
-<img class="static" src="images/${q.chase}">
+<div class="actor">${q.actor}</div>
+<div class="target">${q.target}</div>
 `;
 
-/* VOICE */
-setTimeout(()=> speak(q.question), 400);
+/* 🎤 VOICE */
+setTimeout(()=> speak(q.sentence), 400);
 
 /* OPTIONS */
 let html = "";
-q.answers.forEach((a, index)=>{
-html += `<button onclick="check(${index})">${a}</button>`;
+
+q.questions.forEach((qText)=>{
+html += `<button onclick="check('${q.correctAnswer}')">${qText}</button>`;
 });
 
 document.getElementById("options").innerHTML = html;
 
 }
 
-function check(ans){
+function check(answer){
 
-if(ans === questions[i].correct){
+if(answer === questions[i].correctAnswer){
 document.getElementById("result").innerHTML = "✅ Correct!";
 speak("Correct!");
 }else{
