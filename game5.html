@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HERE vs THERE - Vertical Distance</title>
+<title>HERE vs THERE - Animals Game</title>
 
 <style>
 body{
@@ -20,51 +20,38 @@ body{
     border-radius:15px;
 }
 
-/* TITLE */
 h1{
     margin-bottom:10px;
 }
 
-/* SCORE */
 #score{
     font-size:18px;
     font-weight:bold;
     margin:10px;
 }
 
-/* MAIN SCENE */
 .scene{
     position:relative;
-    height:400px;
+    height:320px;
     margin:20px 0;
     border-radius:15px;
     border:3px solid #333;
-    background:linear-gradient(to top, #c8f7c5 0%, #c8f7c5 40%, #90caf9 100%);
+    background:linear-gradient(to right, #c8f7c5 0%, #c8f7c5 45%, #ffcdd2 55%, #ffcdd2 100%);
 }
 
-/* GROUND (HERE) */
-.ground{
+.line{
     position:absolute;
-    bottom:0;
-    width:100%;
-    height:40%;
-    background:rgba(0,255,0,0.15);
-}
-
-/* SKY (THERE) */
-.sky{
-    position:absolute;
+    left:50%;
     top:0;
-    width:100%;
-    height:60%;
-    background:rgba(255,0,0,0.10);
+    width:3px;
+    height:100%;
+    background:white;
 }
 
-/* LABELS */
 .here-label{
     position:absolute;
-    bottom:10px;
     left:10px;
+    top:10px;
     background:white;
     border:3px solid green;
     color:green;
@@ -75,8 +62,8 @@ h1{
 
 .there-label{
     position:absolute;
-    top:10px;
     right:10px;
+    top:10px;
     background:white;
     border:3px solid red;
     color:red;
@@ -85,14 +72,12 @@ h1{
     border-radius:8px;
 }
 
-/* OBJECT */
 .object{
     position:absolute;
-    font-size:90px;
+    font-size:80px;
     text-shadow:2px 2px 5px rgba(0,0,0,0.3);
 }
 
-/* BUTTONS */
 button{
     width:90%;
     padding:14px;
@@ -106,7 +91,10 @@ button{
     font-weight:bold;
 }
 
-/* RESULT */
+button:hover{
+    opacity:0.9;
+}
+
 #result{
     font-size:20px;
     margin-top:10px;
@@ -119,7 +107,7 @@ button{
 
 <div class="container">
 
-<h1>📍 HERE (Near) vs THERE (Far)</h1>
+<h1>📍 HERE vs THERE - Animals Game</h1>
 
 <div id="score">Score: 0</div>
 
@@ -134,17 +122,24 @@ button{
 <script>
 
 const questions = [
-{ obj:"🐱", pos:"here", answer:"There is a cat here." },
+{ obj:"🐈", pos:"here", answer:"There is a cat here." },
 { obj:"🐶", pos:"there", answer:"There is a dog there." },
 { obj:"🐰", pos:"here", answer:"There is a rabbit here." },
-{ obj:"🦊", pos:"there", answer:"There is a fox there." }
+{ obj:"🦊", pos:"there", answer:"There is a fox there." },
+
+{ obj:"🐈🐈", pos:"there", answer:"There are two cats there." },
+{ obj:"🐶🐶", pos:"here", answer:"There are two dogs here." },
+{ obj:"🐰🐰", pos:"there", answer:"There are two rabbits there." }
 ];
 
 const choices = [
 "There is a cat here.",
 "There is a dog there.",
 "There is a rabbit here.",
-"There is a fox there."
+"There is a fox there.",
+"There are two cats there.",
+"There are two dogs here.",
+"There are two rabbits there."
 ];
 
 let i = 0;
@@ -154,7 +149,7 @@ function load(){
 
 if(i >= questions.length){
 document.getElementById("scene").innerHTML =
-"🎉 Finished! Score: " + score;
+"🎉 Game Finished! Score: " + score;
 document.getElementById("options").innerHTML = "";
 return;
 }
@@ -162,16 +157,14 @@ return;
 let q = questions[i];
 
 document.getElementById("scene").innerHTML = `
-<div class="sky"></div>
-<div class="ground"></div>
-
-<div class="here-label">HERE (close / bottom)</div>
-<div class="there-label">THERE (far / top)</div>
+<div class="here-label">HERE (close)</div>
+<div class="there-label">THERE (far)</div>
+<div class="line"></div>
 
 <div class="object" style="
     ${q.pos === 'here'
-        ? 'bottom:20px; left:45%;'
-        : 'top:20px; left:45%;'
+        ? 'left:20%; bottom:40px;'
+        : 'left:75%; top:60px;'
     }
 ">
 ${q.obj}
