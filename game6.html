@@ -140,26 +140,27 @@ button:hover{
 
 <script>
 
-/* 🔊 BEST POSSIBLE CHILD-LIKE VOICE (browser version) */
+/* 🔊 BEST POSSIBLE YOUNG WOMAN STYLE VOICE (browser limit) */
 function speak(text){
 
     let msg = new SpeechSynthesisUtterance(text);
 
     msg.lang = "en-US";
 
-    // 🎯 tuned for clarity + youthful feel
-    msg.rate = 0.78;   // slow = clear for kids
-    msg.pitch = 1.7;   // higher = more "young voice feel"
+    // 🎯 Natural young female style tuning
+    msg.rate = 0.82;   // clear but not slow
+    msg.pitch = 1.15;  // natural feminine tone
     msg.volume = 1;
 
     let voices = speechSynthesis.getVoices();
 
-    // Try best natural female voices
+    // Try best natural female voices available on system
     let bestVoice = voices.find(v =>
-        v.name.includes("Samantha") ||
-        v.name.includes("Google UK English Female") ||
-        v.name.includes("Microsoft Zira") ||
-        v.name.includes("Victoria") ||
+        v.name.toLowerCase().includes("samantha") ||
+        v.name.toLowerCase().includes("aria") ||
+        v.name.toLowerCase().includes("zira") ||
+        v.name.toLowerCase().includes("victoria") ||
+        v.name.toLowerCase().includes("female") ||
         v.lang.includes("en-US")
     );
 
