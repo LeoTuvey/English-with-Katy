@@ -33,34 +33,39 @@ h1{
     overflow:hidden;
 }
 
-/* 🌍 SAME GROUND LEVEL */
+/* 🐾 BASE POSITIONS */
 .actor, .target{
     position:absolute;
     bottom:40px;
     font-size:110px;
+    transition: all 3s linear;
 }
 
-/* 🐾 CHASE ANIMATION */
+/* left start positions */
 .actor{
     left:10%;
-    animation:moveChaser 3.5s linear forwards;
 }
 
 .target{
     left:60%;
-    animation:moveEscape 3.5s linear forwards;
 }
 
-/* chaser moves forward */
-@keyframes moveChaser{
-    0%{left:10%}
-    100%{left:50%}
+/* CHASE STATE */
+.chase .actor{
+    left:45%;
 }
 
-/* target moves away */
-@keyframes moveEscape{
-    0%{left:60%}
-    100%{left:75%}
+.chase .target{
+    left:75%;
+}
+
+/* ESCAPE STATE */
+.escape .actor{
+    left:10%;
+}
+
+.escape .target{
+    left:50%;
 }
 
 /* speech bubble */
@@ -74,7 +79,7 @@ h1{
     border-radius:10px;
     font-weight:bold;
     font-size:16px;
-    max-width:60%;
+    max-width:70%;
     text-align:left;
 }
 
@@ -117,35 +122,26 @@ button:hover{
 
 <script>
 
-/* 🔊 VOICE */
 function speak(text){
-
     let msg = new SpeechSynthesisUtterance(text);
-
     msg.lang = "en-US";
     msg.rate = 0.78;
     msg.pitch = 1.25;
 
     let voices = speechSynthesis.getVoices();
-
-    let voice =
-        voices.find(v => v.name.includes("Google UK English Female")) ||
-        voices.find(v => v.name.includes("Microsoft Zira")) ||
-        voices.find(v => v.name.includes("Samantha")) ||
-        voices[0];
-
-    if(voice) msg.voice = voice;
+    msg.voice = voices[0];
 
     speechSynthesis.speak(msg);
 }
 
-/* 🧠 DATA */
+/* 🧠 DATA WITH MOVEMENT TYPE */
 const questions = [
 
 {
 actor:"🐱",
 target:"🐶",
 sentence:"The cat is running after the dog.",
+type:"chase",
 questions:[
 "What does the cat do?",
 "What is the cat doing?"
@@ -154,25 +150,15 @@ correctAnswer:"run after"
 },
 
 {
-actor:"🐰",
-target:"🦊",
-sentence:"The rabbit is running from the fox.",
-questions:[
-"What does the rabbit do?",
-"What is the rabbit doing?"
-],
-correctAnswer:"run from"
-},
-
-{
 actor:"🐶",
 target:"🐱",
-sentence:"The dog is running after the cat.",
+sentence:"The dog is running from the cat.",
+type:"escape",
 questions:[
 "What does the dog do?",
 "What is the dog doing?"
 ],
-correctAnswer:"run after"
+correctAnswer:"run from"
 }
 
 ];
@@ -192,16 +178,32 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* 🌍 SCENE */
-document.getElementById("scene").innerHTML = `
-<div class="bubble">${q.sentence}</div>
+/* RESET */
+let scene = document.getElementById("scene");
+scene.className = "";
 
+/* SHOW */
+scene.innerHTML = `
+<div class="bubble">${q.sentence}</div>
 <div class="actor">${q.actor}</div>
 <div class="target">${q.target}</div>
 `;
 
-/* 🎤 VOICE */
+/* VOICE */
 setTimeout(()=> speak(q.sentence), 400);
+
+/* MOVE ANIMATION (based on sentence meaning) */
+setTimeout(()=>{
+
+    if(q.type === "chase"){
+        scene.classList.add("chase");
+    }
+
+    if(q.type === "escape"){
+        scene.classList.add("escape");
+    }
+
+}, 800);
 
 /* OPTIONS */
 let html = "";
