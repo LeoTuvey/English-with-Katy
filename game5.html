@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>There Is / There Are (Here / There)</title>
+<title>HERE / THERE - Matching Game</title>
 
 <style>
 body{
@@ -23,19 +23,19 @@ body{
 
 h1{ margin-bottom:10px; }
 
-#score{ margin:10px; font-size:18px; }
+#score{ font-size:18px; margin:10px; }
 
-.scene img{
+img{
     width:100%;
     height:320px;
     object-fit:cover;
     border-radius:12px;
 }
 
-.label{
+.question{
     font-size:20px;
-    margin:10px;
     font-weight:bold;
+    margin:15px 0;
 }
 
 button{
@@ -63,15 +63,13 @@ button:hover{ opacity:0.9; }
 
 <div class="container">
 
-<h1>📍 There Is / There Are</h1>
+<h1>📍 HERE / THERE Animals</h1>
 
 <div id="score">Score: 0</div>
 
-<div class="scene">
-    <img id="img" src="">
-</div>
+<img id="img">
 
-<div class="label" id="question"></div>
+<div class="question" id="question"></div>
 
 <div id="options"></div>
 
@@ -83,42 +81,55 @@ button:hover{ opacity:0.9; }
 
 const questions = [
 {
-img:"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
-question:"The cat is HERE 🏠 or THERE 🌳?",
-answer:"HERE"
+img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d", // FOX
+text:"A fox is in a forest far away.",
+q:"Is the fox HERE or THERE?",
+a:"THERE"
 },
 {
-img:"https://images.unsplash.com/photo-1507149833265-60c372daea22",
-question:"The rabbit is HERE 🏠 or THERE 🌳?",
-answer:"THERE"
+img:"https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13", // RABBIT
+text:"A rabbit is near me in the garden.",
+q:"Is the rabbit HERE or THERE?",
+a:"HERE"
 },
 {
-img:"https://images.unsplash.com/photo-1517841905240-472988babdf9",
-question:"The dog is HERE 🏠 or THERE 🌳?",
-answer:"HERE"
+img:"https://images.unsplash.com/photo-1517841905240-472988babdf9", // DOG
+text:"A dog is playing next to me.",
+q:"Is the dog HERE or THERE?",
+a:"HERE"
 },
 {
-img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
-question:"The fox is HERE 🏠 or THERE 🌳?",
-answer:"THERE"
+img:"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba", // CAT
+text:"A cat is far away on a tree.",
+q:"Is the cat HERE or THERE?",
+a:"THERE"
+},
+{
+img:"https://images.unsplash.com/photo-1507149833265-60c372daea22", // RABBIT
+text:"A rabbit is running in the forest far away.",
+q:"Is the rabbit HERE or THERE?",
+a:"THERE"
 }
 ];
 
-let current = 0;
+let i = 0;
 let score = 0;
 
 function load(){
 
-if(current >= questions.length){
+if(i >= questions.length){
 document.getElementById("question").innerHTML =
-"🎉 Finished! Score: " + score;
-document.getElementById("img").style.display="none";
-document.getElementById("options").innerHTML="";
+"🎉 Finished! Score: " + score + "/" + questions.length;
+
+document.getElementById("img").style.display = "none";
+document.getElementById("options").innerHTML = "";
 return;
 }
 
-document.getElementById("img").src = questions[current].img;
-document.getElementById("question").innerHTML = questions[current].question;
+document.getElementById("img").src = questions[i].img;
+
+document.getElementById("question").innerHTML =
+questions[i].text + "<br><b>" + questions[i].q + "</b>";
 
 let html = "";
 
@@ -131,19 +142,21 @@ document.getElementById("options").innerHTML = html;
 
 function check(ans){
 
-if(ans === questions[current].answer){
+if(ans === questions[i].a){
 score++;
-document.getElementById("result").innerHTML="✅ Correct!";
+document.getElementById("result").innerHTML = "✅ Correct!";
 }else{
-document.getElementById("result").innerHTML="❌ Wrong!";
+document.getElementById("result").innerHTML =
+"❌ Wrong! Correct answer: " + questions[i].a;
 }
 
-document.getElementById("score").innerHTML="Score: " + score;
+document.getElementById("score").innerHTML =
+"Score: " + score;
 
-current++;
+i++;
 
 setTimeout(()=>{
-document.getElementById("result").innerHTML="";
+document.getElementById("result").innerHTML = "";
 load();
 },1200);
 
