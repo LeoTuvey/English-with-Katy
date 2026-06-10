@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HERE vs THERE - Clear Game</title>
+<title>HERE vs THERE - Ultra Clear</title>
 
 <style>
 body{
     font-family: Arial;
     text-align:center;
-    background:#eaf6ff;
+    background:#dff6ff;
     padding:20px;
 }
 
 .container{
-    max-width:800px;
+    max-width:850px;
     margin:auto;
     background:white;
     padding:20px;
@@ -28,70 +28,62 @@ h1{
 /* SCORE */
 #score{
     font-size:18px;
-    margin:10px;
     font-weight:bold;
+    margin:10px;
 }
 
-/* BIG SCENE */
-.scene{
+/* ROAD STYLE (KEY IMPROVEMENT) */
+.road{
     position:relative;
-    height:300px;
+    height:320px;
     margin:20px 0;
     border-radius:15px;
-    background:linear-gradient(to top, #b7e4c7 40%, #90caf9 60%);
-    border:3px solid #333;
+    background:linear-gradient(to right, #4caf50 0%, #4caf50 45%, #ff5252 55%, #ff5252 100%);
+    border:4px solid #333;
 }
 
-/* HERE SIDE */
-.here-zone{
+/* CENTER LINE */
+.line{
     position:absolute;
-    bottom:0;
-    left:0;
-    width:50%;
+    top:0;
+    left:50%;
+    width:4px;
     height:100%;
-    background:rgba(0,255,0,0.15);
-    border-right:3px dashed green;
-}
-
-/* THERE SIDE */
-.there-zone{
-    position:absolute;
-    bottom:0;
-    right:0;
-    width:50%;
-    height:100%;
-    background:rgba(255,0,0,0.15);
-    border-left:3px dashed red;
-}
-
-/* LABELS */
-.label{
-    position:absolute;
-    top:10px;
-    font-size:24px;
-    font-weight:bold;
-    padding:6px 12px;
-    border-radius:8px;
     background:white;
 }
 
+/* HERE LABEL */
 .here-label{
-    left:10px;
+    position:absolute;
+    left:20px;
+    top:10px;
+    background:white;
+    border:3px solid green;
     color:green;
-    border:2px solid green;
+    padding:5px 10px;
+    font-weight:bold;
+    border-radius:8px;
 }
 
+/* THERE LABEL */
 .there-label{
-    right:10px;
+    position:absolute;
+    right:20px;
+    top:10px;
+    background:white;
+    border:3px solid red;
     color:red;
-    border:2px solid red;
+    padding:5px 10px;
+    font-weight:bold;
+    border-radius:8px;
 }
 
 /* OBJECT */
 .object{
-    font-size:80px;
     position:absolute;
-    text-shadow:2px 2px 4px rgba(0,0,0,0.3);
+    font-size:80px;
+    top:120px;
+    text-shadow:2px 2px 5px rgba(0,0,0,0.3);
 }
 
 /* BUTTONS */
@@ -103,7 +95,7 @@ button{
     border:none;
     border-radius:10px;
     cursor:pointer;
-    background:#1e88e5;
+    background:#1976d2;
     color:white;
     font-weight:bold;
 }
@@ -125,11 +117,11 @@ button:hover{
 
 <div class="container">
 
-<h1>📍 HERE vs THERE (Clear Distance)</h1>
+<h1>📍 HERE vs THERE (Clear Distance Learning)</h1>
 
 <div id="score">Score: 0</div>
 
-<div class="scene" id="scene"></div>
+<div class="road" id="road"></div>
 
 <div id="options"></div>
 
@@ -140,10 +132,10 @@ button:hover{
 <script>
 
 const questions = [
-{ animal:"🐱", pos:"here", answer:"There is a cat here." },
-{ animal:"🐶", pos:"there", answer:"There is a dog there." },
-{ animal:"🐰", pos:"here", answer:"There is a rabbit here." },
-{ animal:"🦊", pos:"there", answer:"There is a fox there." }
+{ obj:"🐱", pos:"here", answer:"There is a cat here." },
+{ obj:"🐶", pos:"there", answer:"There is a dog there." },
+{ obj:"🐰", pos:"here", answer:"There is a rabbit here." },
+{ obj:"🦊", pos:"there", answer:"There is a fox there." }
 ];
 
 const choices = [
@@ -159,7 +151,7 @@ let score = 0;
 function load(){
 
 if(i >= questions.length){
-document.getElementById("scene").innerHTML =
+document.getElementById("road").innerHTML =
 "🎉 Finished! Score: " + score;
 document.getElementById("options").innerHTML = "";
 return;
@@ -167,22 +159,18 @@ return;
 
 let q = questions[i];
 
-document.getElementById("scene").innerHTML = `
-<div class="here-zone">
-<div class="label here-label">HERE (close)</div>
-</div>
-
-<div class="there-zone">
-<div class="label there-label">THERE (far)</div>
-</div>
+document.getElementById("road").innerHTML = `
+<div class="here-label">HERE (close)</div>
+<div class="there-label">THERE (far)</div>
+<div class="line"></div>
 
 <div class="object" style="
     ${q.pos === 'here'
-        ? 'bottom:30px; left:25%;'
-        : 'top:30px; right:25%;'
+        ? 'left:15%;'
+        : 'left:75%;'
     }
 ">
-${q.animal}
+${q.obj}
 </div>
 `;
 
@@ -202,7 +190,7 @@ score++;
 document.getElementById("result").innerHTML = "✅ Correct!";
 }else{
 document.getElementById("result").innerHTML =
-"❌ Correct: " + questions[i].answer;
+"❌ Correct answer: " + questions[i].answer;
 }
 
 document.getElementById("score").innerHTML = "Score: " + score;
