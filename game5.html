@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HERE vs THERE - Clear Learning</title>
+<title>HERE vs THERE - Animals Game</title>
 
 <style>
 body{
@@ -32,14 +32,14 @@ h1{
     margin:10px;
 }
 
-/* SCENE */
+/* GAME AREA */
 .scene{
     position:relative;
     height:320px;
     margin:20px 0;
     border-radius:15px;
     border:3px solid #333;
-    background:linear-gradient(to right, #b9f6ca 0%, #b9f6ca 45%, #ffcdd2 55%, #ffcdd2 100%);
+    background:linear-gradient(to right, #c8f7c5 0%, #c8f7c5 45%, #ffcdd2 55%, #ffcdd2 100%);
 }
 
 /* CENTER LINE */
@@ -52,7 +52,7 @@ h1{
     background:white;
 }
 
-/* HERE LABEL (BIG) */
+/* LABELS */
 .here-label{
     position:absolute;
     left:10px;
@@ -63,10 +63,8 @@ h1{
     padding:6px 12px;
     font-weight:bold;
     border-radius:8px;
-    font-size:20px;
 }
 
-/* THERE LABEL (SMALLER) */
 .there-label{
     position:absolute;
     right:10px;
@@ -74,32 +72,16 @@ h1{
     background:white;
     border:3px solid red;
     color:red;
-    padding:4px 8px;
+    padding:6px 12px;
     font-weight:bold;
     border-radius:8px;
-    font-size:14px;
 }
 
-/* OBJECTS */
+/* OBJECT (ANIMALS) */
 .object{
     position:absolute;
+    font-size:80px;
     text-shadow:2px 2px 5px rgba(0,0,0,0.3);
-}
-
-/* HERE OBJECT (BIGGER) */
-.big{
-    font-size:95px;
-}
-
-/* THERE OBJECT (SMALLER) */
-.small{
-    font-size:55px;
-    opacity:0.85;
-}
-
-/* CAN FIX (CLEARER) */
-.can{
-    font-size:85px;
 }
 
 /* BUTTONS */
@@ -116,6 +98,10 @@ button{
     font-weight:bold;
 }
 
+button:hover{
+    opacity:0.9;
+}
+
 /* RESULT */
 #result{
     font-size:20px;
@@ -129,7 +115,7 @@ button{
 
 <div class="container">
 
-<h1>📍 HERE vs THERE (Clear Visual Learning)</h1>
+<h1>📍 HERE vs THERE - Animals Game</h1>
 
 <div id="score">Score: 0</div>
 
@@ -144,17 +130,25 @@ button{
 <script>
 
 const questions = [
-{ obj:"🥫", type:"can", pos:"here", answer:"There is a can here." },
-{ obj:"🐱", type:"animal", pos:"there", answer:"There is a cat there." },
-{ obj:"🐶", type:"animal", pos:"here", answer:"There is a dog here." },
-{ obj:"🐰", type:"animal", pos:"there", answer:"There is a rabbit there." }
+{ obj:"🐱", pos:"here", answer:"There is a cat here." },
+{ obj:"🐶", pos:"there", answer:"There is a dog there." },
+{ obj:"🐰", pos:"here", answer:"There is a rabbit here." },
+{ obj:"🦊", pos:"there", answer:"There is a fox there." },
+
+// PLURAL (THERE ARE)
+{ obj:"🐱🐱", pos:"there", answer:"There are two cats there." },
+{ obj:"🐶🐶", pos:"here", answer:"There are two dogs here." },
+{ obj:"🐰🐰", pos:"there", answer:"There are two rabbits there." }
 ];
 
 const choices = [
-"There is a can here.",
-"There is a cat there.",
-"There is a dog here.",
-"There is a rabbit there."
+"There is a cat here.",
+"There is a dog there.",
+"There is a rabbit here.",
+"There is a fox there.",
+"There are two cats there.",
+"There are two dogs here.",
+"There are two rabbits there."
 ];
 
 let i = 0;
@@ -164,25 +158,19 @@ function load(){
 
 if(i >= questions.length){
 document.getElementById("scene").innerHTML =
-"🎉 Finished! Score: " + score;
+"🎉 Game Finished! Score: " + score;
 document.getElementById("options").innerHTML = "";
 return;
 }
 
 let q = questions[i];
 
-let sizeClass = "";
-if(q.pos === "here") sizeClass = "big";
-else sizeClass = "small";
-
-if(q.type === "can") sizeClass = "can";
-
 document.getElementById("scene").innerHTML = `
 <div class="here-label">HERE (close)</div>
 <div class="there-label">THERE (far)</div>
 <div class="line"></div>
 
-<div class="object ${sizeClass}" style="
+<div class="object" style="
     ${q.pos === 'here'
         ? 'left:20%; bottom:40px;'
         : 'left:75%; top:60px;'
