@@ -1,1 +1,289 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>Here vs There - Distance Game</title> <style> body{ font-family: Arial, sans-serif; text-align:center; background:#eaf8ff; padding:20px; } .container{ max-width:800px; margin:auto; background:white; padding:20px; border-radius:20px; box-shadow:0 0 15px rgba(0,0,0,0.15); } h1{ margin-bottom:10px; } #score{ font-size:20px; font-weight:bold; margin-bottom:15px; } .scene{ position:relative; height:420px; border:4px solid #333; border-radius:15px; overflow:hidden; margin-bottom:20px; background:linear-gradient(to top,#b8f5b8 35%,#bfe7ff 35%); } .there-label{ position:absolute; top:10px; right:10px; background:white; border:3px solid red; color:red; padding:8px 14px; border-radius:10px; font-weight:bold; } .here-label{ position:absolute; bottom:10px; left:10px; background:white; border:3px solid green; color:green; padding:8px 14px; border-radius:10px; font-weight:bold; } .object{ position:absolute; left:50%; transform:translateX(-50%); } button{ width:95%; padding:14px; margin:8px; font-size:18px; border:none; border-radius:10px; background:#1976d2; color:white; cursor:pointer; } button:hover{ opacity:0.9; } #result{ font-size:22px; font-weight:bold; margin-top:10px; } </style> </head> <body> <div class="container"> <h1>🌍 HERE vs THERE</h1> <div id="score">Score: 0</div> <div class="scene" id="scene"></div> <div id="options"></div> <div id="result"></div> </div> <script> const questions = [ { obj:"🐈", pos:"here", answer:"There is a cat here." }, { obj:"🐶", pos:"there", answer:"There is a dog there." }, { obj:"🐰", pos:"here", answer:"There is a rabbit here." }, { obj:"🦊", pos:"there", answer:"There is a fox there." }, { obj:"🐈🐈", pos:"there", answer:"There are two cats there." }, { obj:"🐶🐶", pos:"here", answer:"There are two dogs here." }, { obj:"🐰🐰", pos:"there", answer:"There are two rabbits there." } ]; const choices = [ "There is a cat here.", "There is a dog there.", "There is a rabbit here.", "There is a fox there.", "There are two cats there.", "There are two dogs here.", "There are two rabbits there." ]; let current = 0; let score = 0; function loadQuestion(){ if(current >= questions.length){ document.getElementById("scene").innerHTML = "<h2 style='margin-top:150px'>🎉 Great Job!</h2>"; document.getElementById("options").innerHTML = ""; document.getElementById("result").innerHTML = "Final Score: " + score + "/" + questions.length; return; } let q = questions[current]; document.getElementById("scene").innerHTML = ` <div class="there-label">THERE (far away)</div> <div class="here-label">HERE (close)</div> <div class="object" style=" ${q.pos === 'here' ? 'bottom:60px;font-size:120px;' : 'top:60px;font-size:70px;'} "> ${q.obj} </div> `; let html = ""; choices.forEach(choice => { html += ` <button onclick="checkAnswer('${choice}')"> ${choice} </button> `; }); document.getElementById("options").innerHTML = html; } function checkAnswer(answer){ if(answer === questions[current].answer){ score++; document.getElementById("result").innerHTML = "✅ Correct!"; }else{ document.getElementById("result").innerHTML = "❌ Correct answer: " + questions[current].answer; } document.getElementById("score").innerHTML = "Score: " + score; current++; setTimeout(() => { document.getElementById("result").innerHTML = ""; loadQuestion(); },1200); } loadQuestion(); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Here / There Game</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:#f0f8ff;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+.scene{
+    height:300px;
+    border:3px solid #333;
+    border-radius:15px;
+    position:relative;
+    background:linear-gradient(to top,#c8f7c5 40%,#bfe7ff 40%);
+    margin-bottom:20px;
+}
+
+/* HERE / THERE AREA */
+.hereObj{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:130px;
+}
+
+.thereObj{
+    position:absolute;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:70px;
+    opacity:0.85;
+}
+
+/* labels */
+.hereLabel{
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    background:white;
+    color:green;
+    border:2px solid green;
+    padding:6px 12px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.thereLabel{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:white;
+    color:red;
+    border:2px solid red;
+    padding:6px 12px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+/* question */
+.questionBox{
+    position:absolute;
+    top:50%;
+    left:10px;
+    transform:translateY(-50%);
+    width:45%;
+    font-size:22px;
+    font-weight:bold;
+    text-align:left;
+}
+
+button{
+    width:95%;
+    padding:14px;
+    margin:8px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:#1976d2;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#result{
+    font-size:20px;
+    font-weight:bold;
+}
+
+#score{
+    font-size:20px;
+    margin:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌍 Here / There Quiz</h1>
+
+<div id="score">Score: 0</div>
+
+<div class="scene" id="scene"></div>
+
+<div id="options"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+/* 🔊 KID-CLEAR VOICE (same as game6) */
+function speak(text){
+
+    let msg = new SpeechSynthesisUtterance(text);
+
+    msg.lang = "en-US";
+    msg.rate = 0.78;
+    msg.pitch = 1.25;
+    msg.volume = 1;
+
+    let voices = speechSynthesis.getVoices();
+
+    let voice =
+        voices.find(v => v.name.includes("Google UK English Female")) ||
+        voices.find(v => v.name.includes("Microsoft Zira")) ||
+        voices.find(v => v.name.includes("Samantha")) ||
+        voices.find(v => v.lang.includes("en-US")) ||
+        voices[0];
+
+    if(voice){
+        msg.voice = voice;
+    }
+
+    speechSynthesis.speak(msg);
+}
+
+const questions = [
+
+{
+obj:"🐈",
+pos:"here",
+question:"Where is the cat?",
+answers:[
+"The cat is here.",
+"The cat is there."
+],
+correct:0
+},
+
+{
+obj:"🐶",
+pos:"there",
+question:"Where is the dog?",
+answers:[
+"The dog is there.",
+"The dog is here."
+],
+correct:0
+},
+
+{
+obj:"🐰",
+pos:"here",
+question:"Where is the rabbit?",
+answers:[
+"The rabbit is here.",
+"The rabbit is there."
+],
+correct:0
+},
+
+{
+obj:"🦊",
+pos:"there",
+question:"Where is the fox?",
+answers:[
+"The fox is there.",
+"The fox is here."
+],
+correct:0
+}
+
+];
+
+let i = 0;
+let score = 0;
+
+function load(){
+
+if(i >= questions.length){
+
+speechSynthesis.cancel();
+speak("Great job! You finished game five!");
+
+document.getElementById("scene").innerHTML =
+"🎉 Finished! Score: " + score;
+
+document.getElementById("options").innerHTML = "";
+return;
+}
+
+let q = questions[i];
+
+speechSynthesis.cancel();
+
+/* 🔊 speak question */
+setTimeout(()=> speak(q.question), 400);
+
+/* 🔊 also teach words */
+setTimeout(()=> speak("Here. There."), 1800);
+
+document.getElementById("scene").innerHTML = `
+
+<div class="hereLabel">HERE (close)</div>
+<div class="thereLabel">THERE (far)</div>
+
+<div class="${q.pos === 'here' ? 'hereObj' : 'thereObj'}">
+${q.obj}
+</div>
+
+<div class="questionBox">
+${q.question}
+</div>
+
+`;
+
+let html = "";
+
+q.answers.forEach((a, index) => {
+html += `<button onclick="check(${index})">${a}</button>`;
+});
+
+document.getElementById("options").innerHTML = html;
+
+}
+
+function check(ans){
+
+if(ans === questions[i].correct){
+score++;
+document.getElementById("result").innerHTML = "✅ Correct!";
+}else{
+document.getElementById("result").innerHTML = "❌ Wrong!";
+}
+
+document.getElementById("score").innerHTML = "Score: " + score;
+
+i++;
+
+setTimeout(()=>{
+document.getElementById("result").innerHTML = "";
+load();
+},1200);
+
+}
+
+load();
+
+</script>
+
+</body>
+</html>
