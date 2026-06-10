@@ -140,30 +140,28 @@ button:hover{
 
 <script>
 
-/* 🔊 IMPROVED VOICE (female / kid-friendly style) */
+/* 🔊 SUPER CLEAR VOICE (best possible browser version) */
 function speak(text){
     let msg = new SpeechSynthesisUtterance(text);
 
     msg.lang = "en-US";
-    msg.rate = 0.85;   // slower for kids
-    msg.pitch = 1.4;   // higher = more “young voice feel”
+    msg.rate = 0.75;   // SLOW = clear for kids
+    msg.pitch = 1.15;  // natural friendly tone
     msg.volume = 1;
 
     let voices = speechSynthesis.getVoices();
 
-    // Try to find female-style voice
-    let femaleVoice = voices.find(v =>
-        v.lang.includes("en") &&
-        (
-            v.name.toLowerCase().includes("female") ||
-            v.name.toLowerCase().includes("samantha") ||
-            v.name.toLowerCase().includes("zira") ||
-            v.name.toLowerCase().includes("google uk english female")
-        )
+    // PRIORITY: best clear voices on most systems
+    let bestVoice = voices.find(v =>
+        v.name.includes("Samantha") ||
+        v.name.includes("Google UK English Female") ||
+        v.name.includes("Microsoft Zira") ||
+        v.name.includes("Daniel") ||
+        v.lang === "en-US"
     );
 
-    if(femaleVoice){
-        msg.voice = femaleVoice;
+    if(bestVoice){
+        msg.voice = bestVoice;
     }
 
     speechSynthesis.speak(msg);
@@ -258,9 +256,9 @@ return;
 
 let q = questions[i];
 
-/* speak question */
+/* speak question clearly */
 speechSynthesis.cancel();
-setTimeout(() => speak(q.question), 300);
+setTimeout(() => speak(q.question), 400);
 
 document.getElementById("scene").innerHTML = `
 
