@@ -9,7 +9,6 @@ body{
     font-family: Arial;
     text-align:center;
     background:#f7fbff;
-    padding:20px;
 }
 
 .container{
@@ -20,10 +19,7 @@ body{
     border-radius:15px;
 }
 
-h1{
-    margin-bottom:10px;
-}
-
+/* 🌍 VISUAL AREA */
 .scene{
     height:260px;
     border:3px solid #333;
@@ -33,7 +29,7 @@ h1{
     overflow:hidden;
 }
 
-/* 🐾 BASE POSITIONS */
+/* 🐾 ANIMALS */
 .actor, .target{
     position:absolute;
     bottom:40px;
@@ -41,48 +37,36 @@ h1{
     transition: all 3s linear;
 }
 
-/* left start positions */
-.actor{
-    left:10%;
-}
+.actor{ left:10%; }
+.target{ left:60%; }
 
-.target{
-    left:60%;
-}
+.chase .actor{ left:45%; }
+.chase .target{ left:75%; }
 
-/* CHASE STATE */
-.chase .actor{
-    left:45%;
-}
+.escape .actor{ left:10%; }
+.escape .target{ left:50%; }
 
-.chase .target{
-    left:75%;
-}
-
-/* ESCAPE STATE */
-.escape .actor{
-    left:10%;
-}
-
-.escape .target{
-    left:50%;
-}
-
-/* speech bubble */
-.bubble{
-    position:absolute;
-    top:10px;
-    left:10px;
-    background:white;
-    border:2px solid #333;
+/* 📘 SENTENCE BOX (IMPORTANT FIX) */
+.sentenceBox{
+    margin-top:15px;
+    font-size:22px;
+    font-weight:bold;
+    background:#f4f4f4;
     padding:10px;
     border-radius:10px;
-    font-weight:bold;
-    font-size:16px;
-    max-width:70%;
-    text-align:left;
 }
 
+/* 🧠 MEANING BOX */
+.meaningBox{
+    margin-top:10px;
+    font-size:16px;
+    color:#333;
+    background:#e8f3ff;
+    padding:8px;
+    border-radius:10px;
+}
+
+/* ❓ OPTIONS */
 button{
     width:95%;
     padding:14px;
@@ -93,10 +77,6 @@ button{
     background:#1976d2;
     color:white;
     cursor:pointer;
-}
-
-button:hover{
-    opacity:0.9;
 }
 
 #result{
@@ -114,6 +94,10 @@ button:hover{
 
 <div class="scene" id="scene"></div>
 
+<div class="sentenceBox" id="sentence"></div>
+
+<div class="meaningBox" id="meaning"></div>
+
 <div id="options"></div>
 
 <div id="result"></div>
@@ -127,14 +111,10 @@ function speak(text){
     msg.lang = "en-US";
     msg.rate = 0.78;
     msg.pitch = 1.25;
-
-    let voices = speechSynthesis.getVoices();
-    msg.voice = voices[0];
-
     speechSynthesis.speak(msg);
 }
 
-/* 🧠 DATA WITH MOVEMENT TYPE */
+/* 🧠 DATA */
 const questions = [
 
 {
@@ -142,10 +122,7 @@ actor:"🐱",
 target:"🐶",
 sentence:"The cat is running after the dog.",
 type:"chase",
-questions:[
-"What does the cat do?",
-"What is the cat doing?"
-],
+meaning:"run after = chase",
 correctAnswer:"run after"
 },
 
@@ -154,10 +131,7 @@ actor:"🐶",
 target:"🐱",
 sentence:"The dog is running from the cat.",
 type:"escape",
-questions:[
-"What does the dog do?",
-"What is the dog doing?"
-],
+meaning:"run from = escape",
 correctAnswer:"run from"
 }
 
@@ -170,7 +144,6 @@ function load(){
 if(i >= questions.length){
 speak("Great job!");
 document.getElementById("scene").innerHTML = "🎉 Finished!";
-document.getElementById("options").innerHTML = "";
 return;
 }
 
@@ -182,34 +155,29 @@ speechSynthesis.cancel();
 let scene = document.getElementById("scene");
 scene.className = "";
 
-/* SHOW */
+/* VISUAL */
 scene.innerHTML = `
-<div class="bubble">${q.sentence}</div>
 <div class="actor">${q.actor}</div>
 <div class="target">${q.target}</div>
 `;
 
+/* TEXT (CLEAR STRUCTURE) */
+document.getElementById("sentence").innerText = q.sentence;
+document.getElementById("meaning").innerText = q.meaning;
+
+/* ANIMATION */
+setTimeout(()=>{
+    scene.classList.add(q.type);
+},800);
+
 /* VOICE */
 setTimeout(()=> speak(q.sentence), 400);
-
-/* MOVE ANIMATION (based on sentence meaning) */
-setTimeout(()=>{
-
-    if(q.type === "chase"){
-        scene.classList.add("chase");
-    }
-
-    if(q.type === "escape"){
-        scene.classList.add("escape");
-    }
-
-}, 800);
 
 /* OPTIONS */
 let html = "";
 
-q.questions.forEach((qText)=>{
-html += `<button onclick="check('${q.correctAnswer}')">${qText}</button>`;
+["run after","run from"].forEach((a)=>{
+html += `<button onclick="check('${a}')">${a}</button>`;
 });
 
 document.getElementById("options").innerHTML = html;
