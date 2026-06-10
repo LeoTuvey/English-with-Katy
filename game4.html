@@ -95,7 +95,7 @@ button:hover{
 
 <script>
 
-/* 🔊 KID-CLEAR VOICE SYSTEM */
+/* 🔊 KID-CLEAR VOICE SYSTEM (helper) */
 function speak(text){
 
     let msg = new SpeechSynthesisUtterance(text);
@@ -177,23 +177,10 @@ return;
 
 let q = questions[i];
 
+/* clear old speech */
 speechSynthesis.cancel();
 
-/* 🔊 QUESTION + EXPLANATION */
-setTimeout(() => speak(q.question), 300);
-
-setTimeout(() => {
-
-    if(q.question.includes("Run after")){
-        speak("Run after means chase.");
-    }
-
-    if(q.question.includes("Run from")){
-        speak("Run from means escape.");
-    }
-
-}, 1400);
-
+/* show visuals */
 document.getElementById("scene").innerHTML = `
 <div class="character">${q.character}</div>
 <div class="enemy">${q.enemy}</div>
@@ -204,14 +191,40 @@ document.getElementById("question").innerHTML = q.question;
 let html = "";
 
 q.answers.forEach((a, index) => {
-
-html += `
-<button onclick="check(${index}, '${a}')">${a}</button>
-`;
-
+html += `<button onclick="check(${index}, '${a}')">${a}</button>`;
 });
 
 document.getElementById("options").innerHTML = html;
+
+/* 🔊 FIXED VOICE FLOW */
+let explanation = "";
+
+if(q.question.includes("Run after")){
+explanation = "Run after means chase.";
+}
+
+if(q.question.includes("Run from")){
+explanation = "Run from means escape.";
+}
+
+let qMsg = new SpeechSynthesisUtterance(q.question);
+qMsg.lang = "en-US";
+qMsg.rate = 0.78;
+qMsg.pitch = 1.25;
+
+qMsg.onend = () => {
+
+if(explanation !== ""){
+let eMsg = new SpeechSynthesisUtterance(explanation);
+eMsg.lang = "en-US";
+eMsg.rate = 0.78;
+eMsg.pitch = 1.25;
+speechSynthesis.speak(eMsg);
+}
+
+};
+
+speechSynthesis.speak(qMsg);
 
 }
 
