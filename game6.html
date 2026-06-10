@@ -140,10 +140,13 @@ button:hover{
 
 <script>
 
-/* 🎧 SOUND FILES */
-const correctSound = new Audio("sounds/correct.mp3");
-const wrongSound = new Audio("sounds/wrong.mp3");
-const winSound = new Audio("sounds/win.mp3");
+/* 🔊 VOICE FUNCTION */
+function speak(text){
+    let msg = new SpeechSynthesisUtterance(text);
+    msg.lang = "en-US";
+    msg.rate = 0.9;
+    speechSynthesis.speak(msg);
+}
 
 const questions = [
 
@@ -222,7 +225,8 @@ function load(){
 
 if(i >= questions.length){
 
-winSound.play();
+speechSynthesis.cancel();
+speak("Great job! You finished the game!");
 
 document.getElementById("scene").innerHTML =
 "🎉 Finished! Score: " + score;
@@ -232,6 +236,10 @@ return;
 }
 
 let q = questions[i];
+
+/* 🔊 speak question */
+speechSynthesis.cancel();
+setTimeout(() => speak(q.question), 300);
 
 document.getElementById("scene").innerHTML = `
 
@@ -265,10 +273,8 @@ function check(ans){
 if(ans === questions[i].correct){
 score++;
 document.getElementById("result").innerHTML = "✅ Correct!";
-correctSound.play();
 }else{
 document.getElementById("result").innerHTML = "❌ Wrong!";
-wrongSound.play();
 }
 
 document.getElementById("score").innerHTML = "Score: " + score;
