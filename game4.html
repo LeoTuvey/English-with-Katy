@@ -8,64 +8,71 @@
 body{
     font-family: Arial;
     text-align:center;
-    background:linear-gradient(135deg,#f6d365,#fda085);
+    background:#f7fbff;
     padding:20px;
 }
 
 .container{
-    max-width:750px;
+    max-width:700px;
     margin:auto;
     background:white;
-    padding:25px;
+    padding:20px;
     border-radius:15px;
-    box-shadow:0 0 12px rgba(0,0,0,0.2);
 }
 
 h1{
     margin-bottom:10px;
 }
 
-.emojiBox{
-    font-size:70px;
-    margin:20px 0;
+.scene{
+    height:260px;
+    border:3px solid #333;
+    border-radius:15px;
+    position:relative;
+    background:linear-gradient(to top,#d0f5c8 40%,#cfe8ff 40%);
+    margin-bottom:20px;
 }
 
-.story{
-    font-size:18px;
-    margin:10px 0;
-    color:#333;
+.character{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:130px;
 }
 
-.question{
-    font-size:20px;
+.enemy{
+    position:absolute;
+    top:20px;
+    right:10%;
+    font-size:120px;
+}
+
+.questionBox{
+    font-size:22px;
     font-weight:bold;
-    margin:10px 0;
+    margin:10px;
 }
 
 button{
+    width:95%;
     padding:14px;
-    margin:10px 0;
-    width:90%;
+    margin:8px;
     font-size:18px;
     border:none;
     border-radius:10px;
-    cursor:pointer;
-    background:#4a90e2;
+    background:#1976d2;
     color:white;
+    cursor:pointer;
 }
 
 button:hover{
     opacity:0.9;
 }
 
-#score{
-    font-size:18px;
-    margin:10px;
-}
-
 #result{
     font-size:20px;
-    margin-top:15px;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -74,15 +81,11 @@ button:hover{
 
 <div class="container">
 
-<h1>🏃 Run After / Run From Game</h1>
+<h1>🐾 Run After / Run From Game</h1>
 
-<div id="score">Score: 0</div>
+<div class="scene" id="scene"></div>
 
-<div class="emojiBox" id="emojiBox"></div>
-
-<div class="story" id="story"></div>
-
-<div class="question" id="question"></div>
+<div class="questionBox" id="question"></div>
 
 <div id="options"></div>
 
@@ -92,151 +95,135 @@ button:hover{
 
 <script>
 
-const questions = [
-{
-emoji:"🦊➡️🐇",
-story:"A fox sees a rabbit in the forest.",
-question:"What does the fox do?",
-answer:"runs after"
-},
-{
-emoji:"🐇➡️💨",
-story:"A rabbit sees a fox and runs away.",
-question:"What does the rabbit do?",
-answer:"runs from"
-},
-{
-emoji:"🐱➡️🐶",
-story:"A cat sees a dog in the street.",
-question:"What does the cat do?",
-answer:"runs after"
-},
-{
-emoji:"🐶➡️💨",
-story:"A dog sees a cat and runs away.",
-question:"What does the dog do?",
-answer:"runs from"
-},
+/* 🔊 KID-CLEAR VOICE SYSTEM */
+function speak(text){
 
-{
-emoji:"🧒➡️👧",
-story:"Saman is chasing Shilan in the yard.",
-question:"What does Saman do?",
-answer:"runs after"
-},
-{
-emoji:"👧➡️💨",
-story:"Shilan runs away from Saman.",
-question:"What does Shilan do?",
-answer:"runs from"
-},
+    let msg = new SpeechSynthesisUtterance(text);
 
-{
-emoji:"👩➡️🧑",
-story:"Katy is chasing Haron in the park.",
-question:"What does Katy do?",
-answer:"runs after"
-},
-{
-emoji:"🧑➡️💨",
-story:"Haron runs away from Katy.",
-question:"What does Haron do?",
-answer:"runs from"
-},
+    msg.lang = "en-US";
+    msg.rate = 0.78;
+    msg.pitch = 1.25;
+    msg.volume = 1;
 
-{
-emoji:"👩‍🦰➡️🧑",
-story:"Beriwan is chasing Mansor in school.",
-question:"What does Beriwan do?",
-answer:"runs after"
-},
-{
-emoji:"🧑➡️💨",
-story:"Mansor runs away from Beriwan.",
-question:"What does Mansor do?",
-answer:"runs from"
-},
+    let voices = speechSynthesis.getVoices();
 
-{
-emoji:"🧑➡️🧑",
-story:"Barzan is chasing Mobin in the playground.",
-question:"What does Barzan do?",
-answer:"runs after"
-},
-{
-emoji:"🧑➡️💨",
-story:"Mobin runs away from Barzan.",
-question:"What does Mobin do?",
-answer:"runs from"
-},
+    let voice =
+        voices.find(v => v.name.includes("Google UK English Female")) ||
+        voices.find(v => v.name.includes("Microsoft Zira")) ||
+        voices.find(v => v.name.includes("Samantha")) ||
+        voices.find(v => v.lang.includes("en-US")) ||
+        voices[0];
 
-{
-emoji:"🧑➡️🧑",
-story:"Dildar is chasing Saman in the field.",
-question:"What does Dildar do?",
-answer:"runs after"
+    if(voice){
+        msg.voice = voice;
+    }
+
+    speechSynthesis.speak(msg);
 }
+
+const questions = [
+
+{
+character:"🐶",
+enemy:"🐱",
+question:"What should the dog do?",
+answers:[
+"Run after the cat",
+"Run from the cat"
+],
+correct:0
+},
+
+{
+character:"🐰",
+enemy:"🦊",
+question:"What should the rabbit do?",
+answers:[
+"Run from the fox",
+"Run after the fox"
+],
+correct:0
+},
+
+{
+character:"🐭",
+enemy:"🐱",
+question:"What should the mouse do?",
+answers:[
+"Run from the cat",
+"Run after the cat"
+],
+correct:0
+}
+
 ];
 
-let current = 0;
-let score = 0;
+let i = 0;
 
-function loadQuestion(){
+function load(){
 
-if(current >= questions.length){
-    document.getElementById("emojiBox").innerHTML = "";
-    document.getElementById("story").innerHTML = "";
-    document.getElementById("question").innerHTML = "";
-    document.getElementById("options").innerHTML = "";
-    document.getElementById("result").innerHTML =
-    "🎉 Game Finished! Score: " + score + "/" + questions.length;
-    return;
+if(i >= questions.length){
+
+speechSynthesis.cancel();
+speak("Great job! You finished Game Four!");
+
+document.getElementById("scene").innerHTML = "🎉 Finished!";
+document.getElementById("question").innerHTML = "";
+document.getElementById("options").innerHTML = "";
+return;
 }
 
-document.getElementById("emojiBox").innerHTML =
-questions[current].emoji;
+let q = questions[i];
 
-document.getElementById("story").innerHTML =
-questions[current].story;
+speechSynthesis.cancel();
 
-document.getElementById("question").innerHTML =
-questions[current].question;
+/* 🔊 speak question */
+setTimeout(()=> speak(q.question), 300);
 
-let options = ["runs after","runs from"];
+document.getElementById("scene").innerHTML = `
+<div class="character">${q.character}</div>
+<div class="enemy">${q.enemy}</div>
+`;
+
+document.getElementById("question").innerHTML = q.question;
 
 let html = "";
 
-options.forEach(opt=>{
-    html += `<button onclick="check('${opt}')">${opt}</button>`;
+q.answers.forEach((a, index) => {
+
+html += `
+<button onclick="check(${index}, '${a}')">${a}</button>
+`;
+
 });
 
 document.getElementById("options").innerHTML = html;
 
 }
 
-function check(answer){
+function check(ans, text){
 
-if(answer === questions[current].answer){
-    score++;
-    document.getElementById("result").innerHTML = "✅ Correct!";
+/* 🔊 speak answer */
+speak(text);
+
+if(ans === questions[i].correct){
+document.getElementById("result").innerHTML = "✅ Correct!";
+speak("Correct!");
 }else{
-    document.getElementById("result").innerHTML =
-    "❌ Wrong! Correct answer: " + questions[current].answer;
+document.getElementById("result").innerHTML = "❌ Try again!";
+speak("Try again!");
 }
 
-document.getElementById("score").innerHTML =
-"Score: " + score;
-
-current++;
+i++;
 
 setTimeout(()=>{
-    document.getElementById("result").innerHTML = "";
-    loadQuestion();
+document.getElementById("result").innerHTML = "";
+load();
 },1200);
 
 }
 
-loadQuestion();
+load();
 
 </script>
 
