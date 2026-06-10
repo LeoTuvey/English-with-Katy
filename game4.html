@@ -31,27 +31,40 @@ h1{
     position:relative;
     background:linear-gradient(to top,#d0f5c8 40%,#cfe8ff 40%);
     margin-bottom:20px;
+    overflow:hidden;
 }
 
-.character{
+/* MOVING ANIMATIONS */
+.move-right{
     position:absolute;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:130px;
+    left:10%;
+    bottom:40px;
+    font-size:120px;
+    animation:runRight 2s forwards;
 }
 
-.enemy{
+@keyframes runRight{
+    0%{left:10%}
+    100%{left:70%}
+}
+
+.static{
     position:absolute;
-    top:20px;
-    right:10%;
+    top:40px;
+    right:20%;
     font-size:120px;
 }
 
-.questionBox{
-    font-size:22px;
+/* speech bubble */
+.bubble{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:white;
+    border:2px solid #333;
+    padding:10px;
+    border-radius:10px;
     font-weight:bold;
-    margin:10px;
 }
 
 button{
@@ -81,11 +94,9 @@ button:hover{
 
 <div class="container">
 
-<h1>🐾 Run After / Run From Game</h1>
+<h1>🐾 Run After / Run From</h1>
 
 <div class="scene" id="scene"></div>
-
-<div class="questionBox" id="question"></div>
 
 <div id="options"></div>
 
@@ -95,82 +106,60 @@ button:hover{
 
 <script>
 
-/* 🔊 KID-CLEAR VOICE SYSTEM */
+/* VOICE */
 function speak(text){
-
     let msg = new SpeechSynthesisUtterance(text);
-
     msg.lang = "en-US";
     msg.rate = 0.78;
     msg.pitch = 1.25;
-    msg.volume = 1;
 
     let voices = speechSynthesis.getVoices();
-
     let voice =
         voices.find(v => v.name.includes("Google UK English Female")) ||
         voices.find(v => v.name.includes("Microsoft Zira")) ||
         voices.find(v => v.name.includes("Samantha")) ||
-        voices.find(v => v.lang.includes("en-US")) ||
         voices[0];
 
-    if(voice){
-        msg.voice = voice;
-    }
+    if(voice) msg.voice = voice;
 
     speechSynthesis.speak(msg);
 }
 
-/* GAME DATA (UNCHANGED) */
 const questions = [
 
 {
-character:"🐶",
-enemy:"🐱",
-question:"What should the dog do?",
-answers:[
-"Run after the cat",
-"Run from the cat"
-],
+moving:"🐶➡️🐱",
+actor:"🐱",
+question:"What am I doing?",
+answers:["Run after","Run from"],
 correct:0
 },
 
 {
-character:"🐰",
-enemy:"🦊",
-question:"What should the rabbit do?",
-answers:[
-"Run from the fox",
-"Run after the fox"
-],
-correct:0
+moving:"🐱➡️🐭",
+actor:"🐭",
+question:"What am I doing?",
+answers:["Run after","Run from"],
+correct:1
 },
 
 {
-character:"🐭",
-enemy:"🐱",
-question:"What should the mouse do?",
-answers:[
-"Run from the cat",
-"Run after the cat"
-],
-correct:0
+moving:"🦊➡️🐰",
+actor:"🐰",
+question:"What am I doing?",
+answers:["Run after","Run from"],
+correct:1
 }
 
 ];
 
 let i = 0;
 
-/* LOAD GAME */
 function load(){
 
 if(i >= questions.length){
-
-speechSynthesis.cancel();
-speak("Great job! You finished Game Four!");
-
+speak("Great job!");
 document.getElementById("scene").innerHTML = "🎉 Finished!";
-document.getElementById("question").innerHTML = "";
 document.getElementById("options").innerHTML = "";
 return;
 }
@@ -179,53 +168,26 @@ let q = questions[i];
 
 speechSynthesis.cancel();
 
-/* show visuals */
+/* SCENE */
 document.getElementById("scene").innerHTML = `
-<div class="character">${q.character}</div>
-<div class="enemy">${q.enemy}</div>
+<div class="bubble">${q.actor} says: ${q.question}</div>
+<div class="move-right">${q.moving}</div>
 `;
 
-document.getElementById("question").innerHTML = q.question;
+/* VOICE */
+setTimeout(()=> speak(q.question), 400);
 
+/* OPTIONS */
 let html = "";
-
-q.answers.forEach((a, index) => {
-html += `<button onclick="check(${index}, '${a}')">${a}</button>`;
+q.answers.forEach((a, index)=>{
+html += `<button onclick="check(${index})">${a}</button>`;
 });
 
 document.getElementById("options").innerHTML = html;
 
-/* 🔊 PREVIEW STYLE VOICE (NEW IDEA) */
-let speakText = q.question + " " + q.answers[q.correct];
-
-let msg = new SpeechSynthesisUtterance(speakText);
-
-msg.lang = "en-US";
-msg.rate = 0.78;
-msg.pitch = 1.25;
-msg.volume = 1;
-
-let voices = speechSynthesis.getVoices();
-
-let voice =
-    voices.find(v => v.name.includes("Google UK English Female")) ||
-    voices.find(v => v.name.includes("Microsoft Zira")) ||
-    voices.find(v => v.name.includes("Samantha")) ||
-    voices.find(v => v.lang.includes("en-US")) ||
-    voices[0];
-
-if(voice){
-    msg.voice = voice;
 }
 
-speechSynthesis.speak(msg);
-
-}
-
-/* CHECK ANSWER */
-function check(ans, text){
-
-speak(text);
+function check(ans){
 
 if(ans === questions[i].correct){
 document.getElementById("result").innerHTML = "✅ Correct!";
