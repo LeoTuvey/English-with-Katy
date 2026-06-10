@@ -140,34 +140,31 @@ button:hover{
 
 <script>
 
-/* 🔊 CAT + CLEAR VOICE SYSTEM */
+/* 🔊 BEST POSSIBLE CHILD-LIKE VOICE (browser version) */
 function speak(text){
 
-    let msg = new SpeechSynthesisUtterance();
+    let msg = new SpeechSynthesisUtterance(text);
 
     msg.lang = "en-US";
-    msg.rate = 0.75;   // slow = clear for kids
-    msg.pitch = 1.2;   // friendly tone
+
+    // 🎯 tuned for clarity + youthful feel
+    msg.rate = 0.78;   // slow = clear for kids
+    msg.pitch = 1.7;   // higher = more "young voice feel"
     msg.volume = 1;
 
     let voices = speechSynthesis.getVoices();
 
+    // Try best natural female voices
     let bestVoice = voices.find(v =>
         v.name.includes("Samantha") ||
         v.name.includes("Google UK English Female") ||
         v.name.includes("Microsoft Zira") ||
-        v.lang === "en-US"
+        v.name.includes("Victoria") ||
+        v.lang.includes("en-US")
     );
 
     if(bestVoice){
         msg.voice = bestVoice;
-    }
-
-    // 🐱 CAT FEATURE
-    if(text.toLowerCase().includes("cat")){
-        msg.text = "Meow... " + text;
-    }else{
-        msg.text = text;
     }
 
     speechSynthesis.speak(msg);
