@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>There Is / There Are</title>
+<title>There Is / There Are (Here / There)</title>
 
 <style>
 body{
@@ -13,32 +13,35 @@ body{
 }
 
 .container{
-    max-width:750px;
+    max-width:800px;
     margin:auto;
     background:white;
-    padding:25px;
+    padding:20px;
     border-radius:15px;
     box-shadow:0 0 12px rgba(0,0,0,0.2);
 }
 
-h1{
-    margin-bottom:10px;
+h1{ margin-bottom:10px; }
+
+#score{ margin:10px; font-size:18px; }
+
+.scene img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+    border-radius:12px;
 }
 
-#score{
-    font-size:18px;
+.label{
+    font-size:20px;
     margin:10px;
-}
-
-.visual{
-    font-size:90px;
-    margin:25px 0;
+    font-weight:bold;
 }
 
 button{
+    width:90%;
     padding:14px;
     margin:8px;
-    width:90%;
     font-size:18px;
     border:none;
     border-radius:10px;
@@ -47,13 +50,11 @@ button{
     color:white;
 }
 
-button:hover{
-    opacity:0.9;
-}
+button:hover{ opacity:0.9; }
 
 #result{
     font-size:20px;
-    margin-top:15px;
+    margin-top:10px;
 }
 </style>
 </head>
@@ -66,7 +67,11 @@ button:hover{
 
 <div id="score">Score: 0</div>
 
-<div class="visual" id="visual"></div>
+<div class="scene">
+    <img id="img" src="">
+</div>
+
+<div class="label" id="question"></div>
 
 <div id="options"></div>
 
@@ -77,135 +82,74 @@ button:hover{
 <script>
 
 const questions = [
-
 {
-visual:"📍🥫",
-answer:"There is a can here."
+img:"https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
+question:"The cat is HERE 🏠 or THERE 🌳?",
+answer:"HERE"
 },
-
 {
-visual:"🌳🐱",
-answer:"There is a cat there."
+img:"https://images.unsplash.com/photo-1507149833265-60c372daea22",
+question:"The rabbit is HERE 🏠 or THERE 🌳?",
+answer:"THERE"
 },
-
 {
-visual:"📍🐱🐱",
-answer:"There are two cats here."
+img:"https://images.unsplash.com/photo-1517841905240-472988babdf9",
+question:"The dog is HERE 🏠 or THERE 🌳?",
+answer:"HERE"
 },
-
 {
-visual:"🌳🐱🐱",
-answer:"There are two cats there."
-},
-
-{
-visual:"📍🐶",
-answer:"There is a dog here."
-},
-
-{
-visual:"🌳🐶",
-answer:"There is a dog there."
-},
-
-{
-visual:"📍🦊🦊",
-answer:"There are two foxes here."
-},
-
-{
-visual:"🌳🐰🐰",
-answer:"There are two rabbits there."
+img:"https://images.unsplash.com/photo-1546182990-dffeafbe841d",
+question:"The fox is HERE 🏠 or THERE 🌳?",
+answer:"THERE"
 }
-
-];
-
-const choices = [
-"There is a can here.",
-"There is a cat there.",
-"There are two cats here.",
-"There are two cats there.",
-"There is a dog here.",
-"There is a dog there.",
-"There are two foxes here.",
-"There are two rabbits there."
 ];
 
 let current = 0;
 let score = 0;
 
-function shuffle(array){
-    return array.sort(() => Math.random() - 0.5);
-}
-
-function loadQuestion(){
+function load(){
 
 if(current >= questions.length){
-
-document.getElementById("visual").innerHTML = "🎉";
-
-document.getElementById("options").innerHTML = "";
-
-document.getElementById("result").innerHTML =
-"Game Finished! Final Score: " + score + "/" + questions.length;
-
+document.getElementById("question").innerHTML =
+"🎉 Finished! Score: " + score;
+document.getElementById("img").style.display="none";
+document.getElementById("options").innerHTML="";
 return;
 }
 
-document.getElementById("visual").innerHTML =
-questions[current].visual;
-
-let answers = shuffle([...choices]).slice(0,3);
-
-if(!answers.includes(questions[current].answer)){
-answers[0] = questions[current].answer;
-}
-
-answers = shuffle(answers);
+document.getElementById("img").src = questions[current].img;
+document.getElementById("question").innerHTML = questions[current].question;
 
 let html = "";
 
-answers.forEach(option=>{
-html += `
-<button onclick="checkAnswer('${option}')">
-${option}
-</button>
-`;
+["HERE","THERE"].forEach(opt=>{
+html += `<button onclick="check('${opt}')">${opt}</button>`;
 });
 
 document.getElementById("options").innerHTML = html;
-
 }
 
-function checkAnswer(answer){
+function check(ans){
 
-if(answer === questions[current].answer){
-
+if(ans === questions[current].answer){
 score++;
-
-document.getElementById("result").innerHTML =
-"✅ Correct!";
-
+document.getElementById("result").innerHTML="✅ Correct!";
 }else{
-
-document.getElementById("result").innerHTML =
-"❌ Correct answer: " + questions[current].answer;
-
+document.getElementById("result").innerHTML="❌ Wrong!";
 }
 
-document.getElementById("score").innerHTML =
-"Score: " + score;
+document.getElementById("score").innerHTML="Score: " + score;
 
 current++;
 
 setTimeout(()=>{
-document.getElementById("result").innerHTML = "";
-loadQuestion();
+document.getElementById("result").innerHTML="";
+load();
 },1200);
 
 }
 
-loadQuestion();
+load();
 
 </script>
 
