@@ -2,55 +2,50 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HERE / THERE Cartoon Game</title>
+<title>English with Katy</title>
 
 <style>
 body{
     font-family: Arial;
     text-align:center;
-    background:linear-gradient(135deg,#84fab0,#8fd3f4);
+    background:linear-gradient(135deg,#74ebd5,#acb6e5);
     padding:20px;
 }
 
 .container{
-    max-width:800px;
+    max-width:600px;
     margin:auto;
     background:white;
-    padding:20px;
-    border-radius:15px;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
 }
 
-h1{ margin-bottom:10px; }
-
-img{
-    width:100%;
-    height:320px;
-    object-fit:contain;
-    background:#f5f5f5;
-    border-radius:12px;
+h1{
+    margin-bottom:10px;
 }
 
-.question{
-    font-size:20px;
-    font-weight:bold;
-    margin:15px 0;
+p{
+    color:gray;
 }
 
 button{
     width:90%;
-    padding:14px;
-    margin:8px;
+    padding:16px;
+    margin:10px;
     font-size:18px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
+    cursor:pointer;
     background:#4a90e2;
     color:white;
-    cursor:pointer;
+    transition:0.2s;
 }
 
-#score{ margin:10px; }
-
-#result{ font-size:20px; margin-top:10px; }
+button:hover{
+    transform:scale(1.02);
+    opacity:0.9;
+}
 </style>
 </head>
 
@@ -58,98 +53,30 @@ button{
 
 <div class="container">
 
-<h1>🐱 HERE / THERE (Cartoon Animals)</h1>
+<h1>🎮 English with Katy</h1>
+<p>Choose a game 👇</p>
 
-<div id="score">Score: 0</div>
+<button onclick="location.href='game1.html'">
+🎯 Game 1: Daily Actions → Verbs practice
+</button>
 
-<img id="img">
+<button onclick="location.href='game2.html'">
+🧠 Game 2: True / False → Sentence check
+</button>
 
-<div class="question" id="question"></div>
+<button onclick="location.href='game3.html'">
+📍 Game 3: This / That → Objects practice
+</button>
 
-<div id="options"></div>
+<button onclick="location.href='game4.html'">
+🐾 Game 4: Chase Game → Run After / Run From
+</button>
 
-<div id="result"></div>
+<button onclick="location.href='game5.html'">
+🌍 Game 5: Here / There → Location practice
+</button>
 
 </div>
-
-<script>
-
-const questions = [
-{
-img:"https://cdn-icons-png.flaticon.com/512/616/616408.png", // cat cartoon
-text:"A cat is close to you.",
-q:"Is it HERE or THERE?",
-a:"HERE"
-},
-{
-img:"https://cdn-icons-png.flaticon.com/512/616/616430.png", // rabbit cartoon
-text:"A rabbit is far in the forest.",
-q:"Is it HERE or THERE?",
-a:"THERE"
-},
-{
-img:"https://cdn-icons-png.flaticon.com/512/616/616430.png", // dog cartoon
-text:"A dog is playing next to you.",
-q:"Is it HERE or THERE?",
-a:"HERE"
-},
-{
-img:"https://cdn-icons-png.flaticon.com/512/616/616408.png", // fox/cartoon style cat placeholder
-text:"A fox is far away.",
-q:"Is it HERE or THERE?",
-a:"THERE"
-}
-];
-
-let i=0;
-let score=0;
-
-function load(){
-
-if(i>=questions.length){
-document.getElementById("question").innerHTML=
-"🎉 Finished! Score: "+score;
-
-document.getElementById("img").style.display="none";
-document.getElementById("options").innerHTML="";
-return;
-}
-
-document.getElementById("img").src=questions[i].img;
-document.getElementById("question").innerHTML=
-questions[i].text + "<br><b>"+questions[i].q+"</b>";
-
-let html="";
-["HERE","THERE"].forEach(o=>{
-html+=`<button onclick="check('${o}')">${o}</button>`;
-});
-
-document.getElementById("options").innerHTML=html;
-}
-
-function check(ans){
-
-if(ans===questions[i].a){
-score++;
-document.getElementById("result").innerHTML="✅ Correct!";
-}else{
-document.getElementById("result").innerHTML="❌ Wrong!";
-}
-
-document.getElementById("score").innerHTML="Score: "+score;
-
-i++;
-
-setTimeout(()=>{
-document.getElementById("result").innerHTML="";
-load();
-},1200);
-
-}
-
-load();
-
-</script>
 
 </body>
 </html>
