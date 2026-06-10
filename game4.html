@@ -23,6 +23,7 @@ h1{
     margin-bottom:10px;
 }
 
+/* SCENE */
 .scene{
     height:260px;
     border:3px solid #333;
@@ -82,7 +83,7 @@ button{
     font-weight:bold;
 }
 
-/* FINAL SCREEN */
+/* FINAL */
 .finalBox{
     margin-top:20px;
     font-size:24px;
@@ -122,7 +123,7 @@ function speak(text){
     speechSynthesis.speak(msg);
 }
 
-/* 🧠 DATA */
+/* 🧠 GAME DATA */
 const questions = [
 
 {actor:"🐱 Cat", target:"🐭 Mouse", sentence:"The cat is running after the mouse.", type:"chase", meaning:"run after = chase", answer:"run after"},
@@ -193,7 +194,7 @@ load();
 
 }
 
-/* 🏆 FINAL GRADE SYSTEM */
+/* 🏆 FINAL + SAVE RESULTS */
 function showFinal(){
 
 let grade = "";
@@ -210,6 +211,10 @@ grade = "C 🙂 OK!";
 else{
 grade = "D ❌ Needs Practice";
 }
+
+/* 💾 SAVE FOR TEACHER VIEW */
+localStorage.setItem("game4_score", score);
+localStorage.setItem("game4_grade", grade);
 
 document.getElementById("scene").innerHTML = "🎉 Finished!";
 document.getElementById("sentence").innerHTML = "";
