@@ -2,167 +2,204 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Game 4 - Grammar Challenge</title>
+<title>English with Katy - Learning Journey</title>
 
 <style>
   body {
     font-family: Arial;
+    margin: 0;
     background: linear-gradient(135deg, #e3f2fd, #fce4ec);
     text-align: center;
-    margin: 0;
   }
 
   h1 {
+    margin-top: 20px;
     color: #2c3e50;
-    margin-top: 10px;
   }
 
-  #topBar {
-    display: flex;
-    justify-content: space-around;
-    margin: 10px;
+  .subtitle {
+    color: #555;
+    margin-bottom: 10px;
   }
 
-  .box {
+  /* 🧭 LEVEL BLOCKS */
+  .level {
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
     background: white;
-    padding: 10px 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: left;
   }
 
-  #question {
-    font-size: 28px;
-    margin: 25px;
-    padding: 10px;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 12px 18px;
-    margin: 10px;
-    border-radius: 12px;
-    cursor: pointer;
+  .level-title {
+    font-weight: bold;
+    margin-bottom: 10px;
     font-size: 18px;
-    color: white;
   }
 
-  .a { background: #2196F3; }
-  .an { background: #4CAF50; }
-  .the { background: #FF9800; }
-
-  #feedback {
-    font-size: 24px;
-    margin: 10px;
-  }
-
-  .next {
-    background: #333;
-    color: white;
-    padding: 10px 15px;
-    border: none;
+  /* 🎮 GAME BUTTONS */
+  .game {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 8px 0;
     border-radius: 10px;
-    cursor: pointer;
-    margin-top: 10px;
+    text-decoration: none;
+    color: black;
+    background: #f7f7f7;
+    transition: 0.2s;
   }
+
+  .game:hover {
+    transform: scale(1.02);
+  }
+
+  .left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .emoji {
+    font-size: 22px;
+  }
+
+  .locked {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .stars {
+    font-size: 14px;
+    color: gold;
+  }
+
 </style>
 </head>
 
 <body>
 
-<h1>⭐ Game 4: Grammar Challenge</h1>
+<h1>📚 English with Katy</h1>
+<p class="subtitle">Your Learning Journey 🎓</p>
 
-<div id="topBar">
-  <div class="box">⭐ Score: <span id="score">0</span></div>
-  <div class="box">📊 Level: <span id="level">1</span></div>
+<!-- 🟢 LEVEL 1 -->
+<div class="level">
+  <div class="level-title">🟢 Level 1: Basics</div>
+
+  <a class="game" href="game1.html" id="g1">
+    <div class="left">
+      <div class="emoji">🏃‍♂️</div>
+      <div>Daily Actions</div>
+    </div>
+    <div class="stars" id="s1">☆☆☆</div>
+  </a>
+
+  <a class="game" href="game2.html" id="g2">
+    <div class="left">
+      <div class="emoji">✔️❌</div>
+      <div>True or False</div>
+    </div>
+    <div class="stars" id="s2">☆☆☆</div>
+  </a>
 </div>
 
-<div id="question"></div>
+<!-- 🟡 LEVEL 2 -->
+<div class="level">
+  <div class="level-title">🟡 Level 2: Grammar</div>
 
-<div>
-  <div class="btn a" onclick="answer('a')">A</div>
-  <div class="btn an" onclick="answer('an')">AN</div>
-  <div class="btn the" onclick="answer('the')">THE</div>
+  <a class="game" href="game3.html" id="g3">
+    <div class="left">
+      <div class="emoji">📍</div>
+      <div>This / That / These / Those</div>
+    </div>
+    <div class="stars" id="s3">☆☆☆</div>
+  </a>
+
+  <a class="game" href="game4.html" id="g4">
+    <div class="left">
+      <div class="emoji">⭐</div>
+      <div>A / An / Plurals</div>
+    </div>
+    <div class="stars" id="s4">☆☆☆</div>
+  </a>
 </div>
 
-<p id="feedback"></p>
+<!-- 🔵 LEVEL 3 -->
+<div class="level">
+  <div class="level-title">🔵 Level 3: Communication</div>
 
-<button class="next" onclick="next()">➡️ Next</button>
+  <a class="game" href="game7.html" id="g7">
+    <div class="left">
+      <div class="emoji">🧩</div>
+      <div>Word Builder</div>
+    </div>
+    <div class="stars" id="s7">☆☆☆</div>
+  </a>
+
+  <a class="game" href="game8.html" id="g8">
+    <div class="left">
+      <div class="emoji">🖼️</div>
+      <div>Picture Match</div>
+    </div>
+    <div class="stars" id="s8">☆☆☆</div>
+  </a>
+</div>
 
 <script>
 
-// 💾 PROGRESS SYSTEM
-function saveProgress(game, score) {
-  localStorage.setItem(game + "_score", score);
-}
-
-function loadProgress(game) {
+// 💾 LOAD SCORE
+function getScore(game) {
   return parseInt(localStorage.getItem(game + "_score")) || 0;
 }
 
-// 🎮 GAME DATA
-const game = [
-  { text: "___ apple 🍎", answer: "an" },
-  { text: "___ cat 🐱", answer: "a" },
-  { text: "___ elephant 🐘", answer: "an" },
-  { text: "___ sun ☀️", answer: "the" },
-  { text: "___ dog 🐶", answer: "a" },
-  { text: "___ owl 🦉", answer: "an" },
-  { text: "___ car 🚗", answer: "a" },
-  { text: "___ moon 🌙", answer: "the" }
-];
-
-let current = 0;
-
-// 🔥 LOAD SCORE
-let score = loadProgress("game4");
-document.getElementById("score").innerText = score;
-
-// 🔊 SPEAK
-function speak(text) {
-  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+// ⭐ CONVERT SCORE TO STARS
+function getStars(score) {
+  if (score >= 80) return "⭐⭐⭐";
+  if (score >= 50) return "⭐⭐";
+  if (score >= 20) return "⭐";
+  return "☆☆☆";
 }
 
-// 📥 LOAD QUESTION
-function load() {
-  const item = game[current];
-
-  document.getElementById("question").innerText = item.text;
-  document.getElementById("level").innerText = current + 1;
-  document.getElementById("feedback").innerText = "";
+// 🔓 UNLOCK LOGIC
+function unlock(gameId, required) {
+  const score = getScore(gameId);
+  return score >= required;
 }
 
-// ✅ ANSWER CHECK
-function answer(choice) {
-  const correct = game[current].answer;
+// 📊 UPDATE UI
+function update() {
 
-  if (choice === correct) {
-    score += 10;
-    document.getElementById("score").innerText = score;
+  // Game 1
+  document.getElementById("s1").innerText = getStars(getScore("game1"));
 
-    saveProgress("game4", score);
+  // Game 2
+  document.getElementById("s2").innerText = getStars(getScore("game2"));
 
-    document.getElementById("feedback").innerText = "🎉 Correct!";
-    speak("Correct");
+  // Game 3
+  document.getElementById("s3").innerText = getStars(getScore("game3"));
 
-  } else {
-    document.getElementById("feedback").innerText = "😕 Try again!";
-    speak("Try again");
-  }
+  // Game 4
+  document.getElementById("s4").innerText = getStars(getScore("game4"));
+
+  // Game 7
+  document.getElementById("s7").innerText = getStars(getScore("game7"));
+
+  // Game 8
+  document.getElementById("s8").innerText = getStars(getScore("game8"));
+
+  // 🔒 LOCK SYSTEM (example progression)
+  if (!unlock("game1", 10)) document.getElementById("g2").classList.add("locked");
+  if (!unlock("game2", 10)) document.getElementById("g3").classList.add("locked");
+  if (!unlock("game3", 10)) document.getElementById("g4").classList.add("locked");
+  if (!unlock("game4", 10)) document.getElementById("g7").classList.add("locked");
+  if (!unlock("game7", 10)) document.getElementById("g8").classList.add("locked");
 }
 
-// ➡️ NEXT
-function next() {
-  current++;
-
-  if (current >= game.length) {
-    current = 0;
-    alert("🎉 Finished Game 4! Score: " + score);
-  }
-
-  load();
-}
-
-load();
+update();
 
 </script>
 
