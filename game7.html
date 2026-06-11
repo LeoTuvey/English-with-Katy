@@ -13,16 +13,14 @@
   }
 
   h1 {
-    margin-top: 15px;
+    margin-top: 10px;
     color: #2c3e50;
   }
 
-  /* TOP PANEL */
   #topBar {
     display: flex;
     justify-content: space-around;
     margin: 10px;
-    font-size: 18px;
   }
 
   .box {
@@ -32,13 +30,11 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
-  /* ANIMAL DISPLAY */
   #animal {
     font-size: 60px;
     margin: 10px;
   }
 
-  /* WORD AREA */
   #words {
     margin: 10px;
   }
@@ -51,15 +47,8 @@
     color: white;
     border-radius: 12px;
     cursor: pointer;
-    font-size: 16px;
-    transition: 0.2s;
   }
 
-  .word:hover {
-    transform: scale(1.05);
-  }
-
-  /* ANSWER BOX */
   #answer {
     border: 2px dashed #666;
     min-height: 50px;
@@ -68,25 +57,21 @@
     padding: 10px;
     border-radius: 10px;
     background: white;
-    font-size: 18px;
   }
 
-  /* BUTTONS */
   button {
     padding: 10px 16px;
     margin: 10px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
   }
 
   .check { background: #2196F3; color: white; }
   .next { background: #FF9800; color: white; }
 
-  /* FEEDBACK */
   #feedback {
-    font-size: 26px;
+    font-size: 24px;
     margin: 10px;
   }
 </style>
@@ -97,7 +82,6 @@
 <h1>🧩 Game 7: Word Builder</h1>
 
 <div id="topBar">
-  <div class="box">📍 Level: <span id="level">1</span></div>
   <div class="box">⭐ Score: <span id="score">0</span></div>
   <div class="box">📊 Progress: <span id="progress">1</span></div>
 </div>
@@ -110,11 +94,11 @@
 <button class="check" onclick="checkAnswer()">Check ✅</button>
 <button class="next" onclick="nextSentence()">Next ➡️</button>
 
-<div id="feedback"></div>
+<p id="feedback"></p>
 
 <script>
 
-// 🧠 LONG GAME (20 SENTENCES + QUESTIONS)
+// 🧠 20 SENTENCES + QUESTIONS
 const sentences = [
   { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱" },
   { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶" },
@@ -126,16 +110,11 @@ const sentences = [
   { words: ["There", "are", "2", "apples"], answer: "There are 2 apples", emoji: "🍎🍎" },
   { words: ["There", "are", "2", "rabbits"], answer: "There are 2 rabbits", emoji: "🐰🐰" },
 
-  // QUESTIONS
   { words: ["Is", "there", "a", "cat", "here?"], answer: "Is there a cat here?", emoji: "❓🐱" },
   { words: ["Is", "there", "a", "dog", "here?"], answer: "Is there a dog here?", emoji: "❓🐶" },
-  { words: ["Is", "there", "an", "owl", "here?"], answer: "Is there an owl here?", emoji: "❓🦉" },
-
   { words: ["Are", "there", "2", "cats", "there?"], answer: "Are there 2 cats there?", emoji: "❓🐱🐱" },
   { words: ["Are", "there", "2", "dogs", "there?"], answer: "Are there 2 dogs there?", emoji: "❓🐶🐶" },
-  { words: ["Are", "there", "2", "apples", "there?"], answer: "Are there 2 apples there?", emoji: "❓🍎🍎" },
 
-  // EXTRA PRACTICE
   { words: ["There", "is", "a", "rabbit"], answer: "There is a rabbit", emoji: "🐰" },
   { words: ["There", "are", "2", "owls"], answer: "There are 2 owls", emoji: "🦉🦉" },
   { words: ["Is", "there", "an", "apple", "here?"], answer: "Is there an apple here?", emoji: "❓🍎" },
@@ -146,10 +125,33 @@ let current = 0;
 let answer = [];
 let score = 0;
 
+// 🧠 FIX COMPARISON
 function normalize(text) {
   return text.toLowerCase().trim().replace(/\s+/g, " ").replace(" ?", "?");
 }
 
+// 🧩 RENDER ANSWER WITH REMOVE FUNCTION
+function renderAnswer() {
+  const answerDiv = document.getElementById("answer");
+  answerDiv.innerHTML = "";
+
+  answer.forEach((word, index) => {
+    const span = document.createElement("span");
+    span.className = "word";
+    span.style.background = "#2196F3";
+    span.innerText = word;
+
+    // CLICK TO REMOVE
+    span.onclick = () => {
+      answer.splice(index, 1);
+      renderAnswer();
+    };
+
+    answerDiv.appendChild(span);
+  });
+}
+
+// 📥 LOAD SENTENCE
 function loadSentence() {
   answer = [];
 
@@ -159,12 +161,11 @@ function loadSentence() {
   document.getElementById("progress").innerText = current + 1;
 
   const wordsDiv = document.getElementById("words");
-  const answerDiv = document.getElementById("answer");
   const feedback = document.getElementById("feedback");
 
   wordsDiv.innerHTML = "";
-  answerDiv.innerHTML = "";
   feedback.innerHTML = "";
+  document.getElementById("answer").innerHTML = "";
 
   let shuffled = [...s.words].sort(() => Math.random() - 0.5);
 
@@ -175,13 +176,14 @@ function loadSentence() {
 
     btn.onclick = () => {
       answer.push(w);
-      answerDiv.innerText = answer.join(" ");
+      renderAnswer();
     };
 
     wordsDiv.appendChild(btn);
   });
 }
 
+// ✅ CHECK ANSWER
 function checkAnswer() {
   const user = normalize(answer.join(" "));
   const correct = normalize(sentences[current].answer);
@@ -196,27 +198,31 @@ function checkAnswer() {
     speak("Correct!");
 
     setTimeout(nextSentence, 1200);
+
   } else {
     document.getElementById("feedback").innerHTML =
       "😕 Try again!";
   }
 }
 
+// ➡️ NEXT
 function nextSentence() {
   current++;
 
   if (current >= sentences.length) {
     current = 0;
-    alert("🎉 You finished ALL levels! Score: " + score);
+    alert("🎉 Finished! Score: " + score);
   }
 
   loadSentence();
 }
 
+// 🔊 VOICE
 function speak(text) {
   speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
+// START GAME
 loadSentence();
 
 </script>
