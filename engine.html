@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Game Engine</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: linear-gradient(135deg,#dff6ff,#fff0f5);
+  text-align: center;
+}
+
+.top {
+  padding: 15px;
+  font-size: 18px;
+}
+
+.card {
+  background: white;
+  width: 85%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.emoji {
+  font-size: 70px;
+  margin-bottom: 10px;
+}
+
+.text {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.green { background:#58cc02; color:white; }
+.red { background:#ff4b4b; color:white; }
+.blue { background:#1cb0f6; color:white; }
+
+.feedback {
+  font-size: 18px;
+  height: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+⭐ XP: <span id="score">0</span>
+</div>
+
+<div class="card">
+
+  <div class="emoji" id="emoji">🐱</div>
+  <div class="text" id="text">Loading...</div>
+
+  <button class="btn green" onclick="answer(true)">Correct</button>
+  <button class="btn red" onclick="answer(false)">Wrong</button>
+
+  <div class="feedback" id="feedback"></div>
+
+  <button class="btn blue" onclick="next()">Next ➜</button>
+
+</div>
+
+<script>
+
+function save(g,s){
+  localStorage.setItem(g+"_score",s);
+}
+
+function load(g){
+  return parseInt(localStorage.getItem(g+"_score")) || 0;
+}
+
+// 🎮 GAME ID (CHANGE THIS PER GAME)
+let gameId = "game1";
+
+// ⭐ SCORE
+let score = load(gameId);
+document.getElementById("score").innerText = score;
+
+// 🧠 QUESTIONS (ONLY THING YOU CHANGE PER GAME)
+const questions = [
+  {emoji:"🐱", text:"There is a cat", correct:true},
+  {emoji:"🐶", text:"There is a dog in the sky", correct:false},
+  {emoji:"🍎", text:"There is an apple", correct:true},
+  {emoji:"🚗", text:"There is a car in the ocean", correct:false}
+];
+
+let i = 0;
+
+// LOAD QUESTION
+function loadQ(){
+  document.getElementById("emoji").innerText = questions[i].emoji;
+  document.getElementById("text").innerText = questions[i].text;
+  document.getElementById("feedback").innerText = "";
+}
+
+// ANSWER
+function answer(a){
+  if(a === questions[i].correct){
+    score += 10;
+    save(gameId, score);
+    document.getElementById("score").innerText = score;
+    document.getElementById("feedback").innerText = "✔ Correct!";
+  } else {
+    document.getElementById("feedback").innerText = "✖ Try again!";
+  }
+}
+
+// NEXT
+function next(){
+  i++;
+  if(i >= questions.length){
+    i = 0;
+    alert("Finished! XP: " + score);
+  }
+  loadQ();
+}
+
+loadQ();
+
+</script>
+
+</body>
+</html>
