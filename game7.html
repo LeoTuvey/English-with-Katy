@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game 7 - Word Builder</title>
+  <style>
+    body { font-family: Arial; text-align: center; }
+    .word {
+      display: inline-block;
+      padding: 10px;
+      margin: 5px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #answer {
+      margin-top: 20px;
+      min-height: 50px;
+      border: 2px dashed #999;
+      padding: 10px;
+    }
+    button { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>🎮 Game 7: Word Builder</h1>
+
+<h3>Arrange the words:</h3>
+
+<div id="words"></div>
+
+<h3>Your sentence:</h3>
+<div id="answer"></div>
+
+<button onclick="checkAnswer()">Check ✅</button>
+<button onclick="speak()">🔊 Listen</button>
+
+<p id="feedback"></p>
+
+<script>
+const correctSentence = "There is a cat";
+const words = ["There", "is", "a", "cat"];
+
+let answer = [];
+
+const wordsDiv = document.getElementById("words");
+const answerDiv = document.getElementById("answer");
+
+function renderWords() {
+  wordsDiv.innerHTML = "";
+  words.forEach(w => {
+    const btn = document.createElement("div");
+    btn.className = "word";
+    btn.innerText = w;
+    btn.onclick = () => {
+      answer.push(w);
+      updateAnswer();
+    };
+    wordsDiv.appendChild(btn);
+  });
+}
+
+function updateAnswer() {
+  answerDiv.innerText = answer.join(" ");
+}
+
+function checkAnswer() {
+  const result = answer.join(" ");
+  const feedback = document.getElementById("feedback");
+
+  if (result === correctSentence) {
+    feedback.innerHTML = "😄 Correct! 🎉👍";
+    speakText("Correct! Well done");
+  } else {
+    feedback.innerHTML = "😕 Try again!";
+  }
+}
+
+function speak() {
+  speakText(correctSentence);
+}
+
+function speakText(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  speechSynthesis.speak(msg);
+}
+
+renderWords();
+</script>
+
+</body>
+</html>
