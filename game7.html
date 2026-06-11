@@ -34,6 +34,7 @@
     width: 80%;
     margin: 20px auto;
     background: white;
+    font-size: 18px;
   }
 
   button {
@@ -48,8 +49,12 @@
   .next { background: #FF9800; color: white; }
 
   #feedback {
-    font-size: 22px;
+    font-size: 24px;
     margin-top: 10px;
+  }
+
+  .animal {
+    font-size: 40px;
   }
 </style>
 </head>
@@ -58,8 +63,9 @@
 
 <h1>🧩 Game 7: Word Builder</h1>
 
-<div id="words"></div>
+<div id="animal" class="animal"></div>
 
+<div id="words"></div>
 <div id="answer"></div>
 
 <button class="check" onclick="checkAnswer()">Check ✅</button>
@@ -69,14 +75,22 @@
 
 <script>
 
+// 🐾 10 SENTENCES + 10 QUESTIONS
 const sentences = [
+
+  // STATEMENTS
   { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱" },
   { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶" },
+  { words: ["There", "is", "an", "owl"], answer: "There is an owl", emoji: "🦉" },
+  { words: ["There", "is", "an", "apple"], answer: "There is an apple", emoji: "🍎" },
   { words: ["There", "are", "2", "cats"], answer: "There are 2 cats", emoji: "🐱🐱" },
+  { words: ["There", "are", "2", "dogs"], answer: "There are 2 dogs", emoji: "🐶🐶" },
+  { words: ["There", "are", "2", "apples"], answer: "There are 2 apples", emoji: "🍎🍎" },
+  { words: ["There", "are", "2", "rabbits"], answer: "There are 2 rabbits", emoji: "🐰🐰" },
 
-  { words: ["Is", "there", "a", "cat", "?"], answer: "Is there a cat?", emoji: "❓🐱" },
-  { words: ["Is", "there", "a", "dog", "?"], answer: "Is there a dog?", emoji: "❓🐶" },
-  { words: ["Are", "there", "2", "cats", "?"], answer: "Are there 2 cats?", emoji: "❓🐱🐱" }
+  // QUESTIONS
+  { words: ["Is", "there", "a", "cat", "here", "?"], answer: "Is there a cat here?", emoji: "❓🐱" },
+  { words: ["Are", "there", "2", "cats", "there", "?"], answer: "Are there 2 cats there?", emoji: "❓🐱🐱" }
 ];
 
 let current = 0;
@@ -89,10 +103,14 @@ function loadSentence() {
   const wordsDiv = document.getElementById("words");
   const answerDiv = document.getElementById("answer");
   const feedback = document.getElementById("feedback");
+  const animal = document.getElementById("animal");
 
   wordsDiv.innerHTML = "";
   answerDiv.innerHTML = "";
   feedback.innerHTML = "";
+
+  // show emoji big
+  animal.innerText = s.emoji;
 
   let shuffled = [...s.words].sort(() => Math.random() - 0.5);
 
@@ -113,23 +131,29 @@ function loadSentence() {
 function checkAnswer() {
   const user = answer.join(" ");
   const correct = sentences[current].answer;
-  const feedback = document.getElementById("feedback");
 
   if (user === correct) {
-    feedback.innerHTML = "🎉 Correct! " + sentences[current].emoji;
+    document.getElementById("feedback").innerHTML =
+      "🎉 Correct! " + sentences[current].emoji;
+
     speak("Correct!");
-    setTimeout(nextSentence, 1000);
+
+    setTimeout(nextSentence, 1200);
+
   } else {
-    feedback.innerHTML = "😕 Try again!";
+    document.getElementById("feedback").innerHTML =
+      "😕 Try again!";
   }
 }
 
 function nextSentence() {
   current++;
+
   if (current >= sentences.length) {
     current = 0;
-    alert("🎉 Finished!");
+    alert("🎉 You finished all 10 sentences!");
   }
+
   loadSentence();
 }
 
