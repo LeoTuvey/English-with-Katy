@@ -21,7 +21,6 @@
     color: white;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
   }
 
   #words, #answer {
@@ -45,18 +44,11 @@
     cursor: pointer;
   }
 
-  .check {
-    background: #2196F3;
-    color: white;
-  }
-
-  .next {
-    background: #FF9800;
-    color: white;
-  }
+  .check { background: #2196F3; color: white; }
+  .next { background: #FF9800; color: white; }
 
   #feedback {
-    font-size: 20px;
+    font-size: 22px;
     margin-top: 10px;
   }
 </style>
@@ -80,14 +72,21 @@
 
 <script>
 
-// 🎯 Sentences database
+// 🎯 Sentences + QUESTIONS + EMOJIS
 const sentences = [
-  { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱" },
-  { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶" },
-  { words: ["There", "is", "an", "owl"], answer: "There is an owl", emoji: "🦉" },
-  { words: ["There", "are", "2", "cats"], answer: "There are 2 cats", emoji: "🐱🐱" },
-  { words: ["There", "are", "2", "dogs"], answer: "There are 2 dogs", emoji: "🐶🐶" },
-  { words: ["There", "are", "2", "rabbits"], answer: "There are 2 rabbits", emoji: "🐰🐰" }
+  // STATEMENTS
+  { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱😄" },
+  { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶😄" },
+  { words: ["There", "is", "an", "owl"], answer: "There is an owl", emoji: "🦉😄" },
+  { words: ["There", "are", "2", "cats"], answer: "There are 2 cats", emoji: "🐱🐱😍" },
+  { words: ["There", "are", "2", "dogs"], answer: "There are 2 dogs", emoji: "🐶🐶😍" },
+
+  // QUESTIONS ❓
+  { words: ["Is", "there", "a", "cat", "?"], answer: "Is there a cat?", emoji: "❓🐱" },
+  { words: ["Is", "there", "a", "dog", "?"], answer: "Is there a dog?", emoji: "❓🐶" },
+  { words: ["Is", "there", "an", "owl", "?"], answer: "Is there an owl?", emoji: "❓🦉" },
+  { words: ["Are", "there", "2", "cats", "?"], answer: "Are there 2 cats?", emoji: "❓🐱🐱" },
+  { words: ["Are", "there", "2", "dogs", "?"], answer: "Are there 2 dogs?", emoji: "❓🐶🐶" }
 ];
 
 let current = 0;
@@ -105,7 +104,6 @@ function loadSentence() {
   answerDiv.innerHTML = "";
   feedback.innerHTML = "";
 
-  // shuffle words
   let shuffled = [...s.words].sort(() => Math.random() - 0.5);
 
   shuffled.forEach(w => {
@@ -128,7 +126,7 @@ function checkAnswer() {
   const feedback = document.getElementById("feedback");
 
   if (user === correct) {
-    feedback.innerHTML = "😄 Correct! " + sentences[current].emoji;
+    feedback.innerHTML = "🎉 Correct! " + sentences[current].emoji + " ⭐";
     speakText("Correct!");
 
     setTimeout(() => {
@@ -136,7 +134,7 @@ function checkAnswer() {
     }, 1200);
 
   } else {
-    feedback.innerHTML = "😕 Try again!";
+    feedback.innerHTML = "😕 Try again! ❌";
     speakText("Try again");
   }
 }
@@ -146,7 +144,7 @@ function nextSentence() {
 
   if (current >= sentences.length) {
     current = 0;
-    alert("🎉 You finished all levels!");
+    alert("🎉 You finished all sentences and questions!");
   }
 
   loadSentence();
@@ -158,7 +156,6 @@ function speakText(text) {
   speechSynthesis.speak(msg);
 }
 
-// start game
 loadSentence();
 
 </script>
