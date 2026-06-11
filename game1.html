@@ -2,177 +2,136 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Game 1 - Daily Actions</title>
+<title>Game</title>
 
 <style>
   body {
     font-family: Arial;
-    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
     text-align: center;
     margin: 0;
+    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
   }
 
   h1 {
-    color: #2c3e50;
-    margin-top: 10px;
+    margin-top: 15px;
   }
 
-  #topBar {
-    display: flex;
-    justify-content: space-around;
+  #scoreBox {
+    font-size: 18px;
     margin: 10px;
-  }
-
-  .box {
-    background: white;
-    padding: 10px 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
   #question {
-    font-size: 40px;
+    font-size: 60px;
     margin: 20px;
   }
 
-  #options {
+  #text {
+    font-size: 22px;
     margin: 10px;
   }
 
-  .option {
-    display: inline-block;
-    padding: 12px 16px;
-    margin: 6px;
+  .btn {
+    padding: 12px 20px;
+    margin: 8px;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .correct {
     background: #4CAF50;
     color: white;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 16px;
+  }
+
+  .wrong {
+    background: #f44336;
+    color: white;
   }
 
   #feedback {
-    font-size: 24px;
+    font-size: 20px;
     margin: 10px;
-  }
-
-  button {
-    padding: 10px 15px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-
-  .next {
-    background: #FF9800;
-    color: white;
   }
 </style>
 </head>
 
 <body>
 
-<h1>🏃‍♂️ Game 1: Daily Actions</h1>
+<h1>🎮 Game</h1>
 
-<div id="topBar">
-  <div class="box">⭐ Score: <span id="score">0</span></div>
-  <div class="box">📊 Level: <span id="level">1</span></div>
+<div id="scoreBox">⭐ Score: <span id="score">0</span></div>
+
+<div id="question">🐱</div>
+<div id="text">There is a cat</div>
+
+<div>
+  <button class="btn correct" onclick="answer(true)">Correct</button>
+  <button class="btn wrong" onclick="answer(false)">Wrong</button>
 </div>
 
-<div id="question"></div>
-
-<div id="options"></div>
-
-<p id="feedback"></p>
-
-<button class="next" onclick="next()">➡️ Next</button>
+<div id="feedback"></div>
 
 <script>
 
-// 🧠 PROGRESS SYSTEM
-function saveProgress(game, score) {
+// 🧠 STORAGE SYSTEM
+function saveScore(game, score) {
   localStorage.setItem(game + "_score", score);
 }
 
-function loadProgress(game) {
+function loadScore(game) {
   return parseInt(localStorage.getItem(game + "_score")) || 0;
 }
 
-// 🎮 GAME DATA
-const game = [
-  { q: "🏃‍♂️", answer: "He is running", options: ["He is running", "He is eating", "He is sleeping"] },
-  { q: "🍽️", answer: "She is eating", options: ["She is eating", "She is running", "She is reading"] },
-  { q: "😴", answer: "He is sleeping", options: ["He is sleeping", "He is running", "She is eating"] },
-  { q: "📖", answer: "She is reading", options: ["She is reading", "She is sleeping", "He is running"] },
-  { q: "🚶‍♂️", answer: "He is walking", options: ["He is walking", "He is eating", "She is reading"] }
-];
+// 🎯 CHANGE THIS FOR EACH GAME
+let gameId = "game1"; // change to game2, game3, game4
 
-let current = 0;
-
-// 🔥 LOAD SAVED SCORE
-let score = loadProgress("game1");
+let score = loadScore(gameId);
 document.getElementById("score").innerText = score;
 
-function speak(text) {
-  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+// 🎮 SIMPLE QUESTIONS (YOU CAN CHANGE THIS LIST)
+const questions = [
+  { emoji: "🐱", text: "There is a cat", correct: true },
+  { emoji: "🐶", text: "There is a dog", correct: true },
+  { emoji: "🐰", text: "There is a apple", correct: false }
+];
+
+let index = 0;
+
+function loadQuestion() {
+  document.getElementById("question").innerText = questions[index].emoji;
+  document.getElementById("text").innerText = questions[index].text;
+  document.getElementById("feedback").innerText = "";
 }
 
-function load() {
-  const item = game[current];
-
-  document.getElementById("question").innerText = item.q;
-  document.getElementById("level").innerText = current + 1;
-
-  const optionsDiv = document.getElementById("options");
-  const feedback = document.getElementById("feedback");
-
-  optionsDiv.innerHTML = "";
-  feedback.innerHTML = "";
-
-  item.options.forEach(opt => {
-    const btn = document.createElement("div");
-    btn.className = "option";
-    btn.innerText = opt;
-
-    btn.onclick = () => {
-      check(opt);
-    };
-
-    optionsDiv.appendChild(btn);
-  });
-}
-
-function check(choice) {
-  const correct = game[current].answer;
-
-  if (choice === correct) {
+function answer(userAnswer) {
+  if (userAnswer === questions[index].correct) {
     score += 10;
+    saveScore(gameId, score);
+
     document.getElementById("score").innerText = score;
-
-    saveProgress("game1", score); // 💾 SAVE PROGRESS
-
-    document.getElementById("feedback").innerHTML = "🎉 Correct!";
-    speak("Correct");
-
+    document.getElementById("feedback").innerText = "✅ Correct!";
   } else {
-    document.getElementById("feedback").innerHTML = "😕 Try again!";
+    document.getElementById("feedback").innerText = "❌ Try again!";
   }
 }
 
 function next() {
-  current++;
-
-  if (current >= game.length) {
-    current = 0;
-    alert("🎉 Finished Game 1! Score: " + score);
+  index++;
+  if (index >= questions.length) {
+    index = 0;
+    alert("🎉 Finished! Score: " + score);
   }
-
-  load();
+  loadQuestion();
 }
 
-load();
+loadQuestion();
 
 </script>
+
+<br>
+<button class="btn" onclick="next()">➡️ Next</button>
 
 </body>
 </html>
