@@ -13,8 +13,8 @@
   }
 
   h1 {
-    margin-top: 10px;
     color: #2c3e50;
+    margin-top: 10px;
   }
 
   #topBar {
@@ -47,6 +47,11 @@
     color: white;
     border-radius: 12px;
     cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .word:hover {
+    transform: scale(1.05);
   }
 
   #answer {
@@ -57,6 +62,7 @@
     padding: 10px;
     border-radius: 10px;
     background: white;
+    font-size: 18px;
   }
 
   button {
@@ -65,6 +71,7 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 16px;
   }
 
   .check { background: #2196F3; color: white; }
@@ -98,7 +105,7 @@
 
 <script>
 
-// 🧠 20 SENTENCES + QUESTIONS
+// 🧠 FULL GAME (20 SENTENCES + QUESTIONS)
 const sentences = [
   { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱" },
   { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶" },
@@ -125,12 +132,27 @@ let current = 0;
 let answer = [];
 let score = 0;
 
-// 🧠 FIX COMPARISON
+// 🧠 FIX TEXT COMPARISON
 function normalize(text) {
   return text.toLowerCase().trim().replace(/\s+/g, " ").replace(" ?", "?");
 }
 
-// 🧩 RENDER ANSWER WITH REMOVE FUNCTION
+// 🔊 SPEAK WORD
+function speakWord(word) {
+  const msg = new SpeechSynthesisUtterance(word);
+  msg.lang = "en-US";
+  msg.rate = 0.9;
+  speechSynthesis.speak(msg);
+}
+
+// 🔊 SPEAK TEXT
+function speak(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  speechSynthesis.speak(msg);
+}
+
+// 🧩 RENDER ANSWER (WITH REMOVE)
 function renderAnswer() {
   const answerDiv = document.getElementById("answer");
   answerDiv.innerHTML = "";
@@ -141,7 +163,6 @@ function renderAnswer() {
     span.style.background = "#2196F3";
     span.innerText = word;
 
-    // CLICK TO REMOVE
     span.onclick = () => {
       answer.splice(index, 1);
       renderAnswer();
@@ -177,6 +198,7 @@ function loadSentence() {
     btn.onclick = () => {
       answer.push(w);
       renderAnswer();
+      speakWord(w); // 🔊 SPEAK WORD
     };
 
     wordsDiv.appendChild(btn);
@@ -215,11 +237,6 @@ function nextSentence() {
   }
 
   loadSentence();
-}
-
-// 🔊 VOICE
-function speak(text) {
-  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
 // START GAME
