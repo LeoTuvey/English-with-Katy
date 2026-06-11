@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Game 3 - This / That</title>
+<title>Game 3 - This / That / These / Those</title>
 
 <style>
   body {
@@ -30,7 +30,6 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
-  /* 🧠 VISUAL DISTANCE AREA */
   #question {
     font-size: 80px;
     margin: 30px;
@@ -59,6 +58,8 @@
 
   .this { background: #2196F3; }
   .that { background: #FF9800; }
+  .these { background: #4CAF50; }
+  .those { background: #9C27B0; }
 
   #feedback {
     font-size: 24px;
@@ -66,7 +67,7 @@
   }
 
   .next {
-    background: #4CAF50;
+    background: #333;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -79,7 +80,7 @@
 
 <body>
 
-<h1>📍 Game 3: This / That</h1>
+<h1>📍 Game 3: This / That / These / Those</h1>
 
 <div id="topBar">
   <div class="box">⭐ Score: <span id="score">0</span></div>
@@ -90,7 +91,9 @@
 
 <div>
   <div class="btn this" onclick="answer('this')">This 👉</div>
+  <div class="btn these" onclick="answer('these')">These 👉👉</div>
   <div class="btn that" onclick="answer('that')">That 👈</div>
+  <div class="btn those" onclick="answer('those')">Those 👈👈</div>
 </div>
 
 <p id="feedback"></p>
@@ -108,49 +111,46 @@ function loadProgress(game) {
   return parseInt(localStorage.getItem(game + "_score")) || 0;
 }
 
-// 🎮 GAME DATA (WITH DISTANCE LOGIC)
+// 🎮 GAME DATA
 const game = [
-  { emoji: "🐱", position: "near", correct: "this" },
-  { emoji: "🚗", position: "far", correct: "that" },
-  { emoji: "🍎", position: "near", correct: "this" },
-  { emoji: "🏠", position: "far", correct: "that" },
-  { emoji: "🐶", position: "near", correct: "this" },
-  { emoji: "🦉", position: "far", correct: "that" },
-  { emoji: "🐦", position: "near", correct: "this" },
-  { emoji: "✈️", position: "far", correct: "that" }
+  { emoji: "🐱", position: "near", type: "this" },
+  { emoji: "🐱🐱", position: "near", type: "these" },
+  { emoji: "🚗", position: "far", type: "that" },
+  { emoji: "🚗🚗", position: "far", type: "those" },
+  { emoji: "🍎", position: "near", type: "this" },
+  { emoji: "🍎🍎", position: "near", type: "these" },
+  { emoji: "🏠", position: "far", type: "that" },
+  { emoji: "🏠🏠", position: "far", type: "those" }
 ];
 
 let current = 0;
 
-// 🔥 LOAD SAVED SCORE
+// 🔥 LOAD SCORE
 let score = loadProgress("game3");
 document.getElementById("score").innerText = score;
 
-// 🔊 SPEAK FUNCTION
+// 🔊 SPEAK
 function speak(text) {
   speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-// 📥 LOAD QUESTION
+// 📥 LOAD
 function load() {
   const item = game[current];
 
   const question = document.getElementById("question");
   question.innerText = item.emoji;
 
-  // reset classes
   question.classList.remove("near", "far");
-
-  // add distance effect
   question.classList.add(item.position);
 
   document.getElementById("level").innerText = current + 1;
   document.getElementById("feedback").innerText = "";
 }
 
-// ✅ ANSWER CHECK
+// ✅ ANSWER
 function answer(choice) {
-  const correct = game[current].correct;
+  const correct = game[current].type;
 
   if (choice === correct) {
     score += 10;
