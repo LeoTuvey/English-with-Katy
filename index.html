@@ -14,7 +14,6 @@
 
   h1 {
     margin-top: 20px;
-    color: #2c3e50;
   }
 
   .subtitle {
@@ -67,17 +66,13 @@
     text-align: center;
   }
 
-  .done { background: #c8f7c5; }
-  .good { background: #fff3cd; }
-  .start { background: #e2e3e5; }
-
 </style>
 </head>
 
 <body>
 
 <h1>📚 English with Katy</h1>
-<p class="subtitle">Your learning world 🎮</p>
+<p class="subtitle">Your learning app 🎮</p>
 
 <div id="container">
 
@@ -88,7 +83,6 @@
       <div class="emoji">🏃‍♂️</div>
       <div>Game 1 - Actions</div>
     </div>
-    <div class="status" id="g1">Loading...</div>
   </a>
 
   <a class="game" href="game2.html">
@@ -96,7 +90,6 @@
       <div class="emoji">✔️❌</div>
       <div>Game 2 - True/False</div>
     </div>
-    <div class="status" id="g2">Loading...</div>
   </a>
 
   <a class="game" href="game3.html">
@@ -104,73 +97,18 @@
       <div class="emoji">📍</div>
       <div>Game 3 - This/That</div>
     </div>
-    <div class="status" id="g3">Loading...</div>
   </a>
 
-  <div class="section-title">🟡 More Games</div>
+  <div class="section-title">🟡 New Game</div>
 
   <a class="game" href="game4.html">
     <div class="left">
-      <div class="emoji">🧠</div>
-      <div>Game 4</div>
+      <div class="emoji">🐱🐶</div>
+      <div>Game 4 - Singular & Plural</div>
     </div>
-    <div class="status" id="g4">Loading...</div>
-  </a>
-
-  <a class="game" href="game5.html">
-    <div class="left">
-      <div class="emoji">👆👇</div>
-      <div>Game 5</div>
-    </div>
-    <div class="status" id="g5">Loading...</div>
-  </a>
-
-  <a class="game" href="game6.html">
-    <div class="left">
-      <div class="emoji">🔊</div>
-      <div>Game 6</div>
-    </div>
-    <div class="status" id="g6">Loading...</div>
-  </a>
-
-  <a class="game" href="game7.html">
-    <div class="left">
-      <div class="emoji">🧩</div>
-      <div>Game 7</div>
-    </div>
-    <div class="status" id="g7">Loading...</div>
   </a>
 
 </div>
-
-<script>
-
-function getScore(game){
-  return parseInt(localStorage.getItem(game + "_score")) || 0;
-}
-
-function getStatus(score){
-  if(score >= 80) return "⭐⭐⭐ Done";
-  if(score >= 40) return "⭐⭐ Good";
-  if(score >= 10) return "⭐ Started";
-  return "Play";
-}
-
-function update(){
-
-  const games = ["game1","game2","game3","game4","game5","game6","game7"];
-
-  games.forEach((g,i)=>{
-    const score = getScore(g);
-    const el = document.getElementById("g"+(i+1));
-    if(el) el.innerText = getStatus(score);
-  });
-
-}
-
-update();
-
-</script>
 
 </body>
 </html>
