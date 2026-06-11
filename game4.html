@@ -2,233 +2,164 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Run After / Run From Game</title>
+<title>Game 4 - Grammar Challenge</title>
 
 <style>
-body{
+  body {
     font-family: Arial;
-    text-align:center;
-    background:#f7fbff;
-}
+    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+    text-align: center;
+    margin: 0;
+  }
 
-.container{
-    max-width:700px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:15px;
-}
+  h1 {
+    color: #2c3e50;
+    margin-top: 10px;
+  }
 
-h1{
-    margin-bottom:10px;
-}
+  #topBar {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+  }
 
-/* SCENE */
-.scene{
-    height:260px;
-    border:3px solid #333;
-    border-radius:15px;
-    position:relative;
-    background:linear-gradient(to top,#d0f5c8 40%,#cfe8ff 40%);
-    overflow:hidden;
-}
+  .box {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 
-/* ANIMATION */
-.actor, .target{
-    position:absolute;
-    bottom:40px;
-    font-size:110px;
-    transition: all 3s linear;
-}
+  #question {
+    font-size: 28px;
+    margin: 25px;
+    padding: 10px;
+  }
 
-.actor{ left:10%; }
-.target{ left:60%; }
+  .btn {
+    display: inline-block;
+    padding: 12px 18px;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+  }
 
-.chase .actor{ left:45%; }
-.chase .target{ left:75%; }
+  .a { background: #2196F3; }
+  .an { background: #4CAF50; }
+  .the { background: #FF9800; }
 
-.escape .actor{ left:10%; }
-.escape .target{ left:50%; }
+  #feedback {
+    font-size: 24px;
+    margin: 10px;
+  }
 
-/* TEXT */
-.sentenceBox{
-    margin-top:15px;
-    font-size:22px;
-    font-weight:bold;
-}
-
-.meaningBox{
-    margin-top:10px;
-    font-size:16px;
-    background:#e8f3ff;
-    padding:8px;
-    border-radius:10px;
-}
-
-/* BUTTONS */
-button{
-    width:95%;
-    padding:14px;
-    margin:8px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    background:#1976d2;
-    color:white;
-    cursor:pointer;
-}
-
-#result{
-    font-size:20px;
-    font-weight:bold;
-}
-
-/* FINAL */
-.finalBox{
-    margin-top:20px;
-    font-size:24px;
-    font-weight:bold;
-}
+  .next {
+    background: #333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>⭐ Game 4: Grammar Challenge</h1>
 
-<h1>🐾 Run After / Run From</h1>
-
-<div class="scene" id="scene"></div>
-
-<div class="sentenceBox" id="sentence"></div>
-
-<div class="meaningBox" id="meaning"></div>
-
-<div id="options"></div>
-
-<div id="result"></div>
-
-<div id="final"></div>
-
+<div id="topBar">
+  <div class="box">⭐ Score: <span id="score">0</span></div>
+  <div class="box">📊 Level: <span id="level">1</span></div>
 </div>
+
+<div id="question"></div>
+
+<div>
+  <div class="btn a" onclick="answer('a')">A</div>
+  <div class="btn an" onclick="answer('an')">AN</div>
+  <div class="btn the" onclick="answer('the')">THE</div>
+</div>
+
+<p id="feedback"></p>
+
+<button class="next" onclick="next()">➡️ Next</button>
 
 <script>
 
-/* 🔊 VOICE */
-function speak(text){
-    let msg = new SpeechSynthesisUtterance(text);
-    msg.lang = "en-US";
-    msg.rate = 0.78;
-    msg.pitch = 1.25;
-    speechSynthesis.speak(msg);
+// 💾 PROGRESS SYSTEM
+function saveProgress(game, score) {
+  localStorage.setItem(game + "_score", score);
 }
 
-/* 🧠 GAME DATA */
-const questions = [
+function loadProgress(game) {
+  return parseInt(localStorage.getItem(game + "_score")) || 0;
+}
 
-{actor:"🐱 Cat", target:"🐭 Mouse", sentence:"The cat is running after the mouse.", type:"chase", meaning:"run after = chase", answer:"run after"},
-{actor:"🐶 Dog", target:"🐱 Cat", sentence:"The dog is running after the cat.", type:"chase", meaning:"run after = chase", answer:"run after"},
-{actor:"🦊 Fox", target:"🐰 Rabbit", sentence:"The fox is running after the rabbit.", type:"chase", meaning:"run after = chase", answer:"run after"},
-{actor:"🐭 Mouse", target:"🐱 Cat", sentence:"The mouse is running from the cat.", type:"escape", meaning:"run from = escape", answer:"run from"},
-{actor:"🐰 Rabbit", target:"🦊 Fox", sentence:"The rabbit is running from the fox.", type:"escape", meaning:"run from = escape", answer:"run from"}
-
+// 🎮 GAME DATA
+const game = [
+  { text: "___ apple 🍎", answer: "an" },
+  { text: "___ cat 🐱", answer: "a" },
+  { text: "___ elephant 🐘", answer: "an" },
+  { text: "___ sun ☀️", answer: "the" },
+  { text: "___ dog 🐶", answer: "a" },
+  { text: "___ owl 🦉", answer: "an" },
+  { text: "___ car 🚗", answer: "a" },
+  { text: "___ moon 🌙", answer: "the" }
 ];
 
-let i = 0;
-let score = 0;
+let current = 0;
 
-/* LOAD GAME */
-function load(){
+// 🔥 LOAD SCORE
+let score = loadProgress("game4");
+document.getElementById("score").innerText = score;
 
-if(i >= questions.length){
-showFinal();
-return;
+// 🔊 SPEAK
+function speak(text) {
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-let q = questions[i];
+// 📥 LOAD QUESTION
+function load() {
+  const item = game[current];
 
-speechSynthesis.cancel();
-
-let scene = document.getElementById("scene");
-scene.className = "";
-
-scene.innerHTML = `
-<div class="actor">${q.actor}</div>
-<div class="target">${q.target}</div>
-`;
-
-document.getElementById("sentence").innerText = q.sentence;
-document.getElementById("meaning").innerText = q.meaning;
-
-setTimeout(()=> scene.classList.add(q.type), 800);
-setTimeout(()=> speak(q.sentence), 400);
-
-let html = "";
-
-["run after","run from"].forEach(a=>{
-html += `<button onclick="check('${a}')">${a}</button>`;
-});
-
-document.getElementById("options").innerHTML = html;
-
+  document.getElementById("question").innerText = item.text;
+  document.getElementById("level").innerText = current + 1;
+  document.getElementById("feedback").innerText = "";
 }
 
-/* CHECK ANSWER */
-function check(ans){
+// ✅ ANSWER CHECK
+function answer(choice) {
+  const correct = game[current].answer;
 
-if(ans === questions[i].answer){
-score++;
-document.getElementById("result").innerHTML = "✅ Correct!";
-speak("Correct!");
-}else{
-document.getElementById("result").innerHTML = "❌ Try again!";
-speak("Try again!");
+  if (choice === correct) {
+    score += 10;
+    document.getElementById("score").innerText = score;
+
+    saveProgress("game4", score);
+
+    document.getElementById("feedback").innerText = "🎉 Correct!";
+    speak("Correct");
+
+  } else {
+    document.getElementById("feedback").innerText = "😕 Try again!";
+    speak("Try again");
+  }
 }
 
-i++;
+// ➡️ NEXT
+function next() {
+  current++;
 
-setTimeout(()=>{
-document.getElementById("result").innerHTML = "";
-load();
-},1500);
+  if (current >= game.length) {
+    current = 0;
+    alert("🎉 Finished Game 4! Score: " + score);
+  }
 
-}
-
-/* 🏆 FINAL + SAVE RESULTS */
-function showFinal(){
-
-let grade = "";
-
-if(score >= 5){
-grade = "A ⭐ Excellent!";
-}
-else if(score >= 4){
-grade = "B 👍 Good!";
-}
-else if(score >= 3){
-grade = "C 🙂 OK!";
-}
-else{
-grade = "D ❌ Needs Practice";
-}
-
-/* 💾 SAVE FOR TEACHER VIEW */
-localStorage.setItem("game4_score", score);
-localStorage.setItem("game4_grade", grade);
-
-document.getElementById("scene").innerHTML = "🎉 Finished!";
-document.getElementById("sentence").innerHTML = "";
-document.getElementById("meaning").innerHTML = "";
-document.getElementById("options").innerHTML = "";
-
-document.getElementById("final").innerHTML = `
-<div class="finalBox">
-🏆 Score: ${score} / ${questions.length}<br><br>
-🎓 Grade: ${grade}
-</div>
-`;
-
-speak("Game finished. Your grade is " + grade);
+  load();
 }
 
 load();
