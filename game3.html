@@ -1,141 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Game 3 - This / That</title>
+<title>Game 3</title>
 
 <style>
-  body {
-    font-family: Arial;
-    margin: 0;
-    text-align: center;
-    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
-  }
-
-  h1 {
-    margin-top: 15px;
-  }
-
-  #scoreBox {
-    font-size: 18px;
-    margin: 10px;
-  }
-
-  #emoji {
-    font-size: 60px;
-    margin: 20px;
-  }
-
-  #text {
-    font-size: 22px;
-    margin: 10px;
-  }
-
-  .btn {
-    padding: 12px 20px;
-    margin: 8px;
-    border-radius: 10px;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-  }
-
-  .correct {
-    background: #4CAF50;
-    color: white;
-  }
-
-  .wrong {
-    background: #f44336;
-    color: white;
-  }
-
-  #feedback {
-    font-size: 20px;
-    margin: 10px;
-  }
+body { font-family: Arial; text-align:center; background:#e3f2fd; margin:0; }
+h1 { margin-top:15px; }
+#score { font-size:18px; margin:10px; }
+#emoji { font-size:60px; margin:20px; }
+#text { font-size:22px; }
+button { padding:12px 20px; margin:8px; border:none; border-radius:10px; font-size:18px; cursor:pointer; }
+.correct { background:#4CAF50; color:white; }
+.wrong { background:#f44336; color:white; }
 </style>
+
 </head>
 
 <body>
 
-<h1>📍 Game 3: This / That</h1>
+<h1>Game 3</h1>
 
-<div id="scoreBox">⭐ Score: <span id="score">0</span></div>
+<div id="score">⭐ Score: 0</div>
 
 <div id="emoji">📚</div>
 <div id="text">This is a book (near)</div>
 
-<div>
-  <button class="btn correct" onclick="answer(true)">Correct</button>
-  <button class="btn wrong" onclick="answer(false)">Wrong</button>
-</div>
+<button class="correct" onclick="answer(true)">Correct</button>
+<button class="wrong" onclick="answer(false)">Wrong</button>
 
 <div id="feedback"></div>
 
-<button class="btn" onclick="next()">➡️ Next</button>
+<button onclick="next()">Next ➡️</button>
 
 <script>
 
-// 🧠 SAVE SYSTEM
-function saveScore(gameId, score) {
-  localStorage.setItem(gameId + "_score", score);
-}
+function saveScore(g,s){ localStorage.setItem(g+"_score",s); }
+function loadScore(g){ return parseInt(localStorage.getItem(g+"_score"))||0; }
 
-function loadScore(gameId) {
-  return parseInt(localStorage.getItem(gameId + "_score")) || 0;
-}
+let gameId="game3";
+let score=loadScore(gameId);
+document.getElementById("score").innerText="⭐ Score: "+score;
 
-// 🎯 GAME ID
-let gameId = "game3";
-
-// 📊 SCORE
-let score = loadScore(gameId);
-document.getElementById("score").innerText = score;
-
-// 🎮 QUESTIONS
-const questions = [
-  { emoji: "📚", text: "This is a book (near)", correct: true },
-  { emoji: "🚗", text: "That is a car (far)", correct: true },
-  { emoji: "🐶", text: "This is a dog (far away)", correct: false },
-  { emoji: "🐱", text: "That is a cat (far)", correct: true },
-  { emoji: "✏️", text: "This is a pencil (near)", correct: true },
-  { emoji: "🏠", text: "This is a house (far away)", correct: false }
+const q=[
+{emoji:"📚",text:"This is a book (near)",correct:true},
+{emoji:"🚗",text:"That is a car (far)",correct:true},
+{emoji:"🐶",text:"This is a dog (far away)",correct:false},
+{emoji:"🐱",text:"That is a cat (far)",correct:true},
+{emoji:"✏️",text:"This is a pencil (near)",correct:true},
+{emoji:"🏠",text:"This is a house (far away)",correct:false}
 ];
 
-let index = 0;
+let i=0;
 
-// 🔄 LOAD QUESTION
-function loadQuestion() {
-  document.getElementById("emoji").innerText = questions[index].emoji;
-  document.getElementById("text").innerText = questions[index].text;
-  document.getElementById("feedback").innerText = "";
+function load(){
+document.getElementById("emoji").innerText=q[i].emoji;
+document.getElementById("text").innerText=q[i].text;
+document.getElementById("feedback").innerText="";
 }
 
-// ✅ ANSWER
-function answer(userAnswer) {
-  if (userAnswer === questions[index].correct) {
-    score += 10;
-    saveScore(gameId, score);
-
-    document.getElementById("score").innerText = score;
-    document.getElementById("feedback").innerText = "✅ Correct!";
-  } else {
-    document.getElementById("feedback").innerText = "❌ Try again!";
-  }
+function answer(a){
+if(a===q[i].correct){
+score+=10;
+saveScore(gameId,score);
+document.getElementById("score").innerText="⭐ Score: "+score;
+document.getElementById("feedback").innerText="✅ Correct!";
+} else {
+document.getElementById("feedback").innerText="❌ Try again!";
+}
 }
 
-// ➡️ NEXT
-function next() {
-  index++;
-  if (index >= questions.length) {
-    index = 0;
-    alert("🎉 Game 3 Finished! Score: " + score);
-  }
-  loadQuestion();
+function next(){
+i++;
+if(i>=q.length){i=0; alert("Finished Game 3!");}
+load();
 }
 
-loadQuestion();
+load();
 
 </script>
 
