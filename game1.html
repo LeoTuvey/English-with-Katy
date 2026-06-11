@@ -2,173 +2,172 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Daily Actions English Game</title>
+<title>Game 1 - Daily Actions</title>
 
 <style>
-body{
+  body {
     font-family: Arial;
-    text-align:center;
-    background:#eef3ff;
-    padding:20px;
-}
+    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+    text-align: center;
+    margin: 0;
+  }
 
-.container{
-    background:white;
-    max-width:700px;
-    margin:auto;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
+  h1 {
+    color: #2c3e50;
+    margin-top: 10px;
+  }
 
-h1{
-    margin-bottom:10px;
-}
+  #topBar {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+  }
 
-#question{
-    font-size:22px;
-    margin:20px;
-}
+  .box {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 
-button{
-    padding:12px;
-    margin:8px;
-    width:80%;
-    max-width:300px;
-    font-size:18px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
+  #question {
+    font-size: 40px;
+    margin: 20px;
+  }
 
-button:hover{
-    opacity:0.9;
-}
+  #options {
+    margin: 10px;
+  }
 
-#score{
-    font-size:18px;
-    margin:10px;
-}
+  .option {
+    display: inline-block;
+    padding: 12px 16px;
+    margin: 6px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+  }
 
-#result{
-    font-size:20px;
-    margin-top:15px;
-}
+  #feedback {
+    font-size: 24px;
+    margin: 10px;
+  }
+
+  button {
+    padding: 10px 15px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .next {
+    background: #FF9800;
+    color: white;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>🏃‍♂️ Game 1: Daily Actions</h1>
 
-<h1>🏃‍♂️ Daily Actions English Game 🎮</h1>
-
-<div id="score">Score: 0</div>
+<div id="topBar">
+  <div class="box">⭐ Score: <span id="score">0</span></div>
+  <div class="box">📊 Level: <span id="level">1</span></div>
+</div>
 
 <div id="question"></div>
 
 <div id="options"></div>
 
-<div id="result"></div>
+<p id="feedback"></p>
 
-</div>
+<button class="next" onclick="next()">➡️ Next</button>
 
 <script>
 
-const questions = [
-{
-q:"She ___ (read) a book now.",
-a:"is reading"
-},
-{
-q:"They ___ (play) football every day.",
-a:"play"
-},
-{
-q:"He ___ (sleep) at the moment.",
-a:"is sleeping"
-},
-{
-q:"I ___ (eat) breakfast now.",
-a:"am eating"
-},
-{
-q:"We ___ (go) to school every morning.",
-a:"go"
-},
-{
-q:"The boy ___ (run) in the park right now.",
-a:"is running"
-},
-{
-q:"She ___ (write) a letter now.",
-a:"is writing"
-},
-{
-q:"I ___ (watch) TV every evening.",
-a:"watch"
+// 🧠 PROGRESS SYSTEM
+function saveProgress(game, score) {
+  localStorage.setItem(game + "_score", score);
 }
+
+function loadProgress(game) {
+  return parseInt(localStorage.getItem(game + "_score")) || 0;
+}
+
+// 🎮 GAME DATA
+const game = [
+  { q: "🏃‍♂️", answer: "He is running", options: ["He is running", "He is eating", "He is sleeping"] },
+  { q: "🍽️", answer: "She is eating", options: ["She is eating", "She is running", "She is reading"] },
+  { q: "😴", answer: "He is sleeping", options: ["He is sleeping", "He is running", "She is eating"] },
+  { q: "📖", answer: "She is reading", options: ["She is reading", "She is sleeping", "He is running"] },
+  { q: "🚶‍♂️", answer: "He is walking", options: ["He is walking", "He is eating", "She is reading"] }
 ];
 
 let current = 0;
-let score = 0;
 
-function load(){
+// 🔥 LOAD SAVED SCORE
+let score = loadProgress("game1");
+document.getElementById("score").innerText = score;
 
-    if(current >= questions.length){
-        document.getElementById("question").innerHTML =
-        "🎉 Game Over!";
-
-        document.getElementById("options").innerHTML = "";
-
-        document.getElementById("result").innerHTML =
-        "Final Score: " + score + "/" + questions.length;
-        return;
-    }
-
-    document.getElementById("question").innerHTML =
-    questions[current].q;
-
-    let opts = [
-        "is reading",
-        "am eating",
-        "is sleeping",
-        "is running",
-        "play",
-        "go",
-        "watch",
-        "is writing"
-    ];
-
-    let html = "";
-
-    opts.forEach(o=>{
-        html += `<button onclick="check('${o}')">${o}</button>`;
-    });
-
-    document.getElementById("options").innerHTML = html;
+function speak(text) {
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-function check(ans){
+function load() {
+  const item = game[current];
 
-    if(ans === questions[current].a){
-        score++;
-        document.getElementById("result").innerHTML =
-        "✅ Correct!";
-    }else{
-        document.getElementById("result").innerHTML =
-        "❌ Wrong!";
-    }
+  document.getElementById("question").innerText = item.q;
+  document.getElementById("level").innerText = current + 1;
 
-    document.getElementById("score").innerHTML =
-    "Score: " + score;
+  const optionsDiv = document.getElementById("options");
+  const feedback = document.getElementById("feedback");
 
-    current++;
+  optionsDiv.innerHTML = "";
+  feedback.innerHTML = "";
 
-    setTimeout(()=>{
-        document.getElementById("result").innerHTML="";
-        load();
-    },1000);
+  item.options.forEach(opt => {
+    const btn = document.createElement("div");
+    btn.className = "option";
+    btn.innerText = opt;
+
+    btn.onclick = () => {
+      check(opt);
+    };
+
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function check(choice) {
+  const correct = game[current].answer;
+
+  if (choice === correct) {
+    score += 10;
+    document.getElementById("score").innerText = score;
+
+    saveProgress("game1", score); // 💾 SAVE PROGRESS
+
+    document.getElementById("feedback").innerHTML = "🎉 Correct!";
+    speak("Correct");
+
+  } else {
+    document.getElementById("feedback").innerHTML = "😕 Try again!";
+  }
+}
+
+function next() {
+  current++;
+
+  if (current >= game.length) {
+    current = 0;
+    alert("🎉 Finished Game 1! Score: " + score);
+  }
+
+  load();
 }
 
 load();
