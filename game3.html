@@ -30,9 +30,21 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
+  /* 🧠 VISUAL DISTANCE AREA */
   #question {
-    font-size: 60px;
-    margin: 20px;
+    font-size: 80px;
+    margin: 30px;
+    transition: 0.3s;
+  }
+
+  .near {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  .far {
+    transform: scale(0.6);
+    opacity: 0.4;
   }
 
   .btn {
@@ -96,14 +108,16 @@ function loadProgress(game) {
   return parseInt(localStorage.getItem(game + "_score")) || 0;
 }
 
-// 🎮 GAME DATA
+// 🎮 GAME DATA (WITH DISTANCE LOGIC)
 const game = [
-  { emoji: "👉🐱", correct: "this" },
-  { emoji: "👈🚗", correct: "that" },
-  { emoji: "👉🍎", correct: "this" },
-  { emoji: "👈🏠", correct: "that" },
-  { emoji: "👉🐶", correct: "this" },
-  { emoji: "👈🦉", correct: "that" }
+  { emoji: "🐱", position: "near", correct: "this" },
+  { emoji: "🚗", position: "far", correct: "that" },
+  { emoji: "🍎", position: "near", correct: "this" },
+  { emoji: "🏠", position: "far", correct: "that" },
+  { emoji: "🐶", position: "near", correct: "this" },
+  { emoji: "🦉", position: "far", correct: "that" },
+  { emoji: "🐦", position: "near", correct: "this" },
+  { emoji: "✈️", position: "far", correct: "that" }
 ];
 
 let current = 0;
@@ -112,19 +126,29 @@ let current = 0;
 let score = loadProgress("game3");
 document.getElementById("score").innerText = score;
 
+// 🔊 SPEAK FUNCTION
 function speak(text) {
   speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
+// 📥 LOAD QUESTION
 function load() {
   const item = game[current];
 
-  document.getElementById("question").innerText = item.emoji;
-  document.getElementById("level").innerText = current + 1;
+  const question = document.getElementById("question");
+  question.innerText = item.emoji;
 
+  // reset classes
+  question.classList.remove("near", "far");
+
+  // add distance effect
+  question.classList.add(item.position);
+
+  document.getElementById("level").innerText = current + 1;
   document.getElementById("feedback").innerText = "";
 }
 
+// ✅ ANSWER CHECK
 function answer(choice) {
   const correct = game[current].correct;
 
@@ -132,16 +156,18 @@ function answer(choice) {
     score += 10;
     document.getElementById("score").innerText = score;
 
-    saveProgress("game3", score); // 💾 SAVE PROGRESS
+    saveProgress("game3", score);
 
     document.getElementById("feedback").innerText = "🎉 Correct!";
     speak("Correct");
 
   } else {
     document.getElementById("feedback").innerText = "😕 Try again!";
+    speak("Try again");
   }
 }
 
+// ➡️ NEXT
 function next() {
   current++;
 
