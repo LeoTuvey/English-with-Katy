@@ -1,84 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Game 7 - Word Builder</title>
-  <style>
-    body { font-family: Arial; text-align: center; }
-    .word {
-      display: inline-block;
-      padding: 10px;
-      margin: 5px;
-      background: #4CAF50;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    #answer {
-      margin-top: 20px;
-      min-height: 50px;
-      border: 2px dashed #999;
-      padding: 10px;
-    }
-    button { margin-top: 10px; }
-  </style>
+<meta charset="UTF-8">
+<title>Game 7 - Word Builder</title>
+
+<style>
+  body {
+    font-family: Arial;
+    text-align: center;
+    background: #f5f7ff;
+  }
+
+  h1 { color: #2c3e50; }
+
+  .word {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #words, #answer {
+    margin-top: 20px;
+    min-height: 50px;
+    padding: 10px;
+  }
+
+  #answer {
+    border: 2px dashed #999;
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+  }
+
+  button {
+    margin: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .check {
+    background: #2196F3;
+    color: white;
+  }
+
+  .next {
+    background: #FF9800;
+    color: white;
+  }
+
+  #feedback {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+</style>
 </head>
+
 <body>
 
-<h1>🎮 Game 7: Word Builder</h1>
+<h1>🧩 Game 7: Word Builder</h1>
 
-<h3>Arrange the words:</h3>
+<h3>Arrange the words</h3>
 
 <div id="words"></div>
 
 <h3>Your sentence:</h3>
 <div id="answer"></div>
 
-<button onclick="checkAnswer()">Check ✅</button>
-<button onclick="speak()">🔊 Listen</button>
+<button class="check" onclick="checkAnswer()">Check ✅</button>
+<button class="next" onclick="nextSentence()">Next ➡️</button>
 
 <p id="feedback"></p>
 
 <script>
-const correctSentence = "There is a cat";
-const words = ["There", "is", "a", "cat"];
 
+// 🎯 Sentences database
+const sentences = [
+  { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱" },
+  { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶" },
+  { words: ["There", "is", "an", "owl"], answer: "There is an owl", emoji: "🦉" },
+  { words: ["There", "are", "2", "cats"], answer: "There are 2 cats", emoji: "🐱🐱" },
+  { words: ["There", "are", "2", "dogs"], answer: "There are 2 dogs", emoji: "🐶🐶" },
+  { words: ["There", "are", "2", "rabbits"], answer: "There are 2 rabbits", emoji: "🐰🐰" }
+];
+
+let current = 0;
 let answer = [];
 
-const wordsDiv = document.getElementById("words");
-const answerDiv = document.getElementById("answer");
+function loadSentence() {
+  answer = [];
 
-function renderWords() {
+  const s = sentences[current];
+  const wordsDiv = document.getElementById("words");
+  const answerDiv = document.getElementById("answer");
+  const feedback = document.getElementById("feedback");
+
   wordsDiv.innerHTML = "";
-  words.forEach(w => {
+  answerDiv.innerHTML = "";
+  feedback.innerHTML = "";
+
+  // shuffle words
+  let shuffled = [...s.words].sort(() => Math.random() - 0.5);
+
+  shuffled.forEach(w => {
     const btn = document.createElement("div");
     btn.className = "word";
     btn.innerText = w;
+
     btn.onclick = () => {
       answer.push(w);
-      updateAnswer();
+      answerDiv.innerText = answer.join(" ");
     };
+
     wordsDiv.appendChild(btn);
   });
 }
 
-function updateAnswer() {
-  answerDiv.innerText = answer.join(" ");
-}
-
 function checkAnswer() {
-  const result = answer.join(" ");
+  const user = answer.join(" ");
+  const correct = sentences[current].answer;
   const feedback = document.getElementById("feedback");
 
-  if (result === correctSentence) {
-    feedback.innerHTML = "😄 Correct! 🎉👍";
-    speakText("Correct! Well done");
+  if (user === correct) {
+    feedback.innerHTML = "😄 Correct! " + sentences[current].emoji;
+    speakText("Correct!");
+
+    setTimeout(() => {
+      nextSentence();
+    }, 1200);
+
   } else {
     feedback.innerHTML = "😕 Try again!";
+    speakText("Try again");
   }
 }
 
-function speak() {
-  speakText(correctSentence);
+function nextSentence() {
+  current++;
+
+  if (current >= sentences.length) {
+    current = 0;
+    alert("🎉 You finished all levels!");
+  }
+
+  loadSentence();
 }
 
 function speakText(text) {
@@ -87,7 +158,9 @@ function speakText(text) {
   speechSynthesis.speak(msg);
 }
 
-renderWords();
+// start game
+loadSentence();
+
 </script>
 
 </body>
