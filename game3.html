@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Game</title>
+<title>Game 3 - This / That</title>
 
 <style>
   body {
     font-family: Arial;
-    text-align: center;
     margin: 0;
+    text-align: center;
     background: linear-gradient(135deg, #e3f2fd, #fce4ec);
   }
 
@@ -21,7 +21,7 @@
     margin: 10px;
   }
 
-  #question {
+  #emoji {
     font-size: 60px;
     margin: 20px;
   }
@@ -59,12 +59,12 @@
 
 <body>
 
-<h1>🎮 Game</h1>
+<h1>📍 Game 3: This / That</h1>
 
 <div id="scoreBox">⭐ Score: <span id="score">0</span></div>
 
-<div id="question">🐱</div>
-<div id="text">There is a cat</div>
+<div id="emoji">📚</div>
+<div id="text">This is a book (near)</div>
 
 <div>
   <button class="btn correct" onclick="answer(true)">Correct</button>
@@ -73,38 +73,46 @@
 
 <div id="feedback"></div>
 
+<button class="btn" onclick="next()">➡️ Next</button>
+
 <script>
 
-// 🧠 STORAGE SYSTEM
-function saveScore(game, score) {
-  localStorage.setItem(game + "_score", score);
+// 🧠 SAVE SYSTEM
+function saveScore(gameId, score) {
+  localStorage.setItem(gameId + "_score", score);
 }
 
-function loadScore(game) {
-  return parseInt(localStorage.getItem(game + "_score")) || 0;
+function loadScore(gameId) {
+  return parseInt(localStorage.getItem(gameId + "_score")) || 0;
 }
 
-// 🎯 CHANGE THIS FOR EACH GAME
-let gameId = "game1"; // change to game2, game3, game4
+// 🎯 GAME ID
+let gameId = "game3";
 
+// 📊 SCORE
 let score = loadScore(gameId);
 document.getElementById("score").innerText = score;
 
-// 🎮 SIMPLE QUESTIONS (YOU CAN CHANGE THIS LIST)
+// 🎮 QUESTIONS
 const questions = [
-  { emoji: "🐱", text: "There is a cat", correct: true },
-  { emoji: "🐶", text: "There is a dog", correct: true },
-  { emoji: "🐰", text: "There is a apple", correct: false }
+  { emoji: "📚", text: "This is a book (near)", correct: true },
+  { emoji: "🚗", text: "That is a car (far)", correct: true },
+  { emoji: "🐶", text: "This is a dog (far away)", correct: false },
+  { emoji: "🐱", text: "That is a cat (far)", correct: true },
+  { emoji: "✏️", text: "This is a pencil (near)", correct: true },
+  { emoji: "🏠", text: "This is a house (far away)", correct: false }
 ];
 
 let index = 0;
 
+// 🔄 LOAD QUESTION
 function loadQuestion() {
-  document.getElementById("question").innerText = questions[index].emoji;
+  document.getElementById("emoji").innerText = questions[index].emoji;
   document.getElementById("text").innerText = questions[index].text;
   document.getElementById("feedback").innerText = "";
 }
 
+// ✅ ANSWER
 function answer(userAnswer) {
   if (userAnswer === questions[index].correct) {
     score += 10;
@@ -117,11 +125,12 @@ function answer(userAnswer) {
   }
 }
 
+// ➡️ NEXT
 function next() {
   index++;
   if (index >= questions.length) {
     index = 0;
-    alert("🎉 Finished! Score: " + score);
+    alert("🎉 Game 3 Finished! Score: " + score);
   }
   loadQuestion();
 }
@@ -129,9 +138,6 @@ function next() {
 loadQuestion();
 
 </script>
-
-<br>
-<button class="btn" onclick="next()">➡️ Next</button>
 
 </body>
 </html>
