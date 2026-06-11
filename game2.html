@@ -2,129 +2,155 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>True or False Game</title>
+<title>Game 2 - True or False</title>
 
 <style>
-body{
+  body {
     font-family: Arial;
-    text-align:center;
-    background:#f5f7ff;
-    padding:20px;
-}
+    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+    text-align: center;
+    margin: 0;
+  }
 
-.container{
-    max-width:700px;
-    margin:auto;
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
+  h1 {
+    color: #2c3e50;
+    margin-top: 10px;
+  }
 
-h1{
-    margin-bottom:10px;
-}
+  #topBar {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+  }
 
-#question{
-    font-size:22px;
-    margin:25px 0;
-}
+  .box {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 
-button{
-    padding:12px;
-    margin:10px;
-    width:120px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-}
+  #statement {
+    font-size: 30px;
+    margin: 20px;
+  }
 
-.true{
-    background:#4CAF50;
-    color:white;
-}
+  .btn {
+    display: inline-block;
+    padding: 12px 18px;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+  }
 
-.false{
-    background:#f44336;
-    color:white;
-}
+  .true { background: #4CAF50; }
+  .false { background: #f44336; }
 
-#score{
-    font-size:18px;
-    margin:10px;
-}
+  #feedback {
+    font-size: 24px;
+    margin: 10px;
+  }
 
-#result{
-    font-size:20px;
-    margin-top:15px;
-}
+  .next {
+    background: #FF9800;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>✔️❌ Game 2: True or False</h1>
 
-<h1>✔ True or False Game ❌</h1>
-
-<div id="score">Score: 0</div>
-
-<div id="question"></div>
-
-<button class="true" onclick="check(true)">TRUE</button>
-<button class="false" onclick="check(false)">FALSE</button>
-
-<div id="result"></div>
-
+<div id="topBar">
+  <div class="box">⭐ Score: <span id="score">0</span></div>
+  <div class="box">📊 Level: <span id="level">1</span></div>
 </div>
+
+<div id="statement"></div>
+
+<div>
+  <div class="btn true" onclick="answer(true)">True ✔️</div>
+  <div class="btn false" onclick="answer(false)">False ❌</div>
+</div>
+
+<p id="feedback"></p>
+
+<button class="next" onclick="next()">➡️ Next</button>
 
 <script>
 
-const questions = [
-{q:"She is eating an apple now.", a:true},
-{q:"They is playing football.", a:false},
-{q:"He goes to school every day.", a:true},
-{q:"We is happy.", a:false},
-{q:"I am reading a book.", a:true},
-{q:"Dogs is animals.", a:false},
-{q:"The sun rises in the east.", a:true},
-{q:"She play football every day.", a:false}
+// 💾 PROGRESS SYSTEM
+function saveProgress(game, score) {
+  localStorage.setItem(game + "_score", score);
+}
+
+function loadProgress(game) {
+  return parseInt(localStorage.getItem(game + "_score")) || 0;
+}
+
+// 🎮 GAME DATA
+const game = [
+  { text: "🐱 A cat can fly", correct: false },
+  { text: "🐶 A dog is an animal", correct: true },
+  { text: "🍎 An apple is food", correct: true },
+  { text: "🦉 An owl can swim", correct: false },
+  { text: "🐰 A rabbit is small", correct: true },
+  { text: "🚗 A car can fly", correct: false }
 ];
 
 let current = 0;
-let score = 0;
 
-function load(){
-    document.getElementById("question").innerHTML =
-    questions[current].q;
+// 🔥 LOAD SAVED SCORE
+let score = loadProgress("game2");
+document.getElementById("score").innerText = score;
+
+function speak(text) {
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-function check(answer){
+function load() {
+  const item = game[current];
 
-    if(answer === questions[current].a){
-        score++;
-        document.getElementById("result").innerHTML = "✅ Correct!";
-    }else{
-        document.getElementById("result").innerHTML = "❌ Wrong!";
-    }
+  document.getElementById("statement").innerText = item.text;
+  document.getElementById("level").innerText = current + 1;
 
-    document.getElementById("score").innerHTML =
-    "Score: " + score;
+  document.getElementById("feedback").innerText = "";
+}
 
-    current++;
+function answer(userChoice) {
+  const correct = game[current].correct;
 
-    if(current < questions.length){
-        setTimeout(()=>{
-            document.getElementById("result").innerHTML="";
-            load();
-        },1000);
-    } else {
-        document.getElementById("question").innerHTML =
-        "🎉 Game Over!";
-        document.getElementById("result").innerHTML =
-        "Final Score: " + score + "/" + questions.length;
-    }
+  if (userChoice === correct) {
+    score += 10;
+    document.getElementById("score").innerText = score;
+
+    saveProgress("game2", score); // 💾 SAVE PROGRESS
+
+    document.getElementById("feedback").innerText = "🎉 Correct!";
+    speak("Correct");
+
+  } else {
+    document.getElementById("feedback").innerText = "😕 Try again!";
+  }
+}
+
+function next() {
+  current++;
+
+  if (current >= game.length) {
+    current = 0;
+    alert("🎉 Finished Game 2! Score: " + score);
+  }
+
+  load();
 }
 
 load();
