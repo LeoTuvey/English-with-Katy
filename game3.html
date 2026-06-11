@@ -2,149 +2,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>This / That / These / Those Game</title>
+<title>Game 3 - This / That</title>
 
 <style>
-body{
+  body {
     font-family: Arial;
-    text-align:center;
-    background:#eaf6ff;
-    padding:20px;
-}
+    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+    text-align: center;
+    margin: 0;
+  }
 
-.container{
-    max-width:750px;
-    margin:auto;
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 12px rgba(0,0,0,0.1);
-}
+  h1 {
+    color: #2c3e50;
+    margin-top: 10px;
+  }
 
-h1{
-    margin-bottom:10px;
-}
+  #topBar {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+  }
 
-#question{
-    font-size:22px;
-    margin:25px 0;
-}
+  .box {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 
-button{
-    padding:14px;
-    margin:8px;
-    width:150px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-}
+  #question {
+    font-size: 60px;
+    margin: 20px;
+  }
 
-button:hover{
-    opacity:0.9;
-}
+  .btn {
+    display: inline-block;
+    padding: 12px 18px;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+  }
 
-.option{
-    background:#4a90e2;
-    color:white;
-}
+  .this { background: #2196F3; }
+  .that { background: #FF9800; }
 
-#score{
-    font-size:18px;
-    margin:10px;
-}
+  #feedback {
+    font-size: 24px;
+    margin: 10px;
+  }
 
-#result{
-    font-size:20px;
-    margin-top:15px;
-}
+  .next {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>📍 Game 3: This / That</h1>
 
-<h1>👉 This / That / These / Those 🧠</h1>
-
-<div id="score">Score: 0</div>
+<div id="topBar">
+  <div class="box">⭐ Score: <span id="score">0</span></div>
+  <div class="box">📊 Level: <span id="level">1</span></div>
+</div>
 
 <div id="question"></div>
 
-<div id="options"></div>
-
-<div id="result"></div>
-
+<div>
+  <div class="btn this" onclick="answer('this')">This 👉</div>
+  <div class="btn that" onclick="answer('that')">That 👈</div>
 </div>
+
+<p id="feedback"></p>
+
+<button class="next" onclick="next()">➡️ Next</button>
 
 <script>
 
-const questions = [
-{q:"___ fox is near me.", answer:"this"},
-{q:"___ rabbit is far away.", answer:"that"},
-{q:"___ dogs are near me.", answer:"these"},
-{q:"___ dogs are far away.", answer:"those"},
-{q:"Look at ___ bird next to me.", answer:"this"},
-{q:"Look at ___ birds far away.", answer:"those"},
-{q:"___ is my friend (near me).", answer:"this"},
-{q:"___ are my friends (near me).", answer:"these"},
-{q:"___ is a car far away.", answer:"that"},
-{q:"___ are cars far away.", answer:"those"}
+// 💾 PROGRESS SYSTEM
+function saveProgress(game, score) {
+  localStorage.setItem(game + "_score", score);
+}
+
+function loadProgress(game) {
+  return parseInt(localStorage.getItem(game + "_score")) || 0;
+}
+
+// 🎮 GAME DATA
+const game = [
+  { emoji: "👉🐱", correct: "this" },
+  { emoji: "👈🚗", correct: "that" },
+  { emoji: "👉🍎", correct: "this" },
+  { emoji: "👈🏠", correct: "that" },
+  { emoji: "👉🐶", correct: "this" },
+  { emoji: "👈🦉", correct: "that" }
 ];
 
-const options = ["this","that","these","those"];
-
 let current = 0;
-let score = 0;
 
-function loadQuestion(){
+// 🔥 LOAD SAVED SCORE
+let score = loadProgress("game3");
+document.getElementById("score").innerText = score;
 
-if(current >= questions.length){
-    document.getElementById("question").innerHTML =
-    "🎉 Game Over!";
-    
-    document.getElementById("options").innerHTML = "";
-    
-    document.getElementById("result").innerHTML =
-    "Final Score: " + score + "/" + questions.length;
-    
-    return;
+function speak(text) {
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
-document.getElementById("question").innerHTML =
-questions[current].q;
+function load() {
+  const item = game[current];
 
-let html = "";
+  document.getElementById("question").innerText = item.emoji;
+  document.getElementById("level").innerText = current + 1;
 
-options.forEach(opt=>{
-    html += `<button class="option" onclick="check('${opt}')">${opt}</button>`;
-});
-
-document.getElementById("options").innerHTML = html;
+  document.getElementById("feedback").innerText = "";
 }
 
-function check(answer){
+function answer(choice) {
+  const correct = game[current].correct;
 
-if(answer === questions[current].answer){
-    score++;
-    document.getElementById("result").innerHTML = "✅ Correct!";
-}else{
-    document.getElementById("result").innerHTML =
-    "❌ Wrong! Correct answer: " + questions[current].answer;
+  if (choice === correct) {
+    score += 10;
+    document.getElementById("score").innerText = score;
+
+    saveProgress("game3", score); // 💾 SAVE PROGRESS
+
+    document.getElementById("feedback").innerText = "🎉 Correct!";
+    speak("Correct");
+
+  } else {
+    document.getElementById("feedback").innerText = "😕 Try again!";
+  }
 }
 
-document.getElementById("score").innerHTML =
-"Score: " + score;
+function next() {
+  current++;
 
-current++;
+  if (current >= game.length) {
+    current = 0;
+    alert("🎉 Finished Game 3! Score: " + score);
+  }
 
-setTimeout(()=>{
-    document.getElementById("result").innerHTML = "";
-    loadQuestion();
-},1000);
+  load();
 }
 
-loadQuestion();
+load();
 
 </script>
 
