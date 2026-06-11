@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>English with Katy - Learning Journey</title>
+<title>English with Katy - App</title>
 
 <style>
   body {
@@ -19,184 +19,150 @@
 
   .subtitle {
     color: #555;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
-  /* 🧭 LEVEL BLOCKS */
-  .level {
+  #container {
     width: 90%;
     max-width: 500px;
-    margin: 20px auto;
-    background: white;
-    border-radius: 15px;
-    padding: 15px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin: auto;
+  }
+
+  .section-title {
     text-align: left;
-  }
-
-  .level-title {
+    margin: 15px 5px;
     font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 18px;
+    color: #444;
   }
 
-  /* 🎮 GAME BUTTONS */
   .game {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 10px;
+    justify-content: space-between;
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 15px;
     text-decoration: none;
     color: black;
-    background: #f7f7f7;
-    transition: 0.2s;
-  }
-
-  .game:hover {
-    transform: scale(1.02);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   }
 
   .left {
     display: flex;
-    gap: 10px;
     align-items: center;
+    gap: 10px;
   }
 
   .emoji {
-    font-size: 22px;
+    font-size: 30px;
   }
 
-  .locked {
-    opacity: 0.4;
-    pointer-events: none;
+  .status {
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: #eee;
+    min-width: 90px;
+    text-align: center;
   }
 
-  .stars {
+  /* 🔧 DEBUG BOX */
+  #debug {
+    margin: 20px auto;
+    padding: 10px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
     font-size: 14px;
-    color: gold;
   }
-
 </style>
 </head>
 
 <body>
 
 <h1>📚 English with Katy</h1>
-<p class="subtitle">Your Learning Journey 🎓</p>
+<p class="subtitle">Progress Debug Version 🔧</p>
 
-<!-- 🟢 LEVEL 1 -->
-<div class="level">
-  <div class="level-title">🟢 Level 1: Basics</div>
+<div id="container">
 
-  <a class="game" href="game1.html" id="g1">
+  <div class="section-title">🟢 Beginner Games</div>
+
+  <div class="game">
     <div class="left">
       <div class="emoji">🏃‍♂️</div>
-      <div>Daily Actions</div>
+      <div>Game 1</div>
     </div>
-    <div class="stars" id="s1">☆☆☆</div>
-  </a>
+    <div class="status" id="g1">Loading...</div>
+  </div>
 
-  <a class="game" href="game2.html" id="g2">
+  <div class="game">
     <div class="left">
       <div class="emoji">✔️❌</div>
-      <div>True or False</div>
+      <div>Game 2</div>
     </div>
-    <div class="stars" id="s2">☆☆☆</div>
-  </a>
-</div>
+    <div class="status" id="g2">Loading...</div>
+  </div>
 
-<!-- 🟡 LEVEL 2 -->
-<div class="level">
-  <div class="level-title">🟡 Level 2: Grammar</div>
-
-  <a class="game" href="game3.html" id="g3">
+  <div class="game">
     <div class="left">
       <div class="emoji">📍</div>
-      <div>This / That / These / Those</div>
+      <div>Game 3</div>
     </div>
-    <div class="stars" id="s3">☆☆☆</div>
-  </a>
+    <div class="status" id="g3">Loading...</div>
+  </div>
 
-  <a class="game" href="game4.html" id="g4">
+  <div class="game">
     <div class="left">
       <div class="emoji">⭐</div>
-      <div>A / An / Plurals</div>
+      <div>Game 4</div>
     </div>
-    <div class="stars" id="s4">☆☆☆</div>
-  </a>
+    <div class="status" id="g4">Loading...</div>
+  </div>
+
 </div>
 
-<!-- 🔵 LEVEL 3 -->
-<div class="level">
-  <div class="level-title">🔵 Level 3: Communication</div>
-
-  <a class="game" href="game7.html" id="g7">
-    <div class="left">
-      <div class="emoji">🧩</div>
-      <div>Word Builder</div>
-    </div>
-    <div class="stars" id="s7">☆☆☆</div>
-  </a>
-
-  <a class="game" href="game8.html" id="g8">
-    <div class="left">
-      <div class="emoji">🖼️</div>
-      <div>Picture Match</div>
-    </div>
-    <div class="stars" id="s8">☆☆☆</div>
-  </a>
+<!-- 🔧 DEBUG INFO -->
+<div id="debug">
+  <b>Debug Info:</b><br>
+  Game1 Score: <span id="d1"></span><br>
+  Game2 Score: <span id="d2"></span><br>
+  Game3 Score: <span id="d3"></span><br>
+  Game4 Score: <span id="d4"></span>
 </div>
 
 <script>
 
-// 💾 LOAD SCORE
+// 📊 GET SCORE
 function getScore(game) {
   return parseInt(localStorage.getItem(game + "_score")) || 0;
 }
 
-// ⭐ CONVERT SCORE TO STARS
-function getStars(score) {
-  if (score >= 80) return "⭐⭐⭐";
-  if (score >= 50) return "⭐⭐";
-  if (score >= 20) return "⭐";
-  return "☆☆☆";
+// ⭐ STARS
+function stars(score) {
+  if (score >= 80) return "⭐⭐⭐ Done";
+  if (score >= 50) return "⭐⭐ Good";
+  if (score >= 20) return "⭐ Started";
+  return "Play";
 }
 
-// 🔓 UNLOCK LOGIC
-function unlock(gameId, required) {
-  const score = getScore(gameId);
-  return score >= required;
-}
-
-// 📊 UPDATE UI
+// 🔄 UPDATE UI
 function update() {
 
-  // Game 1
-  document.getElementById("s1").innerText = getStars(getScore("game1"));
+  // games
+  const games = ["game1", "game2", "game3", "game4"];
 
-  // Game 2
-  document.getElementById("s2").innerText = getStars(getScore("game2"));
+  games.forEach((g, i) => {
+    const score = getScore(g);
 
-  // Game 3
-  document.getElementById("s3").innerText = getStars(getScore("game3"));
+    document.getElementById("g" + (i + 1)).innerText = stars(score);
 
-  // Game 4
-  document.getElementById("s4").innerText = getStars(getScore("game4"));
+    // debug
+    document.getElementById("d" + (i + 1)).innerText = score;
+  });
 
-  // Game 7
-  document.getElementById("s7").innerText = getStars(getScore("game7"));
-
-  // Game 8
-  document.getElementById("s8").innerText = getStars(getScore("game8"));
-
-  // 🔒 LOCK SYSTEM (example progression)
-  if (!unlock("game1", 10)) document.getElementById("g2").classList.add("locked");
-  if (!unlock("game2", 10)) document.getElementById("g3").classList.add("locked");
-  if (!unlock("game3", 10)) document.getElementById("g4").classList.add("locked");
-  if (!unlock("game4", 10)) document.getElementById("g7").classList.add("locked");
-  if (!unlock("game7", 10)) document.getElementById("g8").classList.add("locked");
 }
 
 update();
