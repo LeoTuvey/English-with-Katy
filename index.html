@@ -1,86 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>English with Katy</title>
+  <meta charset="UTF-8">
+  <title>English with Katy</title>
 
-<style>
-body{
-    font-family: Arial;
-    text-align:center;
-    background:linear-gradient(135deg,#74ebd5,#acb6e5);
-    padding:20px;
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f2f6ff;
+      margin: 0;
+      padding: 20px;
+    }
 
-.container{
-    max-width:600px;
-    margin:auto;
-    background:white;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 0 15px rgba(0,0,0,0.2);
-}
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
 
-h1{
-    margin-bottom:10px;
-}
+    p {
+      color: #555;
+    }
 
-p{
-    color:gray;
-}
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      max-width: 900px;
+      margin: 30px auto;
+    }
 
-button{
-    width:90%;
-    padding:15px;
-    margin:10px;
-    font-size:18px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    background:#4a90e2;
-    color:white;
-    transition:0.2s;
-}
+    .game-btn {
+      background: white;
+      border: 2px solid #4CAF50;
+      padding: 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-button:hover{
-    transform:scale(1.02);
-    opacity:0.9;
-}
-</style>
+    .game-btn:hover {
+      background: #4CAF50;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 30px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <h1>📚 English with Katy</h1>
+  <p>Choose a game to start learning English 🎮✨</p>
 
-<h1>🎮 English with Katy</h1>
-<p>Choose a game 👇</p>
+  <div class="container">
 
-<button onclick="location.href='game1.html'">
-🎯 Game 1: Daily Actions
-</button>
+    <button class="game-btn" onclick="location.href='game1.html'">
+      🎯 Game 1: Daily Actions
+    </button>
 
-<button onclick="location.href='game2.html'">
-🧠 Game 2: True / False
-</button>
+    <button class="game-btn" onclick="location.href='game2.html'">
+      ❓ Game 2: True or False
+    </button>
 
-<button onclick="location.href='game3.html'">
-📍 Game 3: This / That
-</button>
+    <button class="game-btn" onclick="location.href='game3.html'">
+      👆 Game 3: This / That
+    </button>
 
-<button onclick="location.href='game4.html'">
-🐾 Game 4: Run After / Run From
-</button>
+    <button class="game-btn" onclick="location.href='game4.html'">
+      🏆 Game 4: Score System
+    </button>
 
-<button onclick="location.href='game5.html'">
-🌍 Game 5: Here / There
-</button>
+    <button class="game-btn" onclick="location.href='game5.html'">
+      📍 Game 5: Here / There
+    </button>
 
-<button onclick="location.href='game6.html'">
-❓ Game 6: Is there? / Are there?
-</button>
+    <button class="game-btn" onclick="location.href='game6.html'">
+      🔊 Game 6: Voice Practice
+    </button>
 
-</div>
+    <button class="game-btn" onclick="location.href='game7.html'">
+      🧩 Game 7: Word Builder
+    </button>
+
+  </div>
+
+  <footer>
+    Made with ❤️ for English learners
+  </footer>
 
 </body>
 </html>
