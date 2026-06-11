@@ -58,11 +58,8 @@
 
 <h1>🧩 Game 7: Word Builder</h1>
 
-<h3>Arrange the words</h3>
-
 <div id="words"></div>
 
-<h3>Your sentence:</h3>
 <div id="answer"></div>
 
 <button class="check" onclick="checkAnswer()">Check ✅</button>
@@ -72,21 +69,14 @@
 
 <script>
 
-// 🎯 Sentences + QUESTIONS + EMOJIS
 const sentences = [
-  // STATEMENTS
-  { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱😄" },
-  { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶😄" },
-  { words: ["There", "is", "an", "owl"], answer: "There is an owl", emoji: "🦉😄" },
-  { words: ["There", "are", "2", "cats"], answer: "There are 2 cats", emoji: "🐱🐱😍" },
-  { words: ["There", "are", "2", "dogs"], answer: "There are 2 dogs", emoji: "🐶🐶😍" },
+  { words: ["There", "is", "a", "cat"], answer: "There is a cat", emoji: "🐱" },
+  { words: ["There", "is", "a", "dog"], answer: "There is a dog", emoji: "🐶" },
+  { words: ["There", "are", "2", "cats"], answer: "There are 2 cats", emoji: "🐱🐱" },
 
-  // QUESTIONS ❓
   { words: ["Is", "there", "a", "cat", "?"], answer: "Is there a cat?", emoji: "❓🐱" },
   { words: ["Is", "there", "a", "dog", "?"], answer: "Is there a dog?", emoji: "❓🐶" },
-  { words: ["Is", "there", "an", "owl", "?"], answer: "Is there an owl?", emoji: "❓🦉" },
-  { words: ["Are", "there", "2", "cats", "?"], answer: "Are there 2 cats?", emoji: "❓🐱🐱" },
-  { words: ["Are", "there", "2", "dogs", "?"], answer: "Are there 2 dogs?", emoji: "❓🐶🐶" }
+  { words: ["Are", "there", "2", "cats", "?"], answer: "Are there 2 cats?", emoji: "❓🐱🐱" }
 ];
 
 let current = 0;
@@ -126,34 +116,25 @@ function checkAnswer() {
   const feedback = document.getElementById("feedback");
 
   if (user === correct) {
-    feedback.innerHTML = "🎉 Correct! " + sentences[current].emoji + " ⭐";
-    speakText("Correct!");
-
-    setTimeout(() => {
-      nextSentence();
-    }, 1200);
-
+    feedback.innerHTML = "🎉 Correct! " + sentences[current].emoji;
+    speak("Correct!");
+    setTimeout(nextSentence, 1000);
   } else {
-    feedback.innerHTML = "😕 Try again! ❌";
-    speakText("Try again");
+    feedback.innerHTML = "😕 Try again!";
   }
 }
 
 function nextSentence() {
   current++;
-
   if (current >= sentences.length) {
     current = 0;
-    alert("🎉 You finished all sentences and questions!");
+    alert("🎉 Finished!");
   }
-
   loadSentence();
 }
 
-function speakText(text) {
-  const msg = new SpeechSynthesisUtterance(text);
-  msg.lang = "en-US";
-  speechSynthesis.speak(msg);
+function speak(text) {
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 }
 
 loadSentence();
