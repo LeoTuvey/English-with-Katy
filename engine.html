@@ -25,13 +25,6 @@ header{
     padding:15px;
 }
 
-.stats{
-    display:flex;
-    justify-content:space-around;
-    margin:15px 0;
-    font-size:18px;
-}
-
 .lesson{
     background:white;
     margin:10px 0;
@@ -51,14 +44,8 @@ header{
     border-color:#1976d2;
 }
 
-button{
-    padding:10px;
-    margin-top:15px;
-    border:none;
-    border-radius:8px;
-    background:#1976d2;
-    color:white;
-    cursor:pointer;
+h2{
+    margin-top:20px;
 }
 </style>
 </head>
@@ -71,109 +58,61 @@ English with Katy 📘
 
 <div class="container">
 
-<div class="stats">
-<div>❤️ Hearts: <span id="hearts">3</span></div>
-<div>⭐ XP: <span id="xp">0</span></div>
-</div>
-
 <h2>Choose a Lesson</h2>
 
 <div id="menu"></div>
-
-<button onclick="resetProgress()">Reset Progress</button>
 
 </div>
 
 <script>
 
-/* =======================
-   BASIC PLAYER DATA
-======================= */
-
-let hearts = 3;
-
-/* XP LOAD */
-let xp = parseInt(localStorage.getItem("xp") || "0");
-document.getElementById("xp").innerText = xp;
-
-/* =======================
-   LESSONS
-======================= */
+/* =========================
+   LESSON LIST (FIXED)
+========================= */
 
 let lessons = [
-{ name:"Game 1 - Daily Actions", file:"game1.html" },
-{ name:"Game 2 - True / False", file:"game2.html" },
-{ name:"Game 3 - This / That", file:"game3.html" },
-{ name:"Game 4 - Run After / From", file:"game4.html" },
-{ name:"Game 5 - Here / There", file:"game5.html" },
-{ name:"Game 6 - A / An", file:"game6.html" }
+{ name:"Game 1 - Daily Actions", file:"game1.html", unlocked:true },
+{ name:"Game 2 - True / False", file:"game2.html", unlocked:false },
+{ name:"Game 3 - This / That", file:"game3.html", unlocked:false },
+{ name:"Game 4 - Run After / From", file:"game4.html", unlocked:false },
+{ name:"Game 5 - Here / There", file:"game5.html", unlocked:false },
+{ name:"Game 6 - A / An", file:"game6.html", unlocked:false },
+{ name:"Game 7 - One / Two / Some", file:"game7.html", unlocked:false }
 ];
 
-/* =======================
-   UNLOCK SYSTEM
-======================= */
-
-let unlocked = JSON.parse(localStorage.getItem("unlocked") || "[true,false,false,false,false,false]");
-
-/* =======================
-   SAVE SYSTEM
-======================= */
-
-function save(){
-localStorage.setItem("unlocked", JSON.stringify(unlocked));
-localStorage.setItem("xp", xp);
-}
-
-/* =======================
-   OPEN LESSON
-======================= */
-
-function openLesson(i){
-window.location.href = lessons[i].file;
-}
-
-/* =======================
-   BUILD MENU
-======================= */
+/* =========================
+   LOAD MENU
+========================= */
 
 function loadMenu(){
-
-document.getElementById("xp").innerText = xp;
 
 let html = "";
 
 lessons.forEach((l,i)=>{
 
-if(unlocked[i]){
 html += `
-<div class="lesson" onclick="openLesson(${i})">
-${l.name}
-</div>`;
-}else{
-html += `
-<div class="lesson locked">
-🔒 ${l.name}
-</div>`;
-}
+<div class="lesson ${l.unlocked ? '' : 'locked'}"
+     onclick="${l.unlocked ? `openLesson(${i})` : ''}">
+${l.unlocked ? l.name : '🔒 ' + l.name}
+</div>
+`;
 
 });
 
 document.getElementById("menu").innerHTML = html;
-
 }
 
-/* =======================
-   RESET
-======================= */
+/* =========================
+   OPEN LESSON
+========================= */
 
-function resetProgress(){
-localStorage.clear();
-location.reload();
+function openLesson(i){
+window.location.href = lessons[i].file;
 }
 
-/* =======================
+/* =========================
    INIT
-======================= */
+========================= */
 
 loadMenu();
 
