@@ -1,100 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>English with Katy</title>
+<meta charset="UTF-8">
+<title>English with Katy - App</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f2f6ff;
-      margin: 0;
-      padding: 20px;
-    }
+<style>
+  body {
+    font-family: Arial;
+    margin: 0;
+    background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+    text-align: center;
+  }
 
-    h1 {
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
+  h1 {
+    margin-top: 20px;
+    color: #2c3e50;
+  }
 
-    p {
-      color: #555;
-    }
+  .subtitle {
+    color: #555;
+    margin-bottom: 20px;
+  }
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      max-width: 900px;
-      margin: 30px auto;
-    }
+  #container {
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+  }
 
-    .game-btn {
-      background: white;
-      border: 2px solid #4CAF50;
-      padding: 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.2s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+  .section-title {
+    text-align: left;
+    margin: 15px 5px;
+    font-weight: bold;
+    color: #444;
+  }
 
-    .game-btn:hover {
-      background: #4CAF50;
-      color: white;
-      transform: scale(1.05);
-    }
+  .game {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 15px;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: 0.2s;
+  }
 
-    footer {
-      margin-top: 30px;
-      color: #888;
-      font-size: 14px;
-    }
-  </style>
+  .game:hover {
+    transform: scale(1.03);
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .emoji {
+    font-size: 30px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .status {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background: #eee;
+  }
+
+  .done {
+    background: #c8f7c5;
+  }
+
+</style>
 </head>
 
 <body>
 
-  <h1>📚 English with Katy</h1>
-  <p>Choose a game to start learning English 🎮✨</p>
+<h1>📚 English with Katy</h1>
+<p class="subtitle">One app. Many games. Daily learning 🎮</p>
 
-  <div class="container">
+<div id="container">
 
-    <button class="game-btn" onclick="location.href='game1.html'">
-      🎯 Game 1: Daily Actions
-    </button>
+  <div class="section-title">🟢 Beginner Games</div>
 
-    <button class="game-btn" onclick="location.href='game2.html'">
-      ❓ Game 2: True or False
-    </button>
+  <a class="game" href="game1.html">
+    <div class="left">
+      <div class="emoji">🏃‍♂️</div>
+      <div class="title">Daily Actions</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
 
-    <button class="game-btn" onclick="location.href='game3.html'">
-      👆 Game 3: This / That
-    </button>
+  <a class="game" href="game2.html">
+    <div class="left">
+      <div class="emoji">✔️❌</div>
+      <div class="title">True or False</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
 
-    <button class="game-btn" onclick="location.href='game4.html'">
-      🏆 Game 4: Score System
-    </button>
+  <a class="game" href="game3.html">
+    <div class="left">
+      <div class="emoji">📍</div>
+      <div class="title">This / That</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
 
-    <button class="game-btn" onclick="location.href='game5.html'">
-      📍 Game 5: Here / There
-    </button>
+  <div class="section-title">🟡 Intermediate Games</div>
 
-    <button class="game-btn" onclick="location.href='game6.html'">
-      🔊 Game 6: Voice Practice
-    </button>
+  <a class="game" href="game5.html">
+    <div class="left">
+      <div class="emoji">👆👇</div>
+      <div class="title">Here vs There</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
 
-    <button class="game-btn" onclick="location.href='game7.html'">
-      🧩 Game 7: Word Builder
-    </button>
+  <a class="game" href="game6.html">
+    <div class="left">
+      <div class="emoji">🔊</div>
+      <div class="title">Listening Game</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
 
-  </div>
+  <div class="section-title">🔵 Advanced Games</div>
 
-  <footer>
-    Made with ❤️ for English learners
-  </footer>
+  <a class="game" href="game7.html">
+    <div class="left">
+      <div class="emoji">🧩</div>
+      <div class="title">Word Builder</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
+
+  <a class="game" href="game8.html">
+    <div class="left">
+      <div class="emoji">🖼️</div>
+      <div class="title">Picture Phrase Match</div>
+    </div>
+    <div class="status">Play</div>
+  </a>
+
+</div>
 
 </body>
 </html>
